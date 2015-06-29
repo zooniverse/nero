@@ -1,0 +1,6 @@
+development:
+  sessions:
+    default:
+      database: ourobouros_spacewarp
+      hosts:
+        - localhost:27017

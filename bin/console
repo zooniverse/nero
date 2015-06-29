@@ -1,0 +1,11 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'bundler/setup'
+
+require 'retirement_plan'
+
+queue = RetirementPlan::KafkaQueueConsumer.new()
+
+require 'pry'
+binding.pry

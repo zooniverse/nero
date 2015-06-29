@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'bundler/setup'
+
+require 'mongo'
+require 'poseidon'
+
+db = Mongo::Client.new(['127.0.0.1:27017'],
+                       database: 'ourobouros_spacewarp',
+                       heartbeat_frequency: 300)
+
+producer = Poseidon::Producer.new(["kafka:9092"], "spacewarps_producer")
+
+require 'pry'
+binding.pry
