@@ -1,5 +1,5 @@
 module RetirementSwap
-  class SimpleRetirement
+  class SwapAlgorithm
     def initialize(storage, panoptes, threshold: 10)
       @storage = storage
       @panoptes = panoptes

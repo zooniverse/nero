@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe RetirementSwap::SimpleRetirement do
+describe RetirementSwap::SwapAlgorithm do
   include Fixtures
 
   let(:storage) { RetirementSwap::Storage::Memory.new }
