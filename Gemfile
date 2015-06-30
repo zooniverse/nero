@@ -7,6 +7,10 @@ gem 'poseidon'
 gem 'pry'
 gem 'awesome_print'
 
+group :development do
+  gem 'rerun'
+end
+
 group :test do
   gem 'rspec'
 end
