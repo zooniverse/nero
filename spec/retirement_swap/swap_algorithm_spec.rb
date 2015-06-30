@@ -12,9 +12,18 @@ describe RetirementSwap::SwapAlgorithm do
     strategy.process(classification)
   end
 
-  it 'retires a subject after the threshold has been reached' do
-    strategy.process(classification)
-    strategy.process(classification.merge("links" => classification["links"].merge("user" => 21)))
-    expect(panoptes).to have_received(:retire).once
+  context 'when a subject is a training subject' do
+    context 'and it is a known lens' do
+      context 'then classifying it as a lens'
+      context 'then classifying it as a dud'
+    end
+
+    context 'and it is a known dud' do
+      context 'then classifying it as a lens'
+      context 'then classifying it as a dud'
+    end
+  end
+
+  context 'when a subject is to be determined' do
   end
 end

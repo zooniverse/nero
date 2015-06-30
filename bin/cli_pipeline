@@ -11,3 +11,5 @@ swap    = RetirementSwap::SwapAlgorithm.new(storage, output, threshold: 2)
 input   = RetirementSwap::Input::IOReader.new(STDIN, swap)
 
 input.run
+
+puts storage.all_estimates.size

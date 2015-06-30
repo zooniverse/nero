@@ -14,11 +14,9 @@ module RetirementSwap
       return unless user_id
 
       subject_ids.each do |subject_id|
-        result = @storage.record_classification(subject_id, user_id)
-
-        if result[:number_of_classifications] >= @threshold
-          @panoptes.retire(subject: subject_id, subject_set: :todo, workflow: workflow_id)
-        end
+        subject = @storage.find_subject(subject_id)
+        estimate = @storage.find_estimate(subject_id, workflow_id)
+        result = @storage.record_estimate(estimate)
       end
     end
   end
