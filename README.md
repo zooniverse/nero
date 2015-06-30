@@ -13,3 +13,9 @@ The entire test suite finishes really fast. Just rerun it every time you make a 
 ```
 bundle exec rerun -x bin/rspec
 ```
+
+Running the actual thing:
+
+```
+cat example_input.json | ruby -Ilib bin/cli_pipeline
+```

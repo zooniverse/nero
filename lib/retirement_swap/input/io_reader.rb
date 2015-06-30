@@ -12,6 +12,7 @@ module RetirementSwap
 
       def run
         io.each_line do |line|
+          next if line.strip == ""
           classification = JSON.parse(line)
           processor.process(classification)
         end
