@@ -7,15 +7,19 @@ module RetirementPlan
     end
 
     def process(classification)
-      result = @storage.record_classification(classification[:subject_id], classification[:user_id])
+      subject_ids = classification.fetch("links").fetch("subjects")
+      user_id = classification.fetch("links").fetch("user")
+      workflow_id = classification.fetch("links").fetch("workflow")
 
-      if result[:number_of_classifications] >= @threshold
-        @panoptes.retire(subject: classification[:subject_id], workflow: classification[:workflow_id])
+      return unless user_id
+
+      subject_ids.each do |subject_id|
+        result = @storage.record_classification(subject_id, user_id)
+
+        if result[:number_of_classifications] >= @threshold
+          @panoptes.retire(subject: subject_id, subject_set: :todo, workflow: workflow_id)
+        end
       end
-    end
-
-    def redis_set_name(classification)
-      "subject-#{classification[:subject_id]}-seen-by"
     end
   end
 end
