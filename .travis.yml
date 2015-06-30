@@ -1,0 +1,11 @@
+language: ruby
+cache: bundler
+sudo: false
+
+matrix:
+  fast_finish: true
+  allow_failures:
+  include:
+    - rvm: 2.2.1
+
+script: RACK_ENV=test bundle exec rake spec
