@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe RetirementPlan::SimpleRetirement do
+describe RetirementSwap::SimpleRetirement do
   include Fixtures
 
-  let(:storage) { RetirementPlan::Storage::Memory.new }
+  let(:storage) { RetirementSwap::Storage::Memory.new }
   let(:panoptes) { spy("Panoptes") }
   let(:classification) { fixture(:panoptes_classification)["classifications"][0] }
   subject(:strategy) { described_class.new(storage, panoptes, threshold: 2) }

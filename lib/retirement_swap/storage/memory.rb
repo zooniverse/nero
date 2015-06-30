@@ -1,6 +1,6 @@
 require 'set'
 
-module RetirementPlan
+module RetirementSwap
   module Storage
     class Memory
       def initialize

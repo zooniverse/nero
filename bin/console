@@ -3,9 +3,9 @@
 require 'rubygems'
 require 'bundler/setup'
 
-require 'retirement_plan'
+require 'retirement_swap'
 
-queue = RetirementPlan::KafkaQueueConsumer.new()
+queue = RetirementSwap::KafkaQueueConsumer.new()
 
 require 'pry'
 binding.pry

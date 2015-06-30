@@ -1,4 +1,4 @@
-module RetirementPlan
+module RetirementSwap
   class SimpleRetirement
     def initialize(storage, panoptes, threshold: 10)
       @storage = storage
