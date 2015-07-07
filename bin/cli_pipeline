@@ -7,7 +7,7 @@ require 'retirement_swap'
 
 storage = RetirementSwap::Storage::Memory.new
 output  = RetirementSwap::Output::IOWriter.new(STDOUT)
-swap    = RetirementSwap::SwapAlgorithm.new(storage, output, threshold: 2)
+swap    = RetirementSwap::SwapAlgorithm.new(storage, output)
 input   = RetirementSwap::Input::IOReader.new(STDIN, swap)
 
 input.run

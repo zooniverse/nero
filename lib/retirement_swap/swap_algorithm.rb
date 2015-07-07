@@ -1,22 +1,33 @@
 module RetirementSwap
   class SwapAlgorithm
-    def initialize(storage, panoptes, threshold: 10)
+    def initialize(storage, panoptes)
       @storage = storage
       @panoptes = panoptes
-      @threshold = threshold
     end
 
-    def process(classification)
-      subject_ids = classification.fetch("links").fetch("subjects")
-      user_id = classification.fetch("links").fetch("user")
-      workflow_id = classification.fetch("links").fetch("workflow")
+    def process(hash)
+      classification = Classification.new(hash)
+      return unless classification.user_id
 
-      return unless user_id
+      agent = @storage.find_agent(classification.user_id)
 
-      subject_ids.each do |subject_id|
-        subject = @storage.find_subject(subject_id)
-        estimate = @storage.find_estimate(subject_id, workflow_id)
-        result = @storage.record_estimate(estimate)
+      classification.subjects.map do |subject|
+        estimate = @storage.find_estimate(subject.id, classification.workflow_id)
+
+        if estimate.status != :active and subject.category == 'test'
+          next estimate
+        end
+
+        unless subject.category == "training" && estimate.status != :active
+          new_estimate = estimate.adjust(agent, classification.guess)
+          agent.update_confusion_unsupervised(classification.guess, new_estimate.probability)
+          @storage.record_estimate(new_estimate)
+          new_estimate
+        else
+          new_estimate = estimate
+          agent.update_confusion_unsupervised(classification.guess, new_estimate.probability)
+          new_estimate
+        end
       end
     end
   end

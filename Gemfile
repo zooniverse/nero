@@ -13,4 +13,7 @@ end
 
 group :test do
   gem 'rspec'
+
+  # To compare against old implementation
+  gem 'mongoid'
 end

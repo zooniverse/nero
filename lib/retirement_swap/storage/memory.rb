@@ -3,16 +3,16 @@ require 'set'
 module RetirementSwap
   module Storage
     class Memory
-      attr_reader :most_recent_estimates, :all_estimates
+      attr_reader :most_recent_estimates, :all_estimates, :agents
 
-      def initialize(training_subjects = {})
+      def initialize
         @most_recent_estimates = {}
         @all_estimates = []
-        @training_subjects = training_subjects
+        @agents = {}
       end
 
-      def find_subject(subject_id)
-        @training_subjects[subject_id] || RetirementSwap::Subject.new(subject_id)
+      def find_agent(user_id)
+        @agents[user_id] ||= Agent.new(user_id)
       end
 
       def find_estimate(subject_id, workflow_id)
