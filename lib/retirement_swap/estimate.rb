@@ -14,6 +14,16 @@ module RetirementSwap
       @probability = probability
     end
 
+    def attributes
+      {
+        subject_id: subject_id,
+        workflow_id: workflow_id,
+        user_id: user_id,
+        answer: answer,
+        probability: probability
+      }
+    end
+
     def adjust(agent, guess)
       pl = agent.pl
       pd = agent.pd
@@ -26,7 +36,7 @@ module RetirementSwap
         likelihood /= ((1-pl)*probability + pd*(1-probability))
       end
 
-      Estimate.new(subject_id, workflow_id, agent.id, guess, likelihood * probability)
+      Estimate.new(subject_id, workflow_id, agent.external_id, guess, likelihood * probability)
     end
 
     def status

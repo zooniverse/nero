@@ -3,48 +3,61 @@ module RetirementSwap
     INITIAL_PL = 0.5
     INITIAL_PD = 0.5
 
-    attr_reader :id, :pl, :pd
+    attr_reader :id, :external_id, :pl, :pd, :contribution, :counts_lens, :counts_duds, :counts_test, :counts_total
 
-    def initialize(id, pl = INITIAL_PL, pd = INITIAL_PD)
+    def initialize(id:, external_id:, pl: INITIAL_PL, pd: INITIAL_PD, contribution: 0.0, counts_lens: 0, counts_duds: 0, counts_test: 0, counts_total: 0)
       @id = id
+      @external_id = external_id
       @pl = pl
       @pd = pd
-      @contribution = 0.0
-      @counts = {"lens" => 0, "duds" =>0, "test" => 0, "total" => 0}
+      @contribution = contribution
+      @counts_lens = counts_lens
+      @counts_duds = counts_duds
+      @counts_test = counts_test
+      @counts_total = counts_total
     end
 
-    def self.perfect
-      new(1, 1)
+    def attributes
+      {
+        :external_id => external_id,
+        :pl => pl,
+        :pd => pd,
+        :contribution => contribution,
+        :counts_lens => counts_lens,
+        :counts_duds => counts_duds,
+        :counts_test => counts_test,
+        :counts_total => counts_total
+      }
     end
 
     def update_confusion_unsupervised(user_said, lens_prob)
       if user_said == "LENS"
-        pl_new = (pl * @counts["lens"] + lens_prob)/(lens_prob+@counts["lens"])
+        pl_new = (pl * @counts_lens + lens_prob)/(lens_prob+@counts_lens)
         pl_new = [pl_new,pl_max].min
         pl_new = [pl_new,pl_min].max
         @pl = pl_new
 
-        pd_new = (pd*@counts["lens"] )/((1-lens_prob)+@counts["duds"])
+        pd_new = (pd*@counts_lens )/((1-lens_prob)+@counts_duds)
         pd_new = [pd_new,pd_max].min
         pd_new = [pd_new,pd_min].max
         @pd = pd_new
 
-        @counts["lens"] += 1
-        @counts["total"] += 1
+        @counts_lens += 1
+        @counts_total += 1
       else
 
-        pl_new = (pl*@counts["lens"])/(lens_prob+@counts["lens"])
+        pl_new = (pl*@counts_lens)/(lens_prob+@counts_lens)
         pl_new = [pl_new,pl_max].min
         pl_new = [pl_new,pl_min].max
         @pl = pl_new
 
-        pd_new = (pd*@counts["duds"] + (1-lens_prob))/((lens_prob-1)+@counts["duds"])
+        pd_new = (pd*@counts_duds + (1-lens_prob))/((lens_prob-1)+@counts_duds)
         pd_new = [pd_new,pd_max].min
         pd_new = [pd_new,pd_min].max
         @pd = pd_new
 
-        @counts["duds"] += 1
-        @counts["total"] += 1
+        @counts_duds += 1
+        @counts_total += 1
       end
     end
 

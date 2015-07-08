@@ -12,7 +12,11 @@ module RetirementSwap
       end
 
       def find_agent(user_id)
-        @agents[user_id] ||= Agent.new(user_id)
+        @agents[user_id] ||= Agent.new(id: nil, external_id: user_id)
+      end
+
+      def record_agent(agent)
+        @agents[agent.id] = agent
       end
 
       def find_estimate(subject_id, workflow_id)

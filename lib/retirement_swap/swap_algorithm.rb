@@ -21,13 +21,14 @@ module RetirementSwap
         unless subject.category == "training" && estimate.status != :active
           new_estimate = estimate.adjust(agent, classification.guess)
           agent.update_confusion_unsupervised(classification.guess, new_estimate.probability)
-          @storage.record_estimate(new_estimate)
-          new_estimate
         else
           new_estimate = estimate
           agent.update_confusion_unsupervised(classification.guess, new_estimate.probability)
-          new_estimate
         end
+
+        @storage.record_agent(agent)
+        @storage.record_estimate(new_estimate)
+        new_estimate
       end
     end
   end

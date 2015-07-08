@@ -4,7 +4,7 @@ module RetirementSwap
   describe Estimate do
     describe '#adjust' do
       let(:estimate) { described_class.new(double("Subject"), double("Workflow")) }
-      let(:agent)    { Agent.new(0.6, 0.6) }
+      let(:agent)    { Agent.new(id: nil, external_id: '1', pl: 0.6, pd: 0.6) }
 
       it 'increases in probability when guessing a LENS with an agent that is more than average' do
         next_estimate = estimate.adjust(agent, "LENS")
