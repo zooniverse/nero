@@ -2,6 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rake'
 gem 'poseidon'
+gem 'poseidon_cluster'
 gem 'sequel'
 gem 'sqlite3'
 
