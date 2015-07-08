@@ -16,7 +16,7 @@ module RetirementSwap
 
       def run
         @consumers.each do |consumer|
-          messages = consumer.fetch
+          messages = consumer.fetch(max_wait_ms: 100)
           messages.each do |message|
             processor.process(JSON.parse(message.value))
           end

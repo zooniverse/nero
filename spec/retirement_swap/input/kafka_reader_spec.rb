@@ -18,7 +18,7 @@ describe RetirementSwap::Input::KafkaReader do
       Poseidon::MessageToSend.new(topic, JSON.dump(id: 3))
     ])
 
-    reader.run # process messages
+    reader.run
 
     expect(processor).to have_received(:process).with("id" => 1)
     expect(processor).to have_received(:process).with("id" => 2)
