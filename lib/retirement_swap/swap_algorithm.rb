@@ -12,17 +12,17 @@ module RetirementSwap
       agent = @storage.find_agent(classification.user_id)
 
       classification.subjects.map do |subject|
-        estimate = @storage.find_estimate(subject.id, classification.workflow_id)
+        old_estimate = @storage.find_estimate(subject.id, classification.workflow_id)
 
-        if estimate.status != :active and subject.category == 'test'
-          next estimate
+        if old_estimate.status != :active and subject.category == 'test'
+          next old_estimate
         end
 
-        unless subject.category == "training" && estimate.status != :active
-          new_estimate = estimate.adjust(agent, classification.guess)
+        unless subject.category == "training" && old_estimate.status != :active
+          new_estimate = old_estimate.adjust(agent, classification.guess)
           agent.update_confusion_unsupervised(classification.guess, new_estimate.probability)
         else
-          new_estimate = estimate
+          new_estimate = old_estimate
           agent.update_confusion_unsupervised(classification.guess, new_estimate.probability)
         end
 
