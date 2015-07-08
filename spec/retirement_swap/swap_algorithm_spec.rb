@@ -6,7 +6,7 @@ describe RetirementSwap::SwapAlgorithm do
   let(:storage) { RetirementSwap::Storage::Memory.new }
   let(:panoptes) { spy("Panoptes") }
   let(:classification) { fixture(:panoptes_classification)["classifications"][0] }
-  subject(:strategy) { described_class.new(storage, panoptes, threshold: 2) }
+  subject(:strategy) { described_class.new(storage, panoptes) }
 
   it 'processes a message' do
     strategy.process(classification)

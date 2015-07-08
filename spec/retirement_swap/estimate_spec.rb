@@ -9,14 +9,12 @@ module RetirementSwap
       it 'increases in probability when guessing a LENS with an agent that is more than average' do
         next_estimate = estimate.adjust(agent, "LENS")
         expect(next_estimate.probability).to be > estimate.probability
-        expect(next_estimate.probability).to eq 0.0002999700029997
 
       end
 
       it 'decreases in probability when guessing a NOT' do
         next_estimate = estimate.adjust(agent, "NOT")
         expect(next_estimate.probability).to be < estimate.probability
-        expect(next_estimate.probability).to eq 0.00013334222281485435
       end
     end
 

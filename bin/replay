@@ -2,7 +2,7 @@
 
 require 'rubygems'
 require 'bundler/setup'
-
+require 'digest/sha1'
 require 'mongo'
 require 'json'
 
@@ -15,6 +15,11 @@ db = Mongo::Client.new(['127.0.0.1:27017'], database: 'ourobouros_spacewarp')
 spacewarp_classifications = db["spacewarp_classifications"]
 spacewarp_subjects = db["spacewarp_subjects"]
 
+def user_identifier(classification)
+  str = classification["user_id"].to_s || classification["user_ip"].to_s
+  Digest::SHA1.hexdigest("#{str}:#{ENV.fetch("SALT")}")
+end
+
 spacewarp_classifications.find({:created_at => {:$gt => start_from}}).sort(:created_at => 1).limit(total_to_do).each do |classification|
   subjects = classification["subject_ids"].map do |id|
     hash = spacewarp_subjects.find({:_id => id}).first.to_h
@@ -26,7 +31,7 @@ spacewarp_classifications.find({:created_at => {:$gt => start_from}}).sort(:crea
     annotations: classification["annotations"],
     subjects: Hash[subjects],
     links: {project: classification["project_id"].to_s,
-            user: (classification["user_id"] || classification["user_ip"]).to_s,
+            user: user_identifier(classification),
             workflow: classification["workflow_id"].to_s,
             subjects: classification["subject_ids"].map(&:to_s)}
 end

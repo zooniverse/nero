@@ -13,6 +13,7 @@ end
 
 group :test do
   gem 'rspec'
+  gem 'approvals'
 
   # To compare against old implementation
   gem 'mongoid'
