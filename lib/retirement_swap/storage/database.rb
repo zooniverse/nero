@@ -1,33 +1,18 @@
 require 'sequel'
+Sequel.extension :migration
 
 module RetirementSwap
   module Storage
     class Database
       attr_reader :db
 
+      def self.migrate(db)
+        Sequel::Migrator.run(db, File.expand_path("../../../../db/migrations", __FILE__))
+      end
+
       def initialize(db)
         @db = db
-
-        db.create_table :agents do
-          primary_key :id
-          String :external_id
-          Float :pl
-          Float :pd
-          Float :contribution
-          Integer :counts_lens
-          Integer :counts_duds
-          Integer :counts_test
-          Integer :counts_total
-        end
-
-        db.create_table :estimates do
-          primary_key :id
-          String :subject_id
-          String :workflow_id
-          String :user_id
-          String :answer
-          Float :probability
-        end
+        self.class.migrate(db)
       end
 
       def find_agent(user_id)

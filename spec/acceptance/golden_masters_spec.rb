@@ -33,13 +33,15 @@ describe 'Golden masters' do
 
     it 'works with the fully integrated kafka-sequel path' do
       # Single partition to ensure processing in known-order
-      producer = Poseidon::Producer.new(brokers, "test_producer", partitioner: -> { 0 })
+      producer = Poseidon::Producer.new(brokers, "test_producer", partitioner: ->(partition_count, key) { 0 })
 
       lines = File.readlines(File.expand_path("../../fixtures/spacewarps_ouroboros_classifications.json", __FILE__))
-      lines.each do |line|
-        producer.send_messages([Poseidon::MessageToSend.new(topic, line)])
-        process_queue
-      end
+      messages = lines.map.with_index { |line, idx| Poseidon::MessageToSend.new(topic, line, "message#{idx}") }
+
+      # sending messages in small groups is faster than both singles and larger groups
+      messages.each_slice(10) {|slice| producer.send_messages(slice) }
+
+      reader.run_until_caught_up
 
       verify do
         db[:estimates].all.map do |row|
@@ -47,17 +49,5 @@ describe 'Golden masters' do
         end
       end
     end
-
-    def process_queue
-      count = 0
-      begin
-        count = reader.run
-      end until count > 0
-
-      begin
-        count = reader.run
-      end while count > 0
-    end
-
   end
 end

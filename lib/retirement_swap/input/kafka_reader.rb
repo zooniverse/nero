@@ -28,6 +28,12 @@ module RetirementSwap
         count
       end
 
+      def run_until_caught_up
+        count = 0
+        count = run until count > 0
+        count = run while count > 0
+      end
+
       private
 
       def topic_partition_count(topic)
