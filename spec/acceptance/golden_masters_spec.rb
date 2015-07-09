@@ -19,17 +19,45 @@ describe 'Golden masters' do
     end
   end
 
-  it 'works with the fully integrated kafka-sequel path' do
-    storage = RetirementSwap::Storage::Database.new(Sequel.sqlite)
-    output = RetirementSwap::Output::IOWriter.new(StringIO.new)
-    retirement_swap = RetirementSwap::SwapAlgorithm.new(storage, output)
+  context 'with kafka and sequel' do
+    let(:db) { Sequel.sqlite }
+    let(:storage) { RetirementSwap::Storage::Database.new(db) }
+    let(:output) { RetirementSwap::Output::IOWriter.new(StringIO.new) }
+    let(:retirement_swap) { RetirementSwap::SwapAlgorithm.new(storage, output) }
+    let(:brokers) { ["192.168.59.103:9092"] }
+    let(:topic) { "retirement-swap-test-#{Time.now.to_i}"}
+    let(:reader) { RetirementSwap::Input::KafkaReader.new(processor: retirement_swap,
+                                                          brokers: brokers,
+                                                          topics: [topic],
+                                                          consumer_id: 'testreader') }
 
-    classifications = File.readlines(File.expand_path("../../fixtures/spacewarps_ouroboros_classifications.json", __FILE__))
-                          .map {|line| JSON.parse(line) }
+    it 'works with the fully integrated kafka-sequel path' do
+      # Single partition to ensure processing in known-order
+      producer = Poseidon::Producer.new(brokers, "test_producer", partitioner: -> { 0 })
 
-    verify do
-      classifications.map { |classification| retirement_swap.process(classification) }
-                     .map { |estimates| estimates.map { |estimate| [estimate.subject_id, estimate.user_id, estimate.answer, estimate.probability] } }
+      lines = File.readlines(File.expand_path("../../fixtures/spacewarps_ouroboros_classifications.json", __FILE__))
+      lines.each do |line|
+        producer.send_messages([Poseidon::MessageToSend.new(topic, line)])
+        process_queue
+      end
+
+      verify do
+        db[:estimates].all.map do |row|
+          [[row[:subject_id], row[:user_id], row[:answer], row[:probability]]]
+        end
+      end
     end
+
+    def process_queue
+      count = 0
+      begin
+        count = reader.run
+      end until count > 0
+
+      begin
+        count = reader.run
+      end while count > 0
+    end
+
   end
 end

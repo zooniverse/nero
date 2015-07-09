@@ -15,12 +15,17 @@ module RetirementSwap
       end
 
       def run
+        count = 0
+
         @consumers.each do |consumer|
-          messages = consumer.fetch(max_wait_ms: 100)
+          messages = consumer.fetch(max_wait_ms: 10)
           messages.each do |message|
+            count += 1
             processor.process(JSON.parse(message.value))
           end
         end
+
+        count
       end
 
       private

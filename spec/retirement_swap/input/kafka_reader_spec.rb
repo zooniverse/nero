@@ -10,7 +10,7 @@ describe RetirementSwap::Input::KafkaReader do
                                      consumer_id: 'testreader') }
 
   it 'forwards classifications to the processor' do
-    producer = Poseidon::Producer.new(brokers, "test_producer")
+    producer = Poseidon::Producer.new(brokers, "test_producer", partitioner: -> { 0 })
 
     producer.send_messages([
       Poseidon::MessageToSend.new(topic, JSON.dump(id: 1)),
