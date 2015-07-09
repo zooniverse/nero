@@ -24,12 +24,14 @@ describe 'Golden masters' do
     let(:storage) { RetirementSwap::Storage::Database.new(db) }
     let(:output) { RetirementSwap::Output::IOWriter.new(StringIO.new) }
     let(:retirement_swap) { RetirementSwap::SwapAlgorithm.new(storage, output) }
-    let(:brokers) { ["192.168.59.103:9092"] }
+    let(:brokers) { ["kafka:9092"] }
+    let(:zookeepers) { ["zk:2181"] }
     let(:topic) { "retirement-swap-test-#{Time.now.to_i}"}
     let(:reader) { RetirementSwap::Input::KafkaReader.new(processor: retirement_swap,
                                                           brokers: brokers,
-                                                          topics: [topic],
-                                                          consumer_id: 'testreader') }
+                                                          zookeepers: zookeepers,
+                                                          topic: topic,
+                                                          group_name: "group-#{Time.now.to_i}") }
 
     it 'works with the fully integrated kafka-sequel path' do
       # Single partition to ensure processing in known-order
@@ -41,7 +43,7 @@ describe 'Golden masters' do
       # sending messages in small groups is faster than both singles and larger groups
       messages.each_slice(10) {|slice| producer.send_messages(slice) }
 
-      reader.run_until_caught_up
+      reader.run
 
       verify do
         db[:estimates].all.map do |row|

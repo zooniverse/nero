@@ -1,57 +1,45 @@
 require 'poseidon'
+require 'poseidon_cluster'
 
 module RetirementSwap
   module Input
     class KafkaReader
       attr_reader :processor
 
-      def initialize(processor:, brokers:, topics:, consumer_id:)
+      def initialize(processor:, group_name:, brokers:, zookeepers:, topic:)
         @processor = processor
-
-        @broker = Poseidon::BrokerPool.new(consumer_id, brokers, 100)
-        @consumers = []
-        @cluster_metadata = Poseidon::ClusterMetadata.new
-        setup_topic_partition_consumers(brokers, topics, consumer_id)
+        @consumer = Poseidon::ConsumerGroup.new(group_name, brokers, zookeepers, topic,
+                                                socket_timeout_ms: 20000, max_wait_ms: 1000)
       end
 
       def run
-        count = 0
+        counts = Hash.new(0)
+        begin
+          partition, count = process_a_partition
+          counts[partition] = count
+        end until counts.any? {|partition, count| count > 0 }
 
-        @consumers.each do |consumer|
-          messages = consumer.fetch(max_wait_ms: 10)
+        begin
+          partition, count = process_a_partition
+          counts[partition] = count
+        end while counts.any? {|partition, count| count > 0 }
+      end
+
+      private
+
+      def process_a_partition
+        count = 0
+        id = nil
+
+        @consumer.fetch do |partition, messages|
+          id = partition
           messages.each do |message|
             count += 1
             processor.process(JSON.parse(message.value))
           end
         end
 
-        count
-      end
-
-      def run_until_caught_up
-        count = 0
-        count = run until count > 0
-        count = run while count > 0
-      end
-
-      private
-
-      def topic_partition_count(topic)
-        @cluster_metadata.update(@broker.fetch_metadata([topic]))
-        @cluster_metadata.topic_metadata[topic].partition_count
-      end
-
-      def lead_broker_for_topic_parition(topic, partition)
-        @cluster_metadata.lead_broker_for_partition(topic, partition)
-      end
-
-      def setup_topic_partition_consumers(brokers, topics, consumer_id)
-        topics.each do |topic|
-          topic_partition_count(topic).times do |partition_count|
-            consumer_opts = [consumer_id, brokers, topic, partition_count, :earliest_offset]
-            @consumers << Poseidon::PartitionConsumer.consumer_for_partition(*consumer_opts)
-          end
-        end
+        return id, count
       end
     end
   end

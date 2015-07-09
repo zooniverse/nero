@@ -6,16 +6,17 @@ describe RetirementSwap::Input::KafkaReader do
   let(:topic) { "retirement-swap-test-#{Time.now.to_i}"}
   let(:reader) { described_class.new(processor: processor,
                                      brokers: brokers,
-                                     topics: [topic],
-                                     consumer_id: 'testreader') }
+                                     zookeepers: ['zk:2181'],
+                                     topic: topic,
+                                     group_name: "group-#{Time.now.to_i}") }
 
   it 'forwards classifications to the processor' do
-    producer = Poseidon::Producer.new(brokers, "test_producer", partitioner: -> { 0 })
+    producer = Poseidon::Producer.new(brokers, "test_producer", partitioner: ->(partition, key) { 0 })
 
     producer.send_messages([
-      Poseidon::MessageToSend.new(topic, JSON.dump(id: 1)),
-      Poseidon::MessageToSend.new(topic, JSON.dump(id: 2)),
-      Poseidon::MessageToSend.new(topic, JSON.dump(id: 3))
+      Poseidon::MessageToSend.new(topic, JSON.dump(id: 1), 'msg1'),
+      Poseidon::MessageToSend.new(topic, JSON.dump(id: 2), 'msg2'),
+      Poseidon::MessageToSend.new(topic, JSON.dump(id: 3), 'msg3')
     ])
 
     reader.run
