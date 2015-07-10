@@ -35,6 +35,7 @@ module RetirementSwap
           id = partition
           messages.each do |message|
             count += 1
+            puts message.value
             processor.process(JSON.parse(message.value))
           end
         end

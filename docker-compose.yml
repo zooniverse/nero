@@ -21,3 +21,17 @@ kafka:
   command: -i 1 -H kafka -p 9092 -z zk:2181
   ports:
     - "9092:9092"
+
+retirementswap:
+  dockerfile: Dockerfile
+  build: ./
+  environment:
+    KAFKA_GROUP: retirement-swap-workers
+    KAFKA_TOPIC: classifications
+  command: ruby -I /app/lib /app/bin/start
+  volumes:
+    - ./:/app
+  links:
+    - postgres
+    - zookeeper:zk
+    - kafka
