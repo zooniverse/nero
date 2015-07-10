@@ -8,4 +8,4 @@ matrix:
   include:
     - rvm: 2.2.1
 
-script: RACK_ENV=test bundle exec rake spec
+script: "bin/rspec --tag ~kafka"

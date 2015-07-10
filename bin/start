@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'bundler/setup'
+
+require 'retirement_swap'
+
+storage = RetirementSwap::Storage::Memory.new
+output  = RetirementSwap::Output::IOWriter.new(STDOUT)
+swap    = RetirementSwap::SwapAlgorithm.new(storage, output)
+input   = RetirementSwap::Input::KafkaReader.new(processor:  swap,
+                                                 zookeepers: ENV.fetch("ZOOKEEPERS", "zk:2181").split(','),
+                                                 group_name: ENV.fetch("KAFKA_GROUP"),
+                                                 brokers:    ENV.fetch("KAFKA_BROKERS", "kafka:9092").split(','),
+                                                 topic:      ENV.fetch("KAFKA_TOPIC"))
+
+puts "RetirementSwap Started."
+loop do
+  input.run
+end

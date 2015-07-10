@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe RetirementSwap::Input::KafkaReader do
+describe RetirementSwap::Input::KafkaReader, :kafka do
   let(:processor) { spy }
   let(:brokers) { ["192.168.59.103:9092"] }
   let(:topic) { "retirement-swap-test-#{Time.now.to_i}"}

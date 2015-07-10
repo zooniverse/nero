@@ -1,0 +1,16 @@
+#!/usr/bin/env ruby
+
+require 'rubygems'
+require 'bundler/setup'
+
+require 'poseidon'
+producer = Poseidon::Producer.new(ENV.fetch("KAFKA_BROKERS", "kafka:9092").split(','),
+                                  ENV.fetch("KAFKA_PRODUCER_NAME", 'retirementswap-cli'),
+                                  partitioner: ->(partition, key) { 0 })
+topic = ENV.fetch("KAFKA_TOPIC")
+
+STDIN.each_line do |line|
+  print '.'
+  producer.send_messages([Poseidon::MessageToSend.new(topic, line)])
+end
+puts ' done'
