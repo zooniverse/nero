@@ -19,7 +19,7 @@ describe 'Golden masters' do
     end
   end
 
-  context 'with kafka and sequel' do
+  context 'with kafka and sequel', :kafka do
     let(:db) { Sequel.sqlite }
     let(:storage) { RetirementSwap::Storage::Database.new(db) }
     let(:output) { RetirementSwap::Output::IOWriter.new(StringIO.new) }
