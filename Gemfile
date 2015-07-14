@@ -4,7 +4,7 @@ gem 'rake'
 gem 'poseidon'
 gem 'poseidon_cluster'
 gem 'sequel'
-gem 'sqlite3'
+gem 'pg'
 
 group :development do
   gem 'rerun'
@@ -14,9 +14,10 @@ group :development, :test do
   gem 'pry'
   gem 'awesome_print'
 
+  gem 'sqlite3'
+
   # To compare against old implementation
   gem 'mongo', '~> 2.0'
-  gem 'mongoid'
 end
 
 group :test do

@@ -6,12 +6,13 @@ require 'digest/sha1'
 require 'mongo'
 require 'json'
 
-start_from = Time.new(2014, 1, 9)
-total_to_do  = (ENV["AMOUNT"] || 1000000).to_i
+start_from  = Time.new(2014, 1, 9)
+total_to_do = (ENV["AMOUNT"] || 1000000).to_i
+db_name     = ENV["DATABASE"] || 'ourobouros_spacewarp'
 
 Mongo::Logger.logger.level = Logger::FATAL
 
-db = Mongo::Client.new(['127.0.0.1:27017'], database: 'ourobouros_spacewarp')
+db = Mongo::Client.new(['127.0.0.1:27017'], database: db_name)
 spacewarp_classifications = db["spacewarp_classifications"]
 spacewarp_subjects = db["spacewarp_subjects"]
 

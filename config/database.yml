@@ -1,0 +1,23 @@
+development:
+  adapter: postgres
+  host: postgres
+  database: retirement_swap_development
+  user: retirement_swap
+  password: retirement_swap
+
+test:
+  adapter: sqlite
+
+staging:
+  adapter: postgres
+  host: postgres
+  database: retirement_swap_staging
+  user: retirement_swap
+  password: retirement_swap
+
+production:
+  adapter: postgres
+  host: postgres
+  database: retirement_swap_production
+  user: retirement_swap
+  password: retirement_swap
