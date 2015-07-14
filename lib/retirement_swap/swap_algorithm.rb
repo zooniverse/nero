@@ -28,6 +28,11 @@ module RetirementSwap
 
         @storage.record_agent(agent)
         @storage.record_estimate(new_estimate)
+
+        if new_estimate.retire?
+          @panoptes.retire(new_estimate)
+        end
+
         new_estimate
       end
     end

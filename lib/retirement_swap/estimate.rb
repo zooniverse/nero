@@ -50,6 +50,10 @@ module RetirementSwap
       end
     end
 
+    def retire?
+      status != :active
+    end
+
     private
 
     def rejected?
