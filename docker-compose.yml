@@ -28,7 +28,7 @@ retirementswap:
   environment:
     KAFKA_GROUP: retirement-swap-workers
     KAFKA_TOPIC: classifications
-  command: ruby -I /app/lib /app/bin/start
+  entrypoint: ["ruby", "-I", "/app/lib", "/app/bin/start"]
   volumes:
     - ./:/app
   links:
