@@ -15,3 +15,5 @@ RUN bundle install
 
 ADD supervisord.conf /etc/supervisor/conf.d/retirement_swap.conf
 ADD ./ /app
+
+ENTRYPOINT ["/usr/bin/supervisord"]
