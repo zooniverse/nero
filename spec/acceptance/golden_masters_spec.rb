@@ -23,7 +23,7 @@ describe 'Golden masters' do
     let(:db) { Sequel.sqlite }
     let(:storage) { RetirementSwap::Storage::Database.new(db) }
     let(:output) { RetirementSwap::Output::IOWriter.new(StringIO.new) }
-    let(:retirement_swap) { RetirementSwap::SwapAlgorithm.new(storage, output) }
+    let(:retirement_swap) { RetirementSwap::Processor.new(storage, output, {'5101a1341a320ea77f000001' => {'algorithm' => 'swap'}}) }
     let(:brokers) { ["kafka:9092"] }
     let(:zookeepers) { ["zk:2181"] }
     let(:topic) { "retirement-swap-test-#{Time.now.to_i}"}
