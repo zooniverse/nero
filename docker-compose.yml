@@ -26,6 +26,7 @@ retirementswap:
   dockerfile: Dockerfile
   build: ./
   environment:
+    RAILS_ENV: development
     KAFKA_GROUP: retirement-swap-workers
     KAFKA_TOPIC: classifications
   entrypoint: ["ruby", "-I", "/app/lib", "/app/bin/start"]
