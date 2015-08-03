@@ -50,7 +50,11 @@ module RetirementSwap
       end
     end
 
-    def retire?
+    def active?
+      status == :active
+    end
+
+    def retired?
       status != :active
     end
 
