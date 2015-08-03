@@ -14,7 +14,7 @@ module RetirementSwap
       classification.subjects.map do |subject|
         old_estimate = @storage.find_estimate(subject.id, classification.workflow_id)
 
-        if old_estimate.retired? && !subject.training?
+        if old_estimate.retired? && subject.test?
           next old_estimate
         end
 
@@ -29,7 +29,7 @@ module RetirementSwap
         @storage.record_agent(agent)
         @storage.record_estimate(new_estimate)
 
-        if new_estimate.retired?
+        if new_estimate.retired? && subject.test?
           @panoptes.retire(new_estimate)
         end
 
