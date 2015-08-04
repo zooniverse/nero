@@ -33,14 +33,13 @@ module RetirementSwap
     end
 
     def training_guess
-      case subjects.first.kind
-      when 'sim'
+      if subjects.first.sim?
         if sim_found?
           "LENS"
         else
           "NOT"
         end
-      when 'dud'
+      else
         test_guess
       end
     end
