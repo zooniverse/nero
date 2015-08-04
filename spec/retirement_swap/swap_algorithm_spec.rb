@@ -5,11 +5,14 @@ describe RetirementSwap::SwapAlgorithm do
 
   let(:storage) { RetirementSwap::Storage::Memory.new }
   let(:panoptes) { spy("Panoptes") }
-  let(:classification) { fixture(:panoptes_classification)["classifications"][0] }
+  let(:classification) { RetirementSwap::Classification.new(fixture(:panoptes_classification)["classifications"][0]) }
+  let(:agent) { double }
+  let(:subject) { double }
+
   subject(:strategy) { described_class.new(storage, panoptes) }
 
   it 'processes a message' do
-    strategy.process(classification)
+    strategy.process(classification, agent, subject)
   end
 
   context 'when a subject is a training subject' do

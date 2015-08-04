@@ -20,6 +20,10 @@ module RetirementSwap
       hash.fetch("links").fetch("workflow")
     end
 
+    def subject_ids
+      hash.fetch("links").fetch("subjects")
+    end
+
     def guess
       if subjects.first.training?
         training_guess

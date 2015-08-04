@@ -8,13 +8,13 @@ describe 'Golden masters' do
   it 'returns the correct results for the old spacewarps data' do
     storage = RetirementSwap::Storage::Memory.new
     output = RetirementSwap::Output::IOWriter.new(StringIO.new)
-    retirement_swap = RetirementSwap::SwapAlgorithm.new(storage, output)
+    processor = RetirementSwap::Processor.new(storage, output, "52c1cf443ae7407d88000001" => {"algorithm" => "swap"})
 
     classifications = File.readlines(File.expand_path("../../fixtures/spacewarps_ouroboros_classifications.json", __FILE__))
                           .map {|line| JSON.parse(line) }
 
     verify do
-      classifications.map { |classification| retirement_swap.process(classification) }
+      classifications.map { |classification| processor.process(classification) }
                      .map { |estimates| estimates.map { |estimate| [estimate.subject_id, estimate.user_id, estimate.answer, estimate.probability] } }
     end
   end
@@ -23,11 +23,11 @@ describe 'Golden masters' do
     let(:db) { Sequel.sqlite }
     let(:storage) { RetirementSwap::Storage::Database.new(db) }
     let(:output) { RetirementSwap::Output::IOWriter.new(StringIO.new) }
-    let(:retirement_swap) { RetirementSwap::SwapAlgorithm.new(storage, output) }
+    let(:processor) { RetirementSwap::Processor.new(storage, output, "52c1cf443ae7407d88000001" => {"algorithm" => "swap"}) }
     let(:brokers) { ["kafka:9092"] }
     let(:zookeepers) { ["zk:2181"] }
     let(:topic) { "retirement-swap-test-#{Time.now.to_i}"}
-    let(:reader) { RetirementSwap::Input::KafkaReader.new(processor: retirement_swap,
+    let(:reader) { RetirementSwap::Input::KafkaReader.new(processor: processor,
                                                           brokers: brokers,
                                                           zookeepers: zookeepers,
                                                           topic: topic,

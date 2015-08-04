@@ -5,8 +5,7 @@ module RetirementSwap
       @panoptes = panoptes
     end
 
-    def process(hash)
-      classification = Classification.new(hash)
+    def process(classification, agent, subject)
       return unless classification.user_id
 
       agent = @storage.find_agent(classification.user_id)

@@ -1,22 +1,30 @@
 module RetirementSwap
   class Processor
+    class NullAlgorithm
+      def process(*args)
+        return []
+      end
+    end
+
     ALGORITHMS = {
       'swap' => RetirementSwap::SwapAlgorithm
     }
 
-    attr_reader :projects
+    attr_reader :workflows
 
     def initialize(storage, output, config)
-      @projects = {}
-
-      config.each do |project_id, project_config|
-        @projects[project_id] = ALGORITHMS.fetch(project_config.fetch('algorithm')).new(storage, output)
+      @storage = storage
+      @output  = output
+      @workflows = config.each.with_object(Hash.new(NullAlgorithm.new)) do |(workflow_id, workflow_config), hash|
+        hash[workflow_id] = ALGORITHMS.fetch(workflow_config.fetch('algorithm')).new(storage, output)
       end
     end
 
     def process(hash)
-      project_id = hash.fetch('links').fetch('project')
-      projects[project_id] && projects[project_id].process(hash)
+      classification = Classification.new(hash)
+      agent = @storage.find_agent(classification.user_id)
+      estimate = @storage.find_estimate(classification.subject_ids.join("-"), classification.workflow_id)
+      workflows[classification.workflow_id].process(classification, agent, estimate)
     end
   end
 end
