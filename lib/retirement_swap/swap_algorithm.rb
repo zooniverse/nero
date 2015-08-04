@@ -5,14 +5,10 @@ module RetirementSwap
       @panoptes = panoptes
     end
 
-    def process(classification, agent, subject)
+    def process(classification, agent, old_estimate)
       return unless classification.user_id
 
-      agent = @storage.find_agent(classification.user_id)
-
       classification.subjects.map do |subject|
-        old_estimate = @storage.find_estimate(subject.id, classification.workflow_id)
-
         if old_estimate.retired? && subject.test?
           next old_estimate
         end
