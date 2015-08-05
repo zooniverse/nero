@@ -20,8 +20,16 @@ module RetirementSwap
       end
     end
 
+    def test?
+      category == 'test'
+    end
+
     def training?
       category == "training"
+    end
+
+    def sim?
+      kind == 'sim'
     end
   end
 end

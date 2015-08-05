@@ -12,6 +12,12 @@ module RetirementSwap
                                                 socket_timeout_ms: 20000, max_wait_ms: 1000)
       end
 
+      # Running the Kafka reader will wait until it processes *at least* one message,
+      # and then continue looping until there are no more messages in the Kafka topic.
+      # This behaviour is useful in the test suite where we need some way of processing
+      # everything in the topic. The first loop is needed to wait until Kafka has started
+      # routing messages to partitions, the second is needed so that everything the test
+      # suite puts in the topic is actually processed.
       def run
         counts = Hash.new(0)
         begin

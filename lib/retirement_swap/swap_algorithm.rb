@@ -5,23 +5,18 @@ module RetirementSwap
       @panoptes = panoptes
     end
 
-    def process(hash)
-      classification = Classification.new(hash)
+    def process(classification, agent, old_estimate)
       return unless classification.user_id
 
-      agent = @storage.find_agent(classification.user_id)
-
       classification.subjects.map do |subject|
-        old_estimate = @storage.find_estimate(subject.id, classification.workflow_id)
-
-        if old_estimate.status != :active and subject.category == 'test'
+        if old_estimate.retired? && subject.test?
           next old_estimate
         end
 
-        unless subject.category == "training" && old_estimate.status != :active
+        if subject.test? || old_estimate.active?
           new_estimate = old_estimate.adjust(agent, classification.guess)
           agent.update_confusion_unsupervised(classification.guess, new_estimate.probability)
-        else
+        else # training subject or retired already
           new_estimate = old_estimate
           agent.update_confusion_unsupervised(classification.guess, new_estimate.probability)
         end
@@ -29,7 +24,7 @@ module RetirementSwap
         @storage.record_agent(agent)
         @storage.record_estimate(new_estimate)
 
-        if new_estimate.retire?
+        if new_estimate.retired? && subject.test?
           @panoptes.retire(new_estimate)
         end
 
