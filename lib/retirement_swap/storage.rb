@@ -18,6 +18,7 @@ module RetirementSwap
       record = db[:agents].where(external_id: user_id).order(:id).first
 
       if record
+        record[:data] = JSON.load(record[:data])
         Agent.new(**record)
       else
         Agent.new(id: nil, external_id: user_id)
@@ -25,10 +26,13 @@ module RetirementSwap
     end
 
     def record_agent(agent)
+      record = agent.attributes
+      record[:data] = JSON.dump(record[:data])
+
       if agent.id
-        db[:agents].where(id: agent.id).update(agent.attributes)
+        db[:agents].where(id: agent.id).update(record)
       else
-        db[:agents].insert(agent.attributes)
+        db[:agents].insert(record)
       end
     end
 

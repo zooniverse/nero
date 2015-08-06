@@ -8,6 +8,7 @@ module RetirementSwap
     def initialize(id:, external_id:, data: {}, pl: INITIAL_PL, pd: INITIAL_PD, contribution: 0.0, counts_lens: 0, counts_duds: 0, counts_test: 0, counts_total: 0)
       @id = id
       @external_id = external_id
+      @data = data
       @pl = pl
       @pd = pd
       @contribution = contribution
@@ -20,6 +21,7 @@ module RetirementSwap
     def attributes
       {
         :external_id => external_id,
+        :data => data,
         :pl => pl,
         :pd => pd,
         :contribution => contribution,
