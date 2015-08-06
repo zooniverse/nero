@@ -3,7 +3,7 @@ require 'spec_helper'
 module RetirementSwap
   describe Estimate do
     describe '#adjust' do
-      let(:estimate) { described_class.new(double("Subject"), double("Workflow")) }
+      let(:estimate) { described_class.new(subject_id: double("Subject"), workflow_id: double("Workflow")) }
       let(:agent)    { Agent.new(id: nil, external_id: '1', pl: 0.6, pd: 0.6) }
 
       it 'increases in probability when guessing a LENS with an agent that is more than average' do
@@ -20,17 +20,17 @@ module RetirementSwap
 
     describe 'status' do
       it 'is rejected when below threshold' do
-        estimate = described_class.new(double, double, nil, nil, 0.000000001)
+        estimate = described_class.new(subject_id: double, workflow_id: double, probability: 0.000000001)
         expect(estimate.status).to eq(:rejected)
       end
 
       it 'is rejected when below threshold' do
-        estimate = described_class.new(double, double, nil, nil, 0.96)
+        estimate = described_class.new(subject_id: double, workflow_id: double, probability: 0.96)
         expect(estimate.status).to eq(:detected)
       end
 
       it 'is active otherwise' do
-        estimate = described_class.new(double, double, nil, nil, 0.5)
+        estimate = described_class.new(subject_id: double, workflow_id: double, probability: 0.5)
         expect(estimate.status).to eq(:active)
       end
     end

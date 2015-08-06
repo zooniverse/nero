@@ -36,9 +36,9 @@ module RetirementSwap
       record = db[:estimates].where(subject_id: subject_id, workflow_id: workflow_id).order(:id).last
 
       if record
-        RetirementSwap::Estimate.new(subject_id, workflow_id, nil, nil, record[:probability])
+        Estimate.new(subject_id: subject_id, workflow_id: workflow_id, probability: record[:probability])
       else
-        RetirementSwap::Estimate.new(subject_id, workflow_id)
+        Estimate.new(subject_id: subject_id, workflow_id: workflow_id)
       end
     end
 
