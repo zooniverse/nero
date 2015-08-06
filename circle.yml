@@ -1,0 +1,9 @@
+machine:
+  ruby:
+    version: 2.2.1
+
+test:
+  pre:
+    - cp config/database.circle.yml config/database.yml
+  override:
+    - bin/rspec --tag ~kafka

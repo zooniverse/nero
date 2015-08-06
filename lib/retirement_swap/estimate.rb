@@ -4,11 +4,12 @@ module RetirementSwap
     REJECTION_THRESHOLD = 1e-07
     DETECTION_THRESHOLD = 0.95
 
-    attr_reader :subject_id, :workflow_id, :user_id, :answer, :probability
+    attr_reader :subject_id, :workflow_id, :data, :user_id, :answer, :probability
 
-    def initialize(subject_id, workflow_id, user_id = nil, answer = nil, probability = INITIAL_PRIOR)
+    def initialize(subject_id:, workflow_id:, data: {}, user_id: nil, answer: nil, probability: INITIAL_PRIOR)
       @subject_id = subject_id
       @workflow_id = workflow_id
+      @data = data
       @user_id = user_id
       @answer = answer
       @probability = probability
@@ -36,7 +37,7 @@ module RetirementSwap
         likelihood /= ((1-pl)*probability + pd*(1-probability))
       end
 
-      Estimate.new(subject_id, workflow_id, agent.external_id, guess, likelihood * probability)
+      Estimate.new(attributes.merge(user_id: agent.external_id, answer: guess, probability: likelihood * probability))
     end
 
     def status

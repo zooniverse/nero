@@ -1,29 +1,28 @@
 require 'spec_helper'
 
 describe 'Golden masters' do
-  let(:storage)         { RetirementSwap::Storage::Memory.new }
-  let(:output)          { RetirementSwap::Output::IOWriter.new(StringIO.new) }
-  let(:retirement_swap) { RetirementSwap::SwapAlgorithm.new(storage, output) }
+  let(:storage) { RetirementSwap::Storage.new(DB) }
+  let(:output) { RetirementSwap::Output::IOWriter.new(StringIO.new) }
+  let(:processor) { RetirementSwap::Processor.new(storage, output, "52c1cf443ae7407d88000001" => {"algorithm" => "swap"}) }
 
-  it 'returns the correct results for the old spacewarps data' do
-    storage = RetirementSwap::Storage::Memory.new
-    output = RetirementSwap::Output::IOWriter.new(StringIO.new)
-    processor = RetirementSwap::Processor.new(storage, output, "52c1cf443ae7407d88000001" => {"algorithm" => "swap"})
-
-    classifications = File.readlines(File.expand_path("../../fixtures/spacewarps_ouroboros_classifications.json", __FILE__))
-                          .map {|line| JSON.parse(line) }
-
+  after do
     verify do
-      classifications.map { |classification| processor.process(classification) }
-                     .map { |estimates| estimates.map { |estimate| [estimate.subject_id, estimate.user_id, estimate.answer, estimate.probability] } }
+      DB[:estimates].all.map do |row|
+        [[row[:subject_id], row[:user_id], row[:answer], row[:probability].round(20)]]
+      end
+    end
+  end
+
+  context 'with io and sequel' do
+    it 'works with the fully integrated kafka-sequel path' do
+      File.open(File.expand_path("../../fixtures/spacewarps_ouroboros_classifications.json", __FILE__), 'r') do |io|
+        reader = RetirementSwap::Input::IOReader.new(io, processor)
+        reader.run
+      end
     end
   end
 
   context 'with kafka and sequel', :kafka do
-    let(:db) { Sequel.sqlite }
-    let(:storage) { RetirementSwap::Storage::Database.new(db) }
-    let(:output) { RetirementSwap::Output::IOWriter.new(StringIO.new) }
-    let(:processor) { RetirementSwap::Processor.new(storage, output, "52c1cf443ae7407d88000001" => {"algorithm" => "swap"}) }
     let(:brokers) { ["kafka:9092"] }
     let(:zookeepers) { ["zk:2181"] }
     let(:topic) { "retirement-swap-test-#{Time.now.to_i}"}
@@ -44,12 +43,6 @@ describe 'Golden masters' do
       messages.each_slice(10) {|slice| producer.send_messages(slice) }
 
       reader.run
-
-      verify do
-        db[:estimates].all.map do |row|
-          [[row[:subject_id], row[:user_id], row[:answer], row[:probability]]]
-        end
-      end
     end
   end
 end

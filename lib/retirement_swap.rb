@@ -1,8 +1,19 @@
+require 'yaml'
+
+module RetirementSwap
+  def self.load_config(filename, environment)
+    path = File.expand_path(File.join('..', '..', 'config', filename), __FILE__)
+    YAML.load_file(path).fetch(environment.to_s)
+  end
+end
+
+require 'sequel'
+DB = Sequel.connect(RetirementSwap.load_config('database.yml', ENV["RAILS_ENV"]))
+
 require_relative 'retirement_swap/input/io_reader'
 require_relative 'retirement_swap/input/kafka_reader'
 
-require_relative 'retirement_swap/storage/memory'
-require_relative 'retirement_swap/storage/database'
+require_relative 'retirement_swap/storage'
 
 require_relative 'retirement_swap/output/io_writer'
 
@@ -16,11 +27,8 @@ require_relative 'retirement_swap/processor'
 
 module RetirementSwap
   def self.start(environment)
-    db = Sequel.connect(load_config('database.yml', environment))
-
-    storage = RetirementSwap::Storage::Database.new(db)
+    storage = RetirementSwap::Storage.new(DB)
     output  = RetirementSwap::Output::IOWriter.new(STDOUT)
-    swap    = RetirementSwap::SwapAlgorithm.new(storage, output)
 
     processor = RetirementSwap::Processor.new(storage, output, load_config('projects.yml', environment))
 
@@ -32,10 +40,5 @@ module RetirementSwap
                                                      topic:      kafka_config.fetch('topic'))
 
     input
-  end
-
-  def self.load_config(filename, environment)
-    path = File.expand_path(File.join('..', '..', 'config', filename), __FILE__)
-    YAML.load_file(path).fetch(environment.to_s)
   end
 end

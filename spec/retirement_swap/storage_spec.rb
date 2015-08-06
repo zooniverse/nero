@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe RetirementSwap::Storage::Database do
+describe RetirementSwap::Storage do
   let(:db) { Sequel.sqlite }
   let(:storage) { described_class.new(db) }
 

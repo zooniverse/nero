@@ -3,11 +3,12 @@ module RetirementSwap
     INITIAL_PL = 0.5
     INITIAL_PD = 0.5
 
-    attr_reader :id, :external_id, :pl, :pd, :contribution, :counts_lens, :counts_duds, :counts_test, :counts_total
+    attr_reader :id, :external_id, :data, :pl, :pd, :contribution, :counts_lens, :counts_duds, :counts_test, :counts_total
 
-    def initialize(id:, external_id:, pl: INITIAL_PL, pd: INITIAL_PD, contribution: 0.0, counts_lens: 0, counts_duds: 0, counts_test: 0, counts_total: 0)
+    def initialize(id:, external_id:, data: {}, pl: INITIAL_PL, pd: INITIAL_PD, contribution: 0.0, counts_lens: 0, counts_duds: 0, counts_test: 0, counts_total: 0)
       @id = id
       @external_id = external_id
+      @data = data
       @pl = pl
       @pd = pd
       @contribution = contribution
@@ -19,14 +20,15 @@ module RetirementSwap
 
     def attributes
       {
-        :external_id => external_id,
-        :pl => pl,
-        :pd => pd,
-        :contribution => contribution,
-        :counts_lens => counts_lens,
-        :counts_duds => counts_duds,
-        :counts_test => counts_test,
-        :counts_total => counts_total
+        external_id: external_id,
+        data: data,
+        pl: pl,
+        pd: pd,
+        contribution: contribution,
+        counts_lens: counts_lens,
+        counts_duds: counts_duds,
+        counts_test: counts_test,
+        counts_total: counts_total
       }
     end
 
