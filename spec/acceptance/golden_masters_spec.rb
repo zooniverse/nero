@@ -11,11 +11,53 @@ describe 'Golden masters' do
     processor = RetirementSwap::Processor.new(storage, output, "52c1cf443ae7407d88000001" => {"algorithm" => "swap"})
 
     classifications = File.readlines(File.expand_path("../../fixtures/spacewarps_ouroboros_classifications.json", __FILE__))
+                          .select { |line| line.strip != "" }
                           .map {|line| JSON.parse(line) }
 
     verify do
       classifications.map { |classification| processor.process(classification) }
                      .map { |estimates| estimates.map { |estimate| [estimate.subject_id, estimate.user_id, estimate.answer, estimate.probability] } }
+                     .select { |i| i.size > 0 }
+    end
+  end
+
+  context 'with io and memory' do
+    let(:storage) { RetirementSwap::Storage::Memory.new }
+    let(:output) { RetirementSwap::Output::IOWriter.new(StringIO.new) }
+    let(:processor) { RetirementSwap::Processor.new(storage, output, "52c1cf443ae7407d88000001" => {"algorithm" => "swap"}) }
+
+    it 'works with the fully integrated kafka-sequel path' do
+      File.open(File.expand_path("../../fixtures/spacewarps_ouroboros_classifications.json", __FILE__), 'r') do |io|
+        reader = RetirementSwap::Input::IOReader.new(io, processor)
+        reader.run
+      end
+
+      verify do
+        storage.all_estimates.map do |estimate|
+          [[estimate.subject_id, estimate.user_id, estimate.answer, estimate.probability]]
+        end
+      end
+    end
+  end
+
+
+  context 'with io and sequel' do
+    let(:db) { Sequel.sqlite }
+    let(:storage) { RetirementSwap::Storage::Database.new(db) }
+    let(:output) { RetirementSwap::Output::IOWriter.new(StringIO.new) }
+    let(:processor) { RetirementSwap::Processor.new(storage, output, "52c1cf443ae7407d88000001" => {"algorithm" => "swap"}) }
+
+    it 'works with the fully integrated kafka-sequel path' do
+      File.open(File.expand_path("../../fixtures/spacewarps_ouroboros_classifications.json", __FILE__), 'r') do |io|
+        reader = RetirementSwap::Input::IOReader.new(io, processor)
+        reader.run
+      end
+
+      verify do
+        db[:estimates].all.map do |row|
+          [[row[:subject_id], row[:user_id], row[:answer], row[:probability]]]
+        end
+      end
     end
   end
 
