@@ -20,20 +20,16 @@ module RetirementSwap
 
     def attributes
       {
-        :external_id => external_id,
-        :data => data,
-        :pl => pl,
-        :pd => pd,
-        :contribution => contribution,
-        :counts_lens => counts_lens,
-        :counts_duds => counts_duds,
-        :counts_test => counts_test,
-        :counts_total => counts_total
+        external_id: external_id,
+        data: data,
+        pl: pl,
+        pd: pd,
+        contribution: contribution,
+        counts_lens: counts_lens,
+        counts_duds: counts_duds,
+        counts_test: counts_test,
+        counts_total: counts_total
       }
-    end
-
-    def skill
-
     end
 
     def update_confusion_unsupervised(user_said, lens_prob)
