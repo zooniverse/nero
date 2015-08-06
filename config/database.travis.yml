@@ -1,0 +1,5 @@
+test:
+  adapter: postgres
+  host: localhost
+  database: retirement_test
+  user: postgres
