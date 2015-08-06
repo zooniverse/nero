@@ -5,7 +5,7 @@ require 'bundler/setup'
 
 require 'poseidon'
 producer = Poseidon::Producer.new(ENV.fetch("KAFKA_BROKERS", "kafka:9092").split(','),
-                                  ENV.fetch("KAFKA_PRODUCER_NAME", 'retirementswap-cli'),
+                                  ENV.fetch("KAFKA_PRODUCER_NAME", 'nero-cli'),
                                   partitioner: ->(partition, key) { 0 })
 topic = ENV.fetch("KAFKA_TOPIC")
 

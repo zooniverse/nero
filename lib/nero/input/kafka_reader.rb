@@ -1,7 +1,7 @@
 require 'poseidon'
 require 'poseidon_cluster'
 
-module RetirementSwap
+module Nero
   module Input
     class KafkaReader
       attr_reader :processor

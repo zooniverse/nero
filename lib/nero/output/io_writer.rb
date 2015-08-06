@@ -1,4 +1,4 @@
-module RetirementSwap
+module Nero
   module Output
     class IOWriter
       attr_reader :io

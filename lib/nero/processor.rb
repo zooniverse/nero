@@ -1,4 +1,4 @@
-module RetirementSwap
+module Nero
   class Processor
     class NullAlgorithm
       def process(*args)
@@ -7,7 +7,7 @@ module RetirementSwap
     end
 
     ALGORITHMS = {
-      'swap' => RetirementSwap::SwapAlgorithm
+      'swap' => Nero::SwapAlgorithm
     }
 
     attr_reader :workflows

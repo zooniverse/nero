@@ -1,27 +1,27 @@
 development:
   adapter: postgres
   host: postgres
-  database: retirement_swap_development
-  user: retirement_swap
-  password: retirement_swap
+  database: nero_development
+  user: nero
+  password: nero
 
 test:
   adapter: postgres
   host: postgres
-  database: retirement_swap_test
-  user: retirement_swap
-  password: retirement_swap
+  database: nero_test
+  user: nero
+  password: nero
 
 staging:
   adapter: postgres
   host: postgres
-  database: retirement_swap_staging
-  user: retirement_swap
-  password: retirement_swap
+  database: nero_staging
+  user: nero
+  password: nero
 
 production:
   adapter: postgres
   host: postgres
-  database: retirement_swap_production
-  user: retirement_swap
-  password: retirement_swap
+  database: nero_production
+  user: nero
+  password: nero

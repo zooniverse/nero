@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe RetirementSwap::Input::IOReader do
+describe Nero::Input::IOReader do
   let(:processor) { spy }
 
   it 'sends a json-parsed line to the processor' do

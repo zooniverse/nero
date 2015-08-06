@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-module RetirementSwap
+module Nero
   describe Estimate do
     describe '#adjust' do
       let(:estimate) { described_class.new(subject_id: double("Subject"), workflow_id: double("Workflow")) }

@@ -1,5 +1,5 @@
 test:
   adapter: postgres
   host: localhost
-  database: retirement_test
+  database: nero_test
   user: postgres

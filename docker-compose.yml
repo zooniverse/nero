@@ -1,9 +1,9 @@
 postgres:
   image: zooniverse/postgresql
   environment:
-    - "PG_USER=retirement_swap"
-    - "DB=retirement_swap_development"
-    - "PASS=retirement_swap"
+    - "PG_USER=nero"
+    - "DB=nero_development"
+    - "PASS=nero"
   ports:
     - "5432:5432"
 
@@ -22,12 +22,12 @@ kafka:
   ports:
     - "9092:9092"
 
-retirementswap:
+nero:
   dockerfile: Dockerfile
   build: ./
   environment:
     RAILS_ENV: development
-    KAFKA_GROUP: retirement-swap-workers
+    KAFKA_GROUP: nero-workers
     KAFKA_TOPIC: classifications
   entrypoint: ["ruby", "-I", "/app/lib", "/app/bin/start"]
   volumes:

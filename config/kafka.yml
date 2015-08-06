@@ -1,5 +1,5 @@
 development:
-  consumer_group: retirement-swap-development
+  consumer_group: nero-development
   topic: classifications
   zookeepers:
     - zk:2181
@@ -7,7 +7,7 @@ development:
     - kafka:9092
 
 test:
-  consumer_group: retirement-swap-test
+  consumer_group: nero-test
   topic: classifications
   zookeepers:
     - zk:2181

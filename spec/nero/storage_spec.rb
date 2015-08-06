@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe RetirementSwap::Storage do
+describe Nero::Storage do
   let(:db) { Sequel.sqlite }
   let(:storage) { described_class.new(db) }
 
@@ -30,7 +30,7 @@ describe RetirementSwap::Storage do
   context 'estimates' do
     it 'returns a default estimate for unknown subject/workflows' do
       estimate = storage.find_estimate('1', '2')
-      expect(estimate.probability).to eq(RetirementSwap::Estimate::INITIAL_PRIOR)
+      expect(estimate.probability).to eq(Nero::Estimate::INITIAL_PRIOR)
     end
 
     it 'finds the latest estimate' do

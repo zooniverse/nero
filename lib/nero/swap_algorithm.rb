@@ -1,4 +1,4 @@
-module RetirementSwap
+module Nero
   class SwapAlgorithm
     def initialize(storage, panoptes)
       @storage = storage

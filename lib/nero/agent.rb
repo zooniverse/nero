@@ -1,4 +1,4 @@
-module RetirementSwap
+module Nero
   class Agent
     INITIAL_PL = 0.5
     INITIAL_PD = 0.5

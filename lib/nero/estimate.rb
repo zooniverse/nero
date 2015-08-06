@@ -1,4 +1,4 @@
-module RetirementSwap
+module Nero
   class Estimate
     INITIAL_PRIOR = 2e-4
     REJECTION_THRESHOLD = 1e-07

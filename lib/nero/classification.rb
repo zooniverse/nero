@@ -1,4 +1,4 @@
-module RetirementSwap
+module Nero
   class Classification
     attr_reader :hash
 

@@ -1,9 +1,9 @@
 require 'spec_helper'
 
 describe 'Golden masters' do
-  let(:storage) { RetirementSwap::Storage.new(DB) }
-  let(:output) { RetirementSwap::Output::IOWriter.new(StringIO.new) }
-  let(:processor) { RetirementSwap::Processor.new(storage, output, "52c1cf443ae7407d88000001" => {"algorithm" => "swap"}) }
+  let(:storage) { Nero::Storage.new(DB) }
+  let(:output) { Nero::Output::IOWriter.new(StringIO.new) }
+  let(:processor) { Nero::Processor.new(storage, output, "52c1cf443ae7407d88000001" => {"algorithm" => "swap"}) }
 
   after do
     verify do
@@ -16,7 +16,7 @@ describe 'Golden masters' do
   context 'with io and sequel' do
     it 'works with the fully integrated kafka-sequel path' do
       File.open(File.expand_path("../../fixtures/spacewarps_ouroboros_classifications.json", __FILE__), 'r') do |io|
-        reader = RetirementSwap::Input::IOReader.new(io, processor)
+        reader = Nero::Input::IOReader.new(io, processor)
         reader.run
       end
     end
@@ -25,8 +25,8 @@ describe 'Golden masters' do
   context 'with kafka and sequel', :kafka do
     let(:brokers) { ["kafka:9092"] }
     let(:zookeepers) { ["zk:2181"] }
-    let(:topic) { "retirement-swap-test-#{Time.now.to_i}"}
-    let(:reader) { RetirementSwap::Input::KafkaReader.new(processor: processor,
+    let(:topic) { "nero-test-#{Time.now.to_i}"}
+    let(:reader) { Nero::Input::KafkaReader.new(processor: processor,
                                                           brokers: brokers,
                                                           zookeepers: zookeepers,
                                                           topic: topic,

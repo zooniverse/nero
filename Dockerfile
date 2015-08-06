@@ -13,7 +13,7 @@ ADD ./Gemfile.lock /app/
 
 RUN bundle install
 
-ADD supervisord.conf /etc/supervisor/conf.d/retirement_swap.conf
+ADD supervisord.conf /etc/supervisor/conf.d/nero.conf
 ADD ./ /app
 
 ENTRYPOINT ["/usr/bin/supervisord"]

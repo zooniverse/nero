@@ -1,4 +1,4 @@
-module RetirementSwap
+module Nero
   class Subject
     attr_reader :id, :attributes, :category, :kind
 

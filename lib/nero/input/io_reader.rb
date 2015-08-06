@@ -1,6 +1,6 @@
 require 'json'
 
-module RetirementSwap
+module Nero
   module Input
     class IOReader
       attr_reader :io, :processor

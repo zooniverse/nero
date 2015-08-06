@@ -2,11 +2,11 @@
 require 'rubygems'
 require 'bundler/setup'
 
-require 'retirement_swap'
+require 'nero'
 
-processor = RetirementSwap.start(ENV.fetch("RAILS_ENV"))
+processor = Nero.start(ENV.fetch("RAILS_ENV"))
 
-puts "RetirementSwap Started."
+puts "Nero Started."
 loop do
   processor.run
 end

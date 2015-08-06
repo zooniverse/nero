@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe RetirementSwap::SwapAlgorithm do
+describe Nero::SwapAlgorithm do
   include Fixtures
 
-  let(:storage) { RetirementSwap::Storage.new(Sequel.sqlite) }
+  let(:storage) { Nero::Storage.new(Sequel.sqlite) }
   let(:panoptes) { spy("Panoptes") }
-  let(:classification) { RetirementSwap::Classification.new(fixture(:panoptes_classification)["classifications"][0]) }
+  let(:classification) { Nero::Classification.new(fixture(:panoptes_classification)["classifications"][0]) }
   let(:agent) { double }
   let(:subject) { double }
 

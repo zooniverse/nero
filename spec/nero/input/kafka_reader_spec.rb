@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe RetirementSwap::Input::KafkaReader, :kafka do
+describe Nero::Input::KafkaReader, :kafka do
   let(:processor) { spy }
   let(:brokers) { ["192.168.59.103:9092"] }
-  let(:topic) { "retirement-swap-test-#{Time.now.to_i}"}
+  let(:topic) { "nero-test-#{Time.now.to_i}"}
   let(:reader) { described_class.new(processor: processor,
                                      brokers: brokers,
                                      zookeepers: ['zk:2181'],

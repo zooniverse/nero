@@ -1,7 +1,7 @@
 require 'sequel'
 Sequel.extension :migration
 
-module RetirementSwap
+module Nero
   class Storage
     attr_reader :db
 
