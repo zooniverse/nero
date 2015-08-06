@@ -6,17 +6,19 @@ describe 'Golden masters' do
   let(:output) { RetirementSwap::Output::IOWriter.new(StringIO.new) }
   let(:processor) { RetirementSwap::Processor.new(storage, output, "52c1cf443ae7407d88000001" => {"algorithm" => "swap"}) }
 
+  after do
+    verify do
+      db[:estimates].all.map do |row|
+        [[row[:subject_id], row[:user_id], row[:answer], row[:probability].round(20)]]
+      end
+    end
+  end
+
   context 'with io and sequel' do
     it 'works with the fully integrated kafka-sequel path' do
       File.open(File.expand_path("../../fixtures/spacewarps_ouroboros_classifications.json", __FILE__), 'r') do |io|
         reader = RetirementSwap::Input::IOReader.new(io, processor)
         reader.run
-      end
-
-      verify do
-        db[:estimates].all.map do |row|
-          [[row[:subject_id], row[:user_id], row[:answer], row[:probability]]]
-        end
       end
     end
   end
@@ -42,12 +44,6 @@ describe 'Golden masters' do
       messages.each_slice(10) {|slice| producer.send_messages(slice) }
 
       reader.run
-
-      verify do
-        db[:estimates].all.map do |row|
-          [[row[:subject_id], row[:user_id], row[:answer], row[:probability]]]
-        end
-      end
     end
   end
 end
