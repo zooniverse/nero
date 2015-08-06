@@ -32,6 +32,20 @@ module Nero
       }
     end
 
+    def skill(p = 0.5)
+      # Special case for 0.0, because 0.0 * -Infinity => indeterminate
+      s = ->(x) { x == 0.0 ? x : x * Math.log2(x) }
+
+      parts = [
+        p*(s[pl] + s[1-pl]),
+        (1-p)*(s[pd] + s[1-pd]),
+        s[p*pl + (1-p)*(1-pd)],
+        s[p*(1-pl) + (1-p)*pd]
+      ]
+
+      parts[0] + parts[1] - parts[2] - parts[3]
+    end
+
     def update_confusion_unsupervised(user_said, lens_prob)
       if user_said == "LENS"
         pl_new = (pl * @counts_lens + lens_prob)/(lens_prob+@counts_lens)
