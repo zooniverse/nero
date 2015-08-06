@@ -6,7 +6,11 @@ development:
   password: retirement_swap
 
 test:
-  adapter: sqlite
+  adapter: postgres
+  host: postgres
+  database: retirement_swap_test
+  user: retirement_swap
+  password: retirement_swap
 
 staging:
   adapter: postgres

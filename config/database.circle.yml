@@ -1,0 +1,5 @@
+test:
+  adapter: postgres
+  host: localhost
+  database: circle_test
+  user: ubuntu

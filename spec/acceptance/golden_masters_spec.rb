@@ -1,14 +1,13 @@
 require 'spec_helper'
 
 describe 'Golden masters' do
-  let(:db) { Sequel.sqlite }
-  let(:storage) { RetirementSwap::Storage.new(db) }
+  let(:storage) { RetirementSwap::Storage.new(DB) }
   let(:output) { RetirementSwap::Output::IOWriter.new(StringIO.new) }
   let(:processor) { RetirementSwap::Processor.new(storage, output, "52c1cf443ae7407d88000001" => {"algorithm" => "swap"}) }
 
   after do
     verify do
-      db[:estimates].all.map do |row|
+      DB[:estimates].all.map do |row|
         [[row[:subject_id], row[:user_id], row[:answer], row[:probability].round(20)]]
       end
     end
