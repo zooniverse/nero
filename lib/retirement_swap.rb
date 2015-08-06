@@ -1,7 +1,7 @@
 require_relative 'retirement_swap/input/io_reader'
 require_relative 'retirement_swap/input/kafka_reader'
 
-require_relative 'retirement_swap/storage/database'
+require_relative 'retirement_swap/storage'
 
 require_relative 'retirement_swap/output/io_writer'
 
@@ -17,7 +17,7 @@ module RetirementSwap
   def self.start(environment)
     db = Sequel.connect(load_config('database.yml', environment))
 
-    storage = RetirementSwap::Storage::Database.new(db)
+    storage = RetirementSwap::Storage.new(db)
     output  = RetirementSwap::Output::IOWriter.new(STDOUT)
 
     processor = RetirementSwap::Processor.new(storage, output, load_config('projects.yml', environment))

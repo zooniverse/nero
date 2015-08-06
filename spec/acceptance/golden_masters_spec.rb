@@ -1,12 +1,12 @@
 require 'spec_helper'
 
 describe 'Golden masters' do
-  context 'with io and sequel' do
-    let(:db) { Sequel.sqlite }
-    let(:storage) { RetirementSwap::Storage::Database.new(db) }
-    let(:output) { RetirementSwap::Output::IOWriter.new(StringIO.new) }
-    let(:processor) { RetirementSwap::Processor.new(storage, output, "52c1cf443ae7407d88000001" => {"algorithm" => "swap"}) }
+  let(:db) { Sequel.sqlite }
+  let(:storage) { RetirementSwap::Storage.new(db) }
+  let(:output) { RetirementSwap::Output::IOWriter.new(StringIO.new) }
+  let(:processor) { RetirementSwap::Processor.new(storage, output, "52c1cf443ae7407d88000001" => {"algorithm" => "swap"}) }
 
+  context 'with io and sequel' do
     it 'works with the fully integrated kafka-sequel path' do
       File.open(File.expand_path("../../fixtures/spacewarps_ouroboros_classifications.json", __FILE__), 'r') do |io|
         reader = RetirementSwap::Input::IOReader.new(io, processor)
@@ -22,10 +22,6 @@ describe 'Golden masters' do
   end
 
   context 'with kafka and sequel', :kafka do
-    let(:db) { Sequel.sqlite }
-    let(:storage) { RetirementSwap::Storage::Database.new(db) }
-    let(:output) { RetirementSwap::Output::IOWriter.new(StringIO.new) }
-    let(:processor) { RetirementSwap::Processor.new(storage, output, "52c1cf443ae7407d88000001" => {"algorithm" => "swap"}) }
     let(:brokers) { ["kafka:9092"] }
     let(:zookeepers) { ["zk:2181"] }
     let(:topic) { "retirement-swap-test-#{Time.now.to_i}"}
