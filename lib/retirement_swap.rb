@@ -1,7 +1,6 @@
 require_relative 'retirement_swap/input/io_reader'
 require_relative 'retirement_swap/input/kafka_reader'
 
-require_relative 'retirement_swap/storage/memory'
 require_relative 'retirement_swap/storage/database'
 
 require_relative 'retirement_swap/output/io_writer'
@@ -20,7 +19,6 @@ module RetirementSwap
 
     storage = RetirementSwap::Storage::Database.new(db)
     output  = RetirementSwap::Output::IOWriter.new(STDOUT)
-    swap    = RetirementSwap::SwapAlgorithm.new(storage, output)
 
     processor = RetirementSwap::Processor.new(storage, output, load_config('projects.yml', environment))
 
