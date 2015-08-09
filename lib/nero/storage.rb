@@ -18,8 +18,7 @@ module Nero
       record = db[:agents].where(external_id: user_id).order(:id).first
 
       if record
-        record[:data] = JSON.load(record[:data])
-        Agent.new(**record)
+        Agent.new(id: record[:id], external_id: record[:external_id], data: JSON.load(record[:data]))
       else
         Agent.new(id: nil, external_id: user_id)
       end

@@ -17,13 +17,13 @@ describe Nero::Storage do
 
     it 'stores and retrieves agents' do
       agent = storage.find_agent('123')
-      agent.update_confusion_unsupervised('LENS', 0.5)
+      agent.data["foo"] = "bar"
       storage.record_agent(agent)
       retrieved_agent = storage.find_agent('123')
 
       expect(retrieved_agent.id).not_to be_nil
       expect(retrieved_agent.external_id).to eq('123')
-      expect(retrieved_agent.pl).to eq(agent.pl)
+      expect(retrieved_agent.data["foo"]).to eq("bar")
     end
   end
 

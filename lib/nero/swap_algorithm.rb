@@ -1,3 +1,5 @@
+require 'nero/swap/swap_agent'
+
 module Nero
   class SwapAlgorithm
     def initialize(storage, panoptes)
@@ -7,6 +9,8 @@ module Nero
 
     def process(classification, agent, old_estimate)
       return unless classification.user_id
+
+      agent = Nero::Swap::SwapAgent.new(agent)
 
       classification.subjects.map do |subject|
         if old_estimate.retired? && subject.test?
