@@ -59,6 +59,10 @@ module Nero
       status != :active
     end
 
+    def seen_by?(user_ids)
+      true
+    end
+
     private
 
     def rejected?

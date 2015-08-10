@@ -1,5 +1,7 @@
 require 'sequel'
 Sequel.extension :migration
+Sequel.extension :pg_json
+Sequel.extension :pg_json_ops
 
 module Nero
   class Storage
@@ -29,9 +31,9 @@ module Nero
       record[:data] = JSON.dump(record[:data])
 
       if agent.id
-        db[:agents].where(id: agent.id).update(record)
+        db[:agents].where(id: agent.id).update(record.merge(updated_at: Time.now))
       else
-        db[:agents].insert(record)
+        db[:agents].insert(record.merge(created_at: Time.now, updated_at: Time.now))
       end
     end
 
@@ -46,7 +48,7 @@ module Nero
     end
 
     def record_estimate(estimate)
-      db[:estimates].insert(estimate.attributes)
+      db[:estimates].insert(estimate.attributes.merge(created_at: Time.now, updated_at: Time.now))
     end
   end
 end

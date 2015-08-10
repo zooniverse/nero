@@ -7,7 +7,7 @@ describe 'Golden masters' do
 
   after do
     verify do
-      DB[:estimates].all.map do |row|
+      DB[:estimates].order(:created_at).all.map do |row|
         [[row[:subject_id], row[:user_id], row[:answer], row[:probability].round(20)]]
       end
     end

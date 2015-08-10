@@ -1,3 +1,4 @@
+require 'ostruct'
 require 'nero/swap/swap_agent'
 
 module Nero
@@ -29,11 +30,25 @@ module Nero
         @storage.record_estimate(new_estimate)
 
         if new_estimate.retired? && subject.test?
-          @panoptes.retire(new_estimate)
+          # if new_estimate.seen_by?(workflow.skilled_agents)
+            @panoptes.retire(new_estimate)
+          # else
+            # @panoptes.enqueue(workflow.skilled_agents)
+          # end
         end
 
         new_estimate
       end
+    end
+
+    def workflow
+      data_column = Sequel.pg_json_op(:data)
+      skilled_agents = agents.where(data_column.get_text('skill').cast(Float) > 0.8).map{|i| i[:external_id] }
+      OpenStruct.new(skilled_agents: skilled_agents)
+    end
+
+    def agents
+      @storage.db[:agents]
     end
   end
 end
