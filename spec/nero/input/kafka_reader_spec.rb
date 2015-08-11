@@ -27,14 +27,14 @@ describe Nero::Input::KafkaReader, :kafka do
   end
 
   it 'processes messages in the expected order' do
-    producer = Poseidon::Producer.new(brokers, "test_producer", partitioner: ->(partition, key) { 0 })
+    producer = Poseidon::Producer.new(brokers, "test_producer", partitioner: ->(_partition, _key) { 0 })
 
-    expected = (1..500).map {|i| {"id" => i} }
-    messages = expected.map {|i| Poseidon::MessageToSend.new(topic, JSON.dump(i), "message-#{i["id"]}") }
-    messages.each_slice(10) {|slice| producer.send_messages(slice) }
+    expected = (1..500).map { |i| {"id" => i} }
+    messages = expected.map { |i| Poseidon::MessageToSend.new(topic, JSON.dump(i), "message-#{i["id"]}") }
+    messages.each_slice(10) { |slice| producer.send_messages(slice) }
 
     inputs = []
-    allow(processor).to receive(:process) {|hash| inputs << hash }
+    allow(processor).to receive(:process) { |hash| inputs << hash }
     reader.run
     expect(inputs).to eq(expected)
   end

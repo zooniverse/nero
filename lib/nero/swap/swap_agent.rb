@@ -32,7 +32,7 @@ module Nero
       def contribution=(value)
         data["contribution"] = value
       end
-      
+
       def counts_lens
         data["counts_lens"] || 0
       end
@@ -40,7 +40,7 @@ module Nero
       def counts_lens=(value)
         data["counts_lens"] = value
       end
-      
+
       def counts_duds
         data["counts_duds"] || 0
       end
@@ -48,7 +48,7 @@ module Nero
       def counts_duds=(value)
         data["counts_duds"] = value
       end
-      
+
       def counts_test
         data["counts_test"] || 0
       end
@@ -56,7 +56,7 @@ module Nero
       def counts_test=(value)
         data["counts_test"] = value
       end
-      
+
       def counts_total
         data["counts_total"] || 0
       end
@@ -64,7 +64,7 @@ module Nero
       def counts_total=(value)
         data["counts_total"] = value
       end
-      
+
       def skill(p = 0.5)
         # Special case for 0.0, because 0.0 * -Infinity => indeterminate
         s = ->(x) { x == 0.0 ? x : x * Math.log2(x) }

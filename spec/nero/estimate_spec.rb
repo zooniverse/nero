@@ -4,7 +4,7 @@ module Nero
   describe Estimate do
     describe '#adjust' do
       let(:estimate) { described_class.new(subject_id: double("Subject"), workflow_id: double("Workflow")) }
-      let(:agent)    { double(external_id: nil, pl: 0.6, pd: 0.6) }
+      let(:agent) { double(external_id: nil, pl: 0.6, pd: 0.6) }
 
       it 'increases in probability when guessing a LENS with an agent that is more than average' do
         next_estimate = estimate.adjust(agent, "LENS")

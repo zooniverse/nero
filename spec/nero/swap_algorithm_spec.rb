@@ -8,7 +8,7 @@ describe Nero::SwapAlgorithm do
   let(:subj) { double("Subject", test?: false) }
   let(:classification) { double("Classification", user_id: 1, subjects: [subj], guess: "LENS") }
   let(:agent) { double(id: 1, data: {}, attributes: {}) }
-  let(:new_estimate) { double("new estimate", seen_by?: false, retired?: false, probability: 0.5, attributes: {})}
+  let(:new_estimate) { double("new estimate", seen_by?: false, retired?: false, probability: 0.5, attributes: {}) }
   let(:old_estimate) { double("old estimate", active?: true, retired?: false, adjust: new_estimate) }
 
   subject(:strategy) { described_class.new(storage, panoptes) }
@@ -36,7 +36,7 @@ describe Nero::SwapAlgorithm do
     context 'and it has been seen by a skilled agent' do
       let(:subj) { double("Subject", test?: true) }
       let(:old_estimate) { double("old estimate", adjust: new_estimate, retired?: false, active?: true) }
-      let(:new_estimate) { double("new estimate", seen_by?: true, retired?: true, probability: 0.5, attributes: {})}
+      let(:new_estimate) { double("new estimate", seen_by?: true, retired?: true, probability: 0.5, attributes: {}) }
 
       it 'retires the subj' do
         strategy.process(classification, agent, old_estimate)
@@ -47,7 +47,7 @@ describe Nero::SwapAlgorithm do
     context 'and it has not been seen by a skilled agent' do
       let(:subj) { double("Subject", test?: true) }
       let(:old_estimate) { double("old estimate", adjust: new_estimate, retired?: false, active?: true) }
-      let(:new_estimate) { double("new estimate", seen_by?: false, retired?: true, probability: 0.5, attributes: {})}
+      let(:new_estimate) { double("new estimate", seen_by?: false, retired?: true, probability: 0.5, attributes: {}) }
 
       it 'enqueues the subject for known skilled agents' do
         pending
