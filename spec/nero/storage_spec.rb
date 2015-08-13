@@ -30,21 +30,25 @@ describe Nero::Storage do
   context 'estimates' do
     it 'returns a default estimate for unknown subject/workflows' do
       estimate = storage.find_estimate('1', '2')
-      expect(estimate.probability).to eq(Nero::Estimate::INITIAL_PRIOR)
+      expect(estimate.id).to be_nil
+      expect(estimate.subject_id).to eq('1')
+      expect(estimate.workflow_id).to eq('2')
     end
 
     it 'finds the latest estimate' do
-      db[:estimates].insert(subject_id: '1', workflow_id: '2', probability: 0.8)
+      db[:estimates].insert(subject_id: '1', workflow_id: '2', data: JSON.dump({a: 1}))
       estimate = storage.find_estimate('1', '2')
-      expect(estimate.probability).to eq(0.8)
+      expect(estimate.data).to eq({'a' => 1})
     end
 
-    it 'stores estimates as new records' do
-      db[:estimates].insert(subject_id: '1', workflow_id: '2', probability: 0.8)
+    it 'stores estimates' do
+      db[:estimates].insert(subject_id: '1', workflow_id: '2')
       estimate = storage.find_estimate('1', '2')
-      new_estimate = estimate.adjust(double(pl: 0.5, pd: 0.5, external_id: '123'), 'LENS')
-      storage.record_estimate(new_estimate)
-      expect(db[:estimates].count).to eq(2)
+      estimate.data["foo"] = "bar"
+      storage.record_estimate(estimate)
+
+      retrieved_estimate = storage.find_estimate('1', '2')
+      expect(retrieved_estimate.data["foo"]).to eq("bar")
     end
   end
 end

@@ -5,16 +5,15 @@ describe Nero::SwapAlgorithm do
 
   let(:storage) { Nero::Storage.new(DB) }
   let(:panoptes) { spy("Panoptes") }
-  let(:subj) { double("Subject", test?: false) }
-  let(:classification) { double("Classification", user_id: 1, subjects: [subj], guess: "LENS") }
-  let(:agent) { double(id: 1, data: {}, attributes: {}) }
-  let(:new_estimate) { double("new estimate", seen_by?: false, retired?: false, probability: 0.5, attributes: {}) }
-  let(:old_estimate) { double("old estimate", active?: true, retired?: false, adjust: new_estimate) }
+  let(:subj) { double("Subject", attributes: {"metadata" => {"training" => [{"type" => "lensing cluster"}]}}) }
+  let(:classification) { double("Classification", user_id: 1, subjects: [subj], hash: {"annotations" => []}) }
+  let(:agent) { double(id: 1, data: {"pl" => 0.9, "pd" => 0.9}, attributes: {}, external_id: '1') }
+  let(:estimate) { Nero::Estimate.new(id: nil, subject_id: 1, workflow_id: 2, data: {}) } # active?: true, retired?: false, adjust: new_estimate) }
 
   subject(:strategy) { described_class.new(storage, panoptes) }
 
   it 'processes a message' do
-    strategy.process(classification, agent, old_estimate)
+    strategy.process(classification, agent, estimate)
   end
 
   context 'when a subject is a training subject' do
@@ -34,13 +33,12 @@ describe Nero::SwapAlgorithm do
 
   context 'when a subject is over the estimation threshold' do
     context 'and it has been seen by a skilled agent' do
-      let(:subj) { double("Subject", test?: true) }
-      let(:old_estimate) { double("old estimate", adjust: new_estimate, retired?: false, active?: true) }
-      let(:new_estimate) { double("new estimate", seen_by?: true, retired?: true, probability: 0.5, attributes: {}) }
+      let(:subj) { double("Subject", attributes: {"metadata" => {}}) }
+      let(:estimate) { Nero::Estimate.new(id: nil, subject_id: 1, workflow_id: 2, data: {"guesses" => [{"probability" => Nero::Swap::SwapEstimate::REJECTION_THRESHOLD}]}) }
 
       it 'retires the subj' do
-        strategy.process(classification, agent, old_estimate)
-        expect(panoptes).to have_received(:retire).with(new_estimate).once
+        strategy.process(classification, agent, estimate)
+        expect(panoptes).to have_received(:retire).once
       end
     end
 

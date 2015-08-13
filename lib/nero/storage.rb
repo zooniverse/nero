@@ -27,7 +27,7 @@ module Nero
     end
 
     def record_agent(agent)
-      record = agent.attributes
+      record = agent.attributes.dup
       record[:data] = JSON.dump(record[:data])
 
       if agent.id
@@ -41,14 +41,21 @@ module Nero
       record = db[:estimates].where(subject_id: subject_id, workflow_id: workflow_id).order(:id).last
 
       if record
-        Estimate.new(subject_id: subject_id, workflow_id: workflow_id, probability: record[:probability])
+        Estimate.new(id: record[:id], subject_id: subject_id, workflow_id: workflow_id, data: JSON.load(record[:data]))
       else
-        Estimate.new(subject_id: subject_id, workflow_id: workflow_id)
+        Estimate.new(id: nil, subject_id: subject_id, workflow_id: workflow_id)
       end
     end
 
     def record_estimate(estimate)
-      db[:estimates].insert(estimate.attributes.merge(created_at: Time.now, updated_at: Time.now))
+      record = estimate.attributes.dup
+      record[:data] = JSON.dump(record[:data])
+
+      if estimate.id
+        db[:estimates].where(id: estimate.id).update(record.merge(updated_at: Time.now))
+      else
+        db[:estimates].insert(record.merge(created_at: Time.now, updated_at: Time.now))
+      end
     end
   end
 end

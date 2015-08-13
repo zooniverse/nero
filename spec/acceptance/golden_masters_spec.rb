@@ -7,9 +7,10 @@ describe 'Golden masters' do
 
   after do
     verify do
-      DB[:estimates].order(:created_at).all.map do |row|
-        [[row[:subject_id], row[:user_id], row[:answer], row[:probability].round(20)]]
-      end
+      DB[:estimates].all.map { |row| row[:data] = JSON.load(row[:data]); row }
+                        .flat_map { |row| (row[:data]["guesses"] || []).map {|guess| guess.merge(row) } }
+                        .sort_by { |row| row["timestamp"] }
+                        .map { |row| [[row[:subject_id], row["user_id"], row["answer"], row["probability"].round(20)]] }
     end
   end
 
