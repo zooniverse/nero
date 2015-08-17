@@ -81,27 +81,27 @@ module Nero
 
       def update_confusion_unsupervised(user_said, lens_prob)
         if user_said == "LENS"
-          pl_new = (pl * counts_lens + lens_prob)/(lens_prob+counts_lens)
-          pl_new = [pl_new,PL_MAX].min
-          pl_new = [pl_new,PL_MIN].max
+          pl_new = (pl * counts_lens + lens_prob) / (lens_prob + counts_lens)
+          pl_new = [pl_new, PL_MAX].min
+          pl_new = [pl_new, PL_MIN].max
           self.pl = pl_new
 
-          pd_new = (pd*counts_lens )/((1-lens_prob)+counts_duds)
-          pd_new = [pd_new,PD_MAX].min
-          pd_new = [pd_new,PD_MIN].max
+          pd_new = (pd * counts_lens) / ((1 - lens_prob) + counts_duds)
+          pd_new = [pd_new, PD_MAX].min
+          pd_new = [pd_new, PD_MIN].max
           self.pd = pd_new
 
           self.counts_lens += 1
           self.counts_total += 1
         else
-          pl_new = (pl*counts_lens)/(lens_prob+counts_lens)
-          pl_new = [pl_new,PL_MAX].min
-          pl_new = [pl_new,PL_MIN].max
+          pl_new = (pl * counts_lens) / (lens_prob + counts_lens)
+          pl_new = [pl_new, PL_MAX].min
+          pl_new = [pl_new, PL_MIN].max
           self.pl = pl_new
 
-          pd_new = (pd*counts_duds + (1-lens_prob))/((lens_prob-1)+counts_duds)
-          pd_new = [pd_new,PD_MAX].min
-          pd_new = [pd_new,PD_MIN].max
+          pd_new = (pd * counts_duds + (1 - lens_prob)) / ((lens_prob - 1) + counts_duds)
+          pd_new = [pd_new, PD_MAX].min
+          pd_new = [pd_new, PD_MIN].max
           self.pd = pd_new
 
           self.counts_duds += 1
