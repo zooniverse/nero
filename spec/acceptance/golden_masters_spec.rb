@@ -7,8 +7,8 @@ describe 'Golden masters' do
 
   after do
     verify do
-      DB[:estimates].all.map { |row| row[:data] = JSON.load(row[:data]); row }
-                        .flat_map { |row| (row[:data]["guesses"] || []).map {|guess| guess.merge(row) } }
+      DB[:estimates].all.map { |row| row.tap { |r| r[:data] = JSON.load(r[:data]) } }
+                        .flat_map { |row| (row[:data]["guesses"] || []).map { |guess| guess.merge(row) } }
                         .sort_by { |row| row["timestamp"] }
                         .map { |row| [[row[:subject_id], row["user_id"], row["answer"], row["probability"].round(20)]] }
     end
@@ -26,22 +26,25 @@ describe 'Golden masters' do
   context 'with kafka and sequel', :kafka do
     let(:brokers) { ["kafka:9092"] }
     let(:zookeepers) { ["zk:2181"] }
-    let(:topic) { "nero-test-#{Time.now.to_i}"}
-    let(:reader) { Nero::Input::KafkaReader.new(processor: processor,
-                                                          brokers: brokers,
-                                                          zookeepers: zookeepers,
-                                                          topic: topic,
-                                                          group_name: "group-#{Time.now.to_i}") }
+    let(:topic) { "nero-test-#{Time.now.to_i}" }
+
+    let(:reader) do
+      Nero::Input::KafkaReader.new(processor: processor,
+                                   brokers: brokers,
+                                   zookeepers: zookeepers,
+                                   topic: topic,
+                                   group_name: "group-#{Time.now.to_i}")
+    end
 
     it 'works with the fully integrated kafka-sequel path' do
       # Single partition to ensure processing in known-order
-      producer = Poseidon::Producer.new(brokers, "test_producer", partitioner: ->(partition_count, key) { 0 })
+      producer = Poseidon::Producer.new(brokers, "test_producer", partitioner: ->(_partition_count, _key) { 0 })
 
       lines = File.readlines(File.expand_path("../../fixtures/spacewarps_ouroboros_classifications.json", __FILE__))
       messages = lines.map.with_index { |line, idx| Poseidon::MessageToSend.new(topic, line, "message#{idx}") }
 
       # sending messages in small groups is faster than both singles and larger groups
-      messages.each_slice(10) {|slice| producer.send_messages(slice) }
+      messages.each_slice(10) { |slice| producer.send_messages(slice) }
 
       reader.run
     end
