@@ -1,4 +1,5 @@
 require 'date'
+require 'set'
 
 module Nero
   module Swap
@@ -51,7 +52,11 @@ module Nero
       end
 
       def seen_by?(user_ids)
-        true
+        user_ids = Set.new(user_ids)
+        
+        guesses.any? do |guess|
+          user_ids.include?(guess["user_id"])
+        end
       end
 
       private

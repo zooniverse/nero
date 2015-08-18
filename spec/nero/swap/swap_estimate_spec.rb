@@ -20,7 +20,7 @@ module Nero
         end
       end
 
-      describe 'status' do
+      describe '#status' do
         it 'is rejected when below threshold' do
           estimate = described_class.new(double(data: {"guesses" => [{"probability" => 0.000000001}]}))
           expect(estimate.status).to eq(:rejected)
@@ -34,6 +34,18 @@ module Nero
         it 'is active otherwise' do
           estimate = described_class.new(double(data: {"guesses" => [{"probability" => 0.5}]}))
           expect(estimate.status).to eq(:active)
+        end
+      end
+
+      describe '#seen_by?' do
+        it 'is seen when one of the given user ids matches a guess' do
+          estimate = described_class.new(double(data: {"guesses" => [{"user_id" => "bob"}, {"user_id" => "alice"}]}))
+          expect(estimate.seen_by?(["alice"])).to be_truthy
+        end
+
+        it 'is not seen when no guess matches any of the given user ids' do
+          estimate = described_class.new(double(data: {"guesses" => [{"user_id" => "bob"}, {"user_id" => "trudy"}]}))
+          expect(estimate.seen_by?(["alice"])).to be_falsey
         end
       end
     end
