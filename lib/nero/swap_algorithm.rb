@@ -1,3 +1,9 @@
+require 'ostruct'
+require_relative 'swap/swap_agent'
+require_relative 'swap/swap_subject'
+require_relative 'swap/swap_classification'
+require_relative 'swap/swap_estimate'
+
 module Nero
   class SwapAlgorithm
     def initialize(storage, panoptes)
@@ -5,31 +11,50 @@ module Nero
       @panoptes = panoptes
     end
 
-    def process(classification, agent, old_estimate)
+    def process(classification, agent, estimate)
       return unless classification.user_id
 
+      classification = Nero::Swap::SwapClassification.new(classification)
+      agent = Nero::Swap::SwapAgent.new(agent)
+      estimate = Nero::Swap::SwapEstimate.new(estimate)
+
       classification.subjects.map do |subject|
-        if old_estimate.retired? && subject.test?
-          next old_estimate
+        if estimate.retired? && subject.test?
+          next estimate
         end
 
-        if subject.test? || old_estimate.active?
-          new_estimate = old_estimate.adjust(agent, classification.guess)
-          agent.update_confusion_unsupervised(classification.guess, new_estimate.probability)
+        if subject.test? || estimate.active?
+          estimate.adjust(agent, classification.guess)
+          agent.update_confusion_unsupervised(classification.guess, estimate.probability)
+          @storage.record_agent(agent)
+          @storage.record_estimate(estimate)
         else # training subject or retired already
-          new_estimate = old_estimate
-          agent.update_confusion_unsupervised(classification.guess, new_estimate.probability)
+          agent.update_confusion_unsupervised(classification.guess, estimate.probability)
+          @storage.record_agent(agent)
         end
 
-        @storage.record_agent(agent)
-        @storage.record_estimate(new_estimate)
 
-        if new_estimate.retired? && subject.test?
-          @panoptes.retire(new_estimate)
+        if estimate.retired? && subject.test?
+          @panoptes.retire(estimate)
+          # if estimate.seen_by?(workflow.skilled_agents)
+          #   @panoptes.retire(estimate)
+          # else
+          #   @panoptes.enqueue(workflow.skilled_agents)
+          # end
         end
 
-        new_estimate
+        estimate
       end
+    end
+
+    def workflow
+      data_column = Sequel.pg_json_op(:data)
+      skilled_agents = agents.where(data_column.get_text('skill').cast(Float) > 0.8).map { |i| i[:external_id] }
+      OpenStruct.new(skilled_agents: skilled_agents)
+    end
+
+    def agents
+      @storage.db[:agents]
     end
   end
 end

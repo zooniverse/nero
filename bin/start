@@ -9,4 +9,5 @@ processor = Nero.start(ENV.fetch("RAILS_ENV"))
 puts "Nero Started."
 loop do
   processor.run
+  sleep 5
 end

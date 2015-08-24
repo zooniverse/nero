@@ -1,5 +1,7 @@
 require 'sequel'
 Sequel.extension :migration
+Sequel.extension :pg_json
+Sequel.extension :pg_json_ops
 
 module Nero
   class Storage
@@ -18,21 +20,20 @@ module Nero
       record = db[:agents].where(external_id: user_id).order(:id).first
 
       if record
-        record[:data] = JSON.load(record[:data])
-        Agent.new(**record)
+        Agent.new(id: record[:id], external_id: record[:external_id], data: JSON.load(record[:data]))
       else
         Agent.new(id: nil, external_id: user_id)
       end
     end
 
     def record_agent(agent)
-      record = agent.attributes
+      record = agent.attributes.dup
       record[:data] = JSON.dump(record[:data])
 
       if agent.id
-        db[:agents].where(id: agent.id).update(record)
+        db[:agents].where(id: agent.id).update(record.merge(updated_at: Time.now))
       else
-        db[:agents].insert(record)
+        db[:agents].insert(record.merge(created_at: Time.now, updated_at: Time.now))
       end
     end
 
@@ -40,14 +41,21 @@ module Nero
       record = db[:estimates].where(subject_id: subject_id, workflow_id: workflow_id).order(:id).last
 
       if record
-        Estimate.new(subject_id: subject_id, workflow_id: workflow_id, probability: record[:probability])
+        Estimate.new(id: record[:id], subject_id: subject_id, workflow_id: workflow_id, data: JSON.load(record[:data]))
       else
-        Estimate.new(subject_id: subject_id, workflow_id: workflow_id)
+        Estimate.new(id: nil, subject_id: subject_id, workflow_id: workflow_id)
       end
     end
 
     def record_estimate(estimate)
-      db[:estimates].insert(estimate.attributes)
+      record = estimate.attributes.dup
+      record[:data] = JSON.dump(record[:data])
+
+      if estimate.id
+        db[:estimates].where(id: estimate.id).update(record.merge(updated_at: Time.now))
+      else
+        db[:estimates].insert(record.merge(created_at: Time.now, updated_at: Time.now))
+      end
     end
   end
 end
