@@ -3,9 +3,11 @@ require 'rubygems'
 require 'bundler/setup'
 
 require 'nero'
-processor = Nero.start(ENV.fetch("RAILS_ENV"))
 
-puts "Nero Started."
+Nero.logger.info "Starting"
+processor = Nero.start(ENV.fetch("RAILS_ENV"))
+Nero.logger.info "Started"
+
 loop do
   processor.run
   sleep 5

@@ -24,6 +24,7 @@ module Nero
 
     def process(hash)
       classification = Classification.new(hash)
+      Nero.logger.info "processing", classification_id: classification.id, subject_ids: classification.subject_ids
       agent = @storage.find_agent(classification.user_id)
       estimate = @storage.find_estimate(classification.subject_ids.join("-"), classification.workflow_id)
       workflows[classification.workflow_id].process(classification, agent, estimate)

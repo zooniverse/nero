@@ -6,6 +6,10 @@ module Nero
       @hash = hash
     end
 
+    def id
+      hash.fetch("id")
+    end
+
     def subjects
       hash.fetch("subjects", {}).map do |id, attributes|
         Subject.new(id, attributes)

@@ -5,6 +5,40 @@ require 'honeybadger'
 require 'sequel'
 
 module Nero
+  class NullLogger
+    def fatal(*args); end
+    def error(*args); end
+    def warn(*args); end
+    def info(*args); end
+    def debug(*args); end
+  end
+
+  class LoggerLogger
+    def initialize(logger)
+      @logger = logger
+    end
+
+    def fatal(message, metadata = {})
+      @logger.fatal("#{message} #{JSON.dump(metadata)}")
+    end
+
+    def error(message, metadata = {})
+      @logger.error("#{message} #{JSON.dump(metadata)}")
+    end
+
+    def warn(message, metadata = {})
+      @logger.warn("#{message} #{JSON.dump(metadata)}")
+    end
+
+    def info(message, metadata = {})
+      @logger.info("#{message} #{JSON.dump(metadata)}")
+    end
+
+    def debug(message, metadata = {})
+      @logger.debug("#{message} #{JSON.dump(metadata)}")
+    end
+  end
+
   def self.config_path(filename)
     File.expand_path(File.join('..', '..', 'config', filename), __FILE__)
   end
@@ -12,6 +46,10 @@ module Nero
   def self.load_config(filename, environment)
     path = config_path(filename)
     YAML.load_file(path).fetch(environment.to_s)
+  end
+
+  def self.logger
+    @logger ||= LoggerLogger.new(Logger.new(STDOUT))
   end
 end
 
@@ -31,14 +69,6 @@ require_relative 'nero/swap_algorithm'
 require_relative 'nero/processor'
 
 module Nero
-  class NullLogger
-    def fatal(*args); end
-    def error(*args); end
-    def warn(*args); end
-    def info(*args); end
-    def debug(*args); end
-  end
-
   def self.start(environment)
     storage = Nero::Storage.new(DB)
     output  = Nero::Output::IOWriter.new(STDOUT)
@@ -56,16 +86,5 @@ module Nero
   rescue StandardError => exception
     Honeybadger.notify(exception)
     raise
-  end
-
-  def logger
-    @logger ||= case env
-                when "development"
-                  Logger.new(STDOUT)
-                when "test"
-                  NullLogger
-                else
-                  Logger.new(STDOUT)
-                end
   end
 end
