@@ -5,6 +5,8 @@ gem 'poseidon'
 gem 'poseidon_cluster'
 gem 'sequel'
 gem 'pg'
+gem 'newrelic_rpm'
+gem 'honeybadger', '~> 2.0'
 
 group :development do
   gem 'rerun'

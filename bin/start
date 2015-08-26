@@ -3,7 +3,6 @@ require 'rubygems'
 require 'bundler/setup'
 
 require 'nero'
-
 processor = Nero.start(ENV.fetch("RAILS_ENV"))
 
 puts "Nero Started."

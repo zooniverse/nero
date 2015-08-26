@@ -1,5 +1,7 @@
 module Nero
   class Processor
+    include ::NewRelic::Agent::Instrumentation::ControllerInstrumentation
+
     class NullAlgorithm
       def process(*args)
         return []
@@ -26,5 +28,7 @@ module Nero
       estimate = @storage.find_estimate(classification.subject_ids.join("-"), classification.workflow_id)
       workflows[classification.workflow_id].process(classification, agent, estimate)
     end
+
+    add_transaction_tracer :process, category: :task
   end
 end
