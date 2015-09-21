@@ -3,6 +3,7 @@ require 'logger'
 require 'newrelic_rpm'
 require 'honeybadger'
 require 'sequel'
+require 'poseidon'
 
 module Nero
   class NullLogger
@@ -18,24 +19,24 @@ module Nero
       @logger = logger
     end
 
-    def fatal(message, metadata = {})
-      @logger.fatal("#{message} #{JSON.dump(metadata)}")
+    def fatal(message = nil, metadata = {})
+      @logger.fatal("#{message || yield} #{JSON.dump(metadata)}")
     end
 
-    def error(message, metadata = {})
-      @logger.error("#{message} #{JSON.dump(metadata)}")
+    def error(message = nil, metadata = {})
+      @logger.error("#{message || yield} #{JSON.dump(metadata)}")
     end
 
-    def warn(message, metadata = {})
-      @logger.warn("#{message} #{JSON.dump(metadata)}")
+    def warn(message = nil, metadata = {})
+      @logger.warn("#{message || yield} #{JSON.dump(metadata)}")
     end
 
-    def info(message, metadata = {})
-      @logger.info("#{message} #{JSON.dump(metadata)}")
+    def info(message = nil, metadata = {})
+      @logger.info("#{message || yield} #{JSON.dump(metadata)}")
     end
 
-    def debug(message, metadata = {})
-      @logger.debug("#{message} #{JSON.dump(metadata)}")
+    def debug(message = nil, metadata = {})
+      @logger.debug("#{message || yield} #{JSON.dump(metadata)}")
     end
   end
 
@@ -56,6 +57,7 @@ end
 DB = Sequel.connect(Nero.load_config('database.yml', ENV["RAILS_ENV"]))
 NewRelic::Agent.manual_start
 Honeybadger.start(:'config.path' => Nero.config_path("honeybadger.yml"))
+Poseidon.logger = Nero.logger
 
 require_relative 'nero/input/io_reader'
 require_relative 'nero/input/kafka_reader'
