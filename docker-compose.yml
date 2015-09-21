@@ -28,7 +28,6 @@ nero:
     RAILS_ENV: development
     KAFKA_GROUP: nero-workers
     KAFKA_TOPIC: classifications
-  entrypoint: ["ruby", "-I", "/app/lib", "/app/bin/start"]
   volumes:
     - ./:/app
   links:
