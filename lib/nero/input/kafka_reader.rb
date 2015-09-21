@@ -37,7 +37,7 @@ module Nero
         count = 0
         id = nil
 
-        @consumer.fetch do |partition, messages|
+        ok = @consumer.fetch do |partition, messages|
           id = partition
           messages.each do |message|
             count += 1
@@ -45,7 +45,13 @@ module Nero
           end
         end
 
-        return id, count
+        if ok
+          return id, count
+        else
+          Nero.logger.warn "Running more processors than partitions, this one has nothing to do"
+          sleep 30 # Manual sleep since we're not waiting on a socket timeout
+          return nil, 0
+        end
       end
     end
   end
