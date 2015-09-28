@@ -44,7 +44,7 @@ describe Nero::SwapAlgorithm do
 
     context 'and it has not been seen by a skilled agent' do
       let(:subj) { double("Subject", test?: true) }
-      let(:old_estimate) { double("old estimate", adjust: new_estimate, retired?: false, active?: true) }
+      let(:old_estimate) { double("old estimate", adjust: new_estimate, data: {}, retired?: false, active?: true) }
       let(:new_estimate) { double("new estimate", seen_by?: false, retired?: true, probability: 0.5, attributes: {}) }
 
       it 'enqueues the subject for known skilled agents' do

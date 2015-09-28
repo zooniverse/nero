@@ -50,14 +50,21 @@ module Nero
   end
 
   def self.logger
-    @logger ||= LoggerLogger.new(Logger.new(STDOUT))
+    return @logger if @logger
+    self.logger = LoggerLogger.new(Logger.new(STDOUT))
+  end
+
+  def self.logger=(logger)
+    @logger = logger
+    Poseidon.logger = Nero.logger
+    logger
   end
 end
 
+Nero.logger
 DB = Sequel.connect(Nero.load_config('database.yml', ENV["RAILS_ENV"]))
 NewRelic::Agent.manual_start
 Honeybadger.start(:'config.path' => Nero.config_path("honeybadger.yml"))
-Poseidon.logger = Nero.logger
 
 require_relative 'nero/input/io_reader'
 require_relative 'nero/input/kafka_reader'
