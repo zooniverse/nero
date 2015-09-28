@@ -2,7 +2,7 @@ require 'spec_helper'
 
 describe Nero::Input::KafkaReader, :kafka do
   let(:processor) { spy }
-  let(:brokers) { ["192.168.59.103:9092"] }
+  let(:brokers) { ["kafka:9092"] }
   let(:topic) { "nero-test-#{Time.now.to_i}"}
   let(:reader) { described_class.new(processor: processor,
                                      brokers: brokers,
