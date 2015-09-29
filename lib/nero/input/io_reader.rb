@@ -13,8 +13,8 @@ module Nero
       def run
         io.each_line do |line|
           next if line.strip == ""
-          classification = JSON.parse(line)
-          processor.process(classification)
+          data = JSON.parse(line)
+          processor.process(data)
         end
       end
     end

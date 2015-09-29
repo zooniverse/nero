@@ -15,7 +15,7 @@ describe 'Golden masters' do
   end
 
   context 'with io and sequel' do
-    it 'works with the fully integrated kafka-sequel path' do
+    it 'processes the spacewarps fixture' do
       File.open(File.expand_path("../../fixtures/spacewarps_ouroboros_classifications.json", __FILE__), 'r') do |io|
         reader = Nero::Input::IOReader.new(io, processor)
         reader.run
@@ -36,7 +36,7 @@ describe 'Golden masters' do
                                    group_name: "group-#{Time.now.to_i}")
     end
 
-    it 'works with the fully integrated kafka-sequel path' do
+    it 'processes the spacewarps fixture' do
       # Single partition to ensure processing in known-order
       producer = Poseidon::Producer.new(brokers, "test_producer", partitioner: ->(_partition_count, _key) { 0 })
 

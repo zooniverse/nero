@@ -22,12 +22,14 @@ module Nero
       end
     end
 
-    def process(hash)
-      classification = Classification.new(hash)
-      Nero.logger.info "processing", classification_id: classification.id, subject_ids: classification.subject_ids
-      agent = @storage.find_agent(classification.user_id)
-      estimate = @storage.find_estimate(classification.subject_ids.join("-"), classification.workflow_id)
-      workflows[classification.workflow_id].process(classification, agent, estimate)
+    def process(data)
+      data.fetch("classifications").each do |classification_hash|
+        classification = Classification.new(classification_hash)
+        Nero.logger.info "processing", classification_id: classification.id, subject_ids: classification.subject_ids
+        agent = @storage.find_agent(classification.user_id)
+        estimate = @storage.find_estimate(classification.subject_ids.join("-"), classification.workflow_id)
+        workflows[classification.workflow_id].process(classification, agent, estimate)
+      end
     end
 
     add_transaction_tracer :process, category: :task
