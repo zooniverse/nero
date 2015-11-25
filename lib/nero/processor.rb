@@ -1,3 +1,6 @@
+require_relative 'swap/swap_algorithm'
+require_relative 'wildlife_watch/wildlife_watch_algorithm'
+
 module Nero
   class Processor
     include ::NewRelic::Agent::Instrumentation::ControllerInstrumentation
@@ -9,7 +12,8 @@ module Nero
     end
 
     ALGORITHMS = {
-      'swap' => Nero::SwapAlgorithm
+      'wildlife_watch' => Nero::WildlifeWatch::WildlifeWatchAlgorithm,
+      'swap' => Nero::Swap::SwapAlgorithm
     }
 
     attr_reader :workflows
