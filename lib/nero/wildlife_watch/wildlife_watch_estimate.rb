@@ -31,7 +31,6 @@ module Nero
           groups
         end
       end
-
     end
   end
 end
