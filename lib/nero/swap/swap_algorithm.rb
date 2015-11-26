@@ -34,7 +34,6 @@ module Nero
             @storage.record_agent(agent)
           end
 
-
           if estimate.retired? && subject.test?
             @panoptes.retire(estimate)
             # if estimate.seen_by?(workflow.skilled_agents)

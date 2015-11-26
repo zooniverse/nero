@@ -6,7 +6,7 @@ describe Nero::WildlifeWatch::WildlifeWatchClassification do
   let(:i_see_human_with_deer)    { [{"task" => "init", "value" => 1}, {"task" => "T1", "value" => [{"choice" => "DR", "answers" => {"HWMN" => "1", "NGPRSNT" => "N"}, "filters" => {}}]}] }
   let(:i_see_human_with_human)   { [{"task" => "init", "value" => 1}, {"task" => "T1", "value" => [{"choice" => "HMN", "answers" => {"HWMN" => "1", "NGPRSNT" => "N"}, "filters" => {}}]}] }
   let(:i_see_animal_with_deer)   { [{"task" => "init", "value" => 2}, {"task" => "T1", "value" => [{"choice" => "DR", "answers" => {"HWMN" => "1", "NGPRSNT" => "N"}, "filters" => {}}]}] }
-  let(:i_see_animal_with_human)  { [{"task" => "init", "value" => 2}, {"task" => "T1", "value" => [{"choice" => "HMN", "answers" => {"HWMN" => "1", "NGPRSNT" => "N"}, "filters" => {}}]}]}
+  let(:i_see_animal_with_human)  { [{"task" => "init", "value" => 2}, {"task" => "T1", "value" => [{"choice" => "HMN", "answers" => {"HWMN" => "1", "NGPRSNT" => "N"}, "filters" => {}}]}] }
 
   def make_classification(annotations)
     base = Nero::Classification.new("annotations" => annotations)
