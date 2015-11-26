@@ -3,7 +3,7 @@
 require 'rubygems'
 require 'bundler/setup'
 
-require 'nero'
+require_relative '../lib/nero'
 
 require 'pry'
 binding.pry
