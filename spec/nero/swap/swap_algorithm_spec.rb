@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Nero::SwapAlgorithm do
+describe Nero::Swap::SwapAlgorithm do
   include Fixtures
 
   let(:storage) { Nero::Storage.new(DB) }
