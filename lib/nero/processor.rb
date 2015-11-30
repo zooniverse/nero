@@ -22,7 +22,7 @@ module Nero
       @storage = storage
       @output  = output
       @workflows = config.each.with_object(Hash.new(NullAlgorithm.new)) do |(workflow_id, workflow_config), hash|
-        hash[workflow_id] = ALGORITHMS.fetch(workflow_config.fetch('algorithm')).new(storage, output)
+        hash[workflow_id.to_s] = ALGORITHMS.fetch(workflow_config.fetch('algorithm')).new(storage, output)
       end
     end
 
@@ -32,7 +32,7 @@ module Nero
         Nero.logger.info "processing", classification_id: classification.id, subject_ids: classification.subject_ids
         agent = @storage.find_agent(classification.user_id)
         estimate = @storage.find_estimate(classification.subject_ids.join("-"), classification.workflow_id)
-        workflows[classification.workflow_id].process(classification, agent, estimate)
+        workflows[classification.workflow_id.to_s].process(classification, agent, estimate)
       end
     end
 
