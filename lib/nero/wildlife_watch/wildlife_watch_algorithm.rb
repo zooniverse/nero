@@ -11,7 +11,7 @@ module Nero
 
       def process(classification, agent, estimate)
         return unless classification.user_id
-        return unless classification.subjects.size == 1
+        return unless classification.subject_ids.size == 1
 
         classification = Nero::WildlifeWatch::WildlifeWatchClassification.new(classification)
         estimate = Nero::WildlifeWatch::WildlifeWatchEstimate.new(estimate)
