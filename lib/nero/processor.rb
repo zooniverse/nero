@@ -27,8 +27,9 @@ module Nero
     end
 
     def process(data)
+      linked_data = data.fetch("linked") { {} }
       data.fetch("classifications").each do |classification_hash|
-        classification = Classification.new(classification_hash)
+        classification = Classification.new(classification_hash, linked: linked_data)
         Nero.logger.info "processing", classification_id: classification.id, subject_ids: classification.subject_ids
         agent = @storage.find_agent(classification.user_id)
         estimate = @storage.find_estimate(classification.subject_ids.join("-"), classification.workflow_id)

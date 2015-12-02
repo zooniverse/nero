@@ -1,6 +1,8 @@
 development:
   5101a1341a320ea77f000001:
     algorithm: swap
+  1021:
+    algorithm: wildlife_watch
 test:
   5101a1341a320ea77f000001:
     algorithm: swap
