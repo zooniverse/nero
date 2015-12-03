@@ -16,7 +16,7 @@ describe 'Golden masters' do
 
   context 'with io and sequel' do
     it 'processes the spacewarps fixture' do
-      File.open(File.expand_path("../../fixtures/spacewarps_ouroboros_classifications.json", __FILE__), 'r') do |io|
+      File.open(File.expand_path("../../fixtures/spacewarps.json", __FILE__), 'r') do |io|
         reader = Nero::Input::IOReader.new(io, processor)
         reader.run
       end
