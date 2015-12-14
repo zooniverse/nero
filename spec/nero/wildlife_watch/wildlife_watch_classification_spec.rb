@@ -27,7 +27,7 @@ describe Nero::WildlifeWatch::WildlifeWatchClassification do
     end
 
     it 'detects animals' do
-      expect(make_classification(i_see_animal_with_deer).vote).to eq("animal")
+      expect(make_classification(i_see_animal_with_deer).vote).to eq("DR")
     end
   end
 end

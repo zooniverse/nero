@@ -10,7 +10,7 @@ module Nero
         when choices.include?("HMN")
           "human"
         else
-          "animal"
+          choices.join("-") # Should only ever be one choice probably
         end
       end
 
