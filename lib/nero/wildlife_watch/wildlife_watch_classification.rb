@@ -7,6 +7,10 @@ module Nero
           "blank"
         when init_task["value"] == 1
           "human"
+        when choices.empty?
+          "blank"
+        when choices.include?("NTHNGHR")
+          "blank"
         when choices.include?("HMN")
           "human"
         else
