@@ -33,7 +33,13 @@ module Nero
         Nero.logger.info "processing", classification_id: classification.id, subject_ids: classification.subject_ids
         agent = @storage.find_agent(classification.user_id)
         estimate = @storage.find_estimate(classification.subject_ids.join("-"), classification.workflow_id)
-        workflows[classification.workflow_id.to_s].process(classification, agent, estimate)
+
+        begin
+          workflows[classification.workflow_id.to_s].process(classification, agent, estimate)
+        rescue StandardError => exception
+          Honeybadger.notify(exception, context: {classification_id: classification.id, subject_ids: classification.subject_ids})
+          Nero.logger.error 'processing-failed', classification_id: classification.id, subject_ids: classification.subject_ids
+        end
       end
     end
 

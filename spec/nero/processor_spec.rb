@@ -38,4 +38,20 @@ describe Nero::Processor do
     processor.process(data)
     expect(processed_classifications[0].subjects[0]).to be_a(Nero::Subject)
   end
+
+  it 'notifies Honeybadger in case a workflow implementation crashes' do
+    always_crashes = Class.new do
+      def process(*args)
+        raise 'Oops'
+      end
+    end
+
+    stub_const("Honeybadger", double("Honey Badger").as_null_object)
+    stub_const("Nero::Processor::NullAlgorithm", always_crashes)
+
+    processor = described_class.new(storage, output, config)
+    processor.process(data)
+
+    expect(Honeybadger).to have_received(:notify).once
+  end
 end
