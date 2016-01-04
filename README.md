@@ -18,7 +18,7 @@ Once this has finished starting up services (and Postgresql is running) you need
 ```
 $ docker exec -it nero_postgres_1 createdb --username=nero nero_development
 $ docker exec -it nero_postgres_1 createdb --username=nero nero_test
-``
+```
 
 Then try running the test suite:
 
