@@ -25,15 +25,15 @@ module Nero
       end
 
       def init_task
-        (annotations.fetch("init") || [])[0] || {}
+        annotations.fetch("init", []).first || {}
       end
 
       def t1_task
-        (annotations.fetch("T1") || [])[0] || {}
+        annotations.fetch("T1", []).first || {}
       end
 
       def choices
-        values = t1_task["value"] || []
+        values = t1_task.fetch("value", [])
         values.map { |val| val["choice"] }
       end
     end
