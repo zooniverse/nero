@@ -3,10 +3,6 @@ module Nero
     class WildlifeWatchClassification < SimpleDelegator
       def vote
         case
-        when init_task["value"] == 0
-          "blank"
-        when init_task["value"] == 1
-          "human"
         when choices.empty?
           "blank"
         when choices.include?("NTHNGHR")
@@ -22,10 +18,6 @@ module Nero
 
       def annotations
         @annotations ||= hash.fetch("annotations", {}).group_by { |ann| ann["task"] }
-      end
-
-      def init_task
-        annotations.fetch("init", []).first || {}
       end
 
       def t1_task
