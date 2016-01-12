@@ -3,12 +3,7 @@ require_relative 'wildlife_watch_estimate'
 
 module Nero
   module WildlifeWatch
-    class WildlifeWatchAlgorithm
-      def initialize(storage, panoptes)
-        @storage = storage
-        @panoptes = panoptes
-      end
-
+    class WildlifeWatchAlgorithm < Nero::Algorithm
       def process(classification, agent, estimate)
         return unless classification.user_id
         return unless classification.subject_ids.size == 1

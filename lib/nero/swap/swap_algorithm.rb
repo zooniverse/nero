@@ -6,12 +6,7 @@ require_relative 'swap_estimate'
 
 module Nero
   module Swap
-    class SwapAlgorithm
-      def initialize(storage, panoptes)
-        @storage = storage
-        @panoptes = panoptes
-      end
-
+    class SwapAlgorithm < Nero::Algorithm
       def process(classification, agent, estimate)
         return unless classification.user_id
 
