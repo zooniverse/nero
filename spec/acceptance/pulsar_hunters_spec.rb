@@ -1,8 +1,7 @@
 require 'spec_helper'
 
 describe 'Pulsar Hunters' do
-  let(:db)        { Sequel.sqlite }
-  let(:storage)   { Nero::Storage.new(db) }
+  let(:storage)   { Nero::Storage.new(DB) }
   let(:output)    { double("Output") }
 
   let(:processor) do
@@ -13,6 +12,24 @@ describe 'Pulsar Hunters' do
         "normal_limit" => 30
       }
     })
+  end
+
+  describe 'approvals' do
+    after do
+      verify do
+        DB[:estimates].all.sort_by { |row| row[:subject_id] }
+                          .map { |row| [row[:subject_id], JSON.load(row[:data])] }
+      end
+    end
+
+    context 'with io and sequel' do
+      it 'processes the fixture' do
+        File.open(File.expand_path("../../fixtures/pulsar_hunters.json", __FILE__), 'r') do |io|
+          reader = Nero::Input::IOReader.new(io, processor)
+          reader.run
+        end
+      end
+    end
   end
 
   describe 'for a disc class subject' do
