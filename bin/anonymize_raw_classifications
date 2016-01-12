@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+jq '.classifications[0].links.user = "1" | .classifications[0].metadata = {}'
