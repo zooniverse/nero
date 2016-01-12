@@ -10,5 +10,6 @@ Nero.logger.info "Started"
 
 loop do
   processor.run
-  sleep 5
+  Nero.logger.info "microsleep"
+  sleep 0.5
 end
