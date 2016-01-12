@@ -1,5 +1,6 @@
 require_relative 'swap/swap_algorithm'
 require_relative 'wildlife_watch/wildlife_watch_algorithm'
+require_relative 'pulsar_hunters/pulsar_hunters_algorithm'
 
 module Nero
   class Processor
@@ -13,7 +14,8 @@ module Nero
 
     ALGORITHMS = {
       'wildlife_watch' => Nero::WildlifeWatch::WildlifeWatchAlgorithm,
-      'swap' => Nero::Swap::SwapAlgorithm
+      'swap' => Nero::Swap::SwapAlgorithm,
+      'pulsar_hunters' => Nero::PulsarHunters::PulsarHuntersAlgorithm
     }
 
     attr_reader :workflows
@@ -22,7 +24,7 @@ module Nero
       @storage = storage
       @output  = output
       @workflows = config.each.with_object(Hash.new(NullAlgorithm.new)) do |(workflow_id, workflow_config), hash|
-        hash[workflow_id.to_s] = ALGORITHMS.fetch(workflow_config.fetch('algorithm')).new(storage, output)
+        hash[workflow_id.to_s] = ALGORITHMS.fetch(workflow_config.fetch('algorithm')).new(storage, output, workflow_config)
       end
     end
 
