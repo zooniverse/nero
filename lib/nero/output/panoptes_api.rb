@@ -21,7 +21,7 @@ module Nero
       def retire(estimate)
         client.post("/api/workflows/#{estimate.workflow_id}/retired_subjects",
                     admin: true,
-                    subject_id: [estimate.subject_id])
+                    subject_id: estimate.subject_id)
       end
     end
   end

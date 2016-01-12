@@ -1,27 +1,27 @@
 development:
   adapter: postgres
-  host: postgres
+  host: localhost
   database: nero_development
-  user: nero
-  password: nero
+  user: marten
+  password:
 
 test:
   adapter: postgres
-  host: postgres
+  host: localhost
   database: nero_test
-  user: nero
-  password: nero
+  user: marten
+  password:
 
 staging:
   adapter: postgres
-  host: postgres
+  host: localhost
   database: nero_staging
-  user: nero
-  password: nero
+  user: marten
+  password:
 
 production:
   adapter: postgres
-  host: postgres
+  host: localhost
   database: nero_production
-  user: nero
-  password: nero
+  user: marten
+  password:
