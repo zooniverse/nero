@@ -13,6 +13,7 @@ module Nero
           faraday.request :panoptes_api_v1
           faraday.request :json
           faraday.response :json
+          faraday.response :raise_error
           faraday.adapter Faraday.default_adapter
         end
       end
