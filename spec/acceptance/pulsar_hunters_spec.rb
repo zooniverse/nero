@@ -17,7 +17,6 @@ describe 'Pulsar Hunters' do
   describe 'approvals' do
     after do
       verify do
-        require 'pry'; binding.pry
         DB[:estimates].all.sort_by { |row| row[:subject_id] }
                           .map { |row| [row[:subject_id], JSON.load(row[:data])] }
       end
