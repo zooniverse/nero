@@ -5,11 +5,11 @@ describe Nero::Output::PanoptesApi do
 
   before do
     stub_request(:post, "http://example.org/oauth/token")
-      .with(:body => {"client_id"=>"key", "client_secret"=>"secret", "grant_type"=>"client_credentials"},
-            :headers => {'Accept'=>'*/*', 'Accept-Encoding'=>'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type'=>'application/x-www-form-urlencoded', 'User-Agent'=>'Faraday v0.9.2'})
-      .to_return(:status => 200,
-                 :body => '{"access_token":"token", "token_type":"bearer", "expires_in":7200, "scope":"public user project group collection classification subject medium", "created_at":1449498104}',
-                 :headers => {'Content-Type' => 'application/json; charset=utf-8'})
+      .with(body: {"client_id" => "key", "client_secret" => "secret", "grant_type" => "client_credentials"},
+            headers: {'Accept' => '*/*', 'Accept-Encoding' => 'gzip;q=1.0,deflate;q=0.6,identity;q=0.3', 'Content-Type' => 'application/x-www-form-urlencoded', 'User-Agent' => 'Faraday v0.9.2'})
+      .to_return(status: 200,
+                 body: '{"access_token":"token", "token_type":"bearer", "expires_in":7200, "scope":"public user project group collection classification subject medium", "created_at":1449498104}',
+                 headers: {'Content-Type' => 'application/json; charset=utf-8'})
   end
 
   describe '#retire' do
@@ -23,7 +23,7 @@ describe Nero::Output::PanoptesApi do
     end
 
     it 'raises an error if panoptes responds with something other than HTTP 200 status' do
-      request = stub_request(:post, "http://example.org/api/workflows/1/retired_subjects")
+      stub_request(:post, "http://example.org/api/workflows/1/retired_subjects")
         .to_return(status: 500, body: '')
       expect { api.retire(estimate) }.to raise_error(Faraday::ClientError)
     end
