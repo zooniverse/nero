@@ -7,9 +7,7 @@ gem 'sequel'
 gem 'pg'
 gem 'newrelic_rpm'
 gem 'honeybadger', '~> 2.0'
-gem 'faraday'
-gem 'faraday_middleware'
-gem 'faraday-panoptes'
+gem 'panoptes-client'
 
 group :development do
   gem 'rerun'

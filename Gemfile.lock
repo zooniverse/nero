@@ -15,7 +15,7 @@ GEM
     diff-lcs (1.2.5)
     faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
-    faraday-panoptes (0.1.0)
+    faraday-panoptes (0.2.0)
       faraday (~> 0.9)
       faraday_middleware (~> 0.10)
     faraday_middleware (0.10.0)
@@ -40,6 +40,9 @@ GEM
     newrelic_rpm (3.13.0.299)
     nokogiri (1.6.6.2)
       mini_portile (~> 0.6.0)
+    panoptes-client (0.2.0)
+      faraday
+      faraday-panoptes (~> 0.2.0)
     pg (0.18.2)
     poseidon (0.0.5)
     poseidon_cluster (0.3.2)
@@ -89,12 +92,10 @@ PLATFORMS
 DEPENDENCIES
   approvals
   awesome_print
-  faraday
-  faraday-panoptes
-  faraday_middleware
   honeybadger (~> 2.0)
   mongo (~> 2.0)
   newrelic_rpm
+  panoptes-client
   pg
   poseidon
   poseidon_cluster
