@@ -25,7 +25,7 @@ describe Nero::Output::PanoptesApi do
     it 'raises an error if panoptes responds with something other than HTTP 200 status' do
       stub_request(:post, "http://example.org/api/workflows/1/retired_subjects")
         .to_return(status: 500, body: '')
-      expect { api.retire(estimate) }.to raise_error(Faraday::ClientError)
+      expect { api.retire(estimate) }.to raise_error(Panoptes::Client::ServerError)
     end
   end
 end
