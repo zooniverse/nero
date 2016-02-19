@@ -9,7 +9,7 @@ describe 'Golden masters' do
     verify do
       DB[:estimates].all.flat_map { |row| (row[:data]["guesses"] || []).map { |guess| guess.merge(row) } }
                         .sort_by { |row| row["timestamp"] }
-                        .map { |row| [[row[:subject_id], row["user_id"], row["answer"], row["probability"].round(20)]] }
+                        .map { |row| [[row[:subject_id], row["user_id"], row["answer"], row["probability"].round(10)]] }
     end
   end
 
