@@ -3,7 +3,8 @@ require 'logger'
 require 'newrelic_rpm'
 require 'honeybadger'
 require 'sequel'
-require 'poseidon'
+require 'telekinesis'
+require 'dotenv'
 
 module Nero
   class NullLogger
@@ -56,18 +57,19 @@ module Nero
 
   def self.logger=(logger)
     @logger = logger
-    Poseidon.logger = Nero.logger
     logger
   end
 end
 
 Nero.logger
-DB = Sequel.connect(Nero.load_config('database.yml', ENV["RAILS_ENV"]))
+Dotenv.load
 NewRelic::Agent.manual_start
 Honeybadger.start(:'config.path' => Nero.config_path("honeybadger.yml"))
 
+DB = Sequel.connect(Nero.load_config('database.yml', ENV.fetch("RAILS_ENV")))
+DB.extension :pg_json
+
 require_relative 'nero/input/io_reader'
-require_relative 'nero/input/kafka_reader'
 require_relative 'nero/storage'
 require_relative 'nero/output/io_writer'
 require_relative 'nero/output/panoptes_api'
@@ -89,12 +91,27 @@ module Nero
 
     processor = Nero::Processor.new(storage, output, load_config('projects.yml', environment))
 
-    kafka_config = load_config('kafka.yml', environment)
-    input = Nero::Input::KafkaReader.new(processor:  processor,
-                                         zookeepers: kafka_config.fetch('zookeepers'),
-                                         group_name: kafka_config.fetch('consumer_group'),
-                                         brokers:    kafka_config.fetch('brokers'),
-                                         topic:      kafka_config.fetch('topic'))
+    input = Telekinesis::Consumer::KCL.new(stream: ENV.fetch("AWS_KINESIS_STREAM", "panoptes-production"),
+                                           app:    ENV.fetch("AWS_KINESIS_APPNAME", "marten")) do
+      Telekinesis::Consumer::Block.new do |records, checkpointer, millis_behind|
+        records.each do |record|
+          begin
+            json = String.from_java_bytes(record.data.array)
+            hash = JSON.parse(json)
+            puts ">>> #{hash.inspect}"
+
+            case hash.fetch("type")
+            when "classification"
+              processor.process(hash)
+            end
+          rescue StandardError => ex
+            puts "*" * 100
+            puts ex.message
+            puts ex.backtrace
+          end
+        end
+      end
+    end
 
     input
   rescue StandardError => exception

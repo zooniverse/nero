@@ -15,7 +15,7 @@ describe Nero::Processor do
 
   let(:data) do
     {
-      "classifications" => [{
+      "data" => {
         "id" => "classification-1",
         "links" => {
           "project" => "project-1",
@@ -23,7 +23,7 @@ describe Nero::Processor do
           "user" => "user-1",
           "subjects" => ["subject-1"]
         }
-      }],
+      },
       "linked" => {
         "subjects" => [{
           "id" => "subject-1",

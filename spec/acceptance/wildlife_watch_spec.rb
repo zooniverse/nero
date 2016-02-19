@@ -8,7 +8,7 @@ describe 'Wildlife Watch' do
   after do
     verify do
       DB[:estimates].all.sort_by { |row| row[:subject_id] }
-                        .map { |row| [row[:subject_id], JSON.load(row[:data])] }
+                        .map { |row| [row[:subject_id], row[:data]] }
     end
   end
 

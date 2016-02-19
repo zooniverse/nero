@@ -20,7 +20,7 @@ module Nero
       record = db[:agents].where(external_id: user_id).order(:id).first
 
       if record
-        Agent.new(id: record[:id], external_id: record[:external_id], data: JSON.load(record[:data]))
+        Agent.new(id: record[:id], external_id: record[:external_id], data: record[:data])
       else
         Agent.new(id: nil, external_id: user_id)
       end
@@ -28,7 +28,7 @@ module Nero
 
     def record_agent(agent)
       record = agent.attributes.dup
-      record[:data] = JSON.dump(record[:data])
+      record[:data] = Sequel.pg_jsonb(record[:data])
 
       if agent.id
         db[:agents].where(id: agent.id).update(record.merge(updated_at: Time.now))
@@ -41,7 +41,7 @@ module Nero
       record = db[:estimates].where(subject_id: subject_id, workflow_id: workflow_id).order(:id).last
 
       if record
-        Estimate.new(id: record[:id], subject_id: subject_id, workflow_id: workflow_id, data: JSON.load(record[:data]))
+        Estimate.new(id: record[:id], subject_id: subject_id, workflow_id: workflow_id, data: record[:data])
       else
         Estimate.new(id: nil, subject_id: subject_id, workflow_id: workflow_id)
       end
@@ -49,7 +49,7 @@ module Nero
 
     def record_estimate(estimate)
       record = estimate.attributes.dup
-      record[:data] = JSON.dump(record[:data])
+      record[:data] = Sequel.pg_jsonb(record[:data])
 
       if estimate.id
         db[:estimates].where(id: estimate.id).update(record.merge(updated_at: Time.now))
