@@ -105,7 +105,7 @@ module Nero
               processor.process(hash)
             end
           rescue StandardError => ex
-            Honeybadger.notify(exception)
+            Honeybadger.notify(ex)
           end
         end
 
