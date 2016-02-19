@@ -105,9 +105,7 @@ module Nero
               processor.process(hash)
             end
           rescue StandardError => ex
-            puts "*" * 100
-            puts ex.message
-            puts ex.backtrace
+            Honeybadger.notify(exception)
           end
         end
 
