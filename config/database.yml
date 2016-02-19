@@ -1,27 +1,15 @@
 development:
-  adapter: postgres
-  host: localhost
-  database: nero_development
-  user: marten
-  password:
+  adapter: jdbc
+  uri: jdbc:postgresql://postgres/nero_development?user=nero&password=nero
 
 test:
-  adapter: postgres
-  host: localhost
-  database: nero_test
-  user: marten
-  password:
+  adapter: jdbc
+  uri: jdbc:postgresql://postgres/nero_test?user=nero&password=nero
 
 staging:
-  adapter: postgres
-  host: localhost
-  database: nero_staging
-  user: marten
-  password:
+  adapter: jdbc
+  uri: jdbc:postgresql://postgres/nero_staging?user=nero&password=nero
 
 production:
-  adapter: postgres
-  host: localhost
-  database: nero_production
-  user: marten
-  password:
+  adapter: jdbc
+  uri: jdbc:postgresql://postgres/nero_production?user=nero&password=nero

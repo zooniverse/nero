@@ -1,5 +1,3 @@
 test:
-  adapter: postgres
-  host: localhost
-  database: nero_test
-  user: postgres
+  adapter: jdbc
+  uri: jdbc:postgresql://localhost/nero_test?user=postgres

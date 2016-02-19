@@ -1,4 +1,4 @@
-FROM zooniverse/ruby:2.2.1
+FROM zooniverse/ruby:jruby-9.0.5.0
 
 WORKDIR /app
 

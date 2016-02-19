@@ -2,6 +2,7 @@ ENV["RAILS_ENV"] ||= "test"
 Dir[File.expand_path("../support/**/*.rb", __FILE__)].each { |f| require f }
 require 'approvals/rspec'
 require 'webmock/rspec'
+require 'pry'
 
 require 'nero'
 Nero.logger = Nero::NullLogger.new

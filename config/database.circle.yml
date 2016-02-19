@@ -1,5 +1,3 @@
 test:
-  adapter: postgres
-  host: localhost
-  database: circle_test
-  user: ubuntu
+  adapter: jdbc
+  uri: jdbc:postgresql://localhost/circle_test?user=ubuntu

@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Nero::Storage do
-  let(:db) { Sequel.sqlite }
+  let(:db) { DB }
   let(:storage) { described_class.new(db) }
 
   before do
