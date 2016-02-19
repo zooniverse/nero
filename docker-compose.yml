@@ -9,12 +9,9 @@ postgres:
 nero:
   dockerfile: Dockerfile
   build: ./
-  environment:
-    RAILS_ENV: development
   env_file:
     - .env
   volumes:
     - ./:/app
-    - ./log/:/var/log/nero
   links:
     - postgres
