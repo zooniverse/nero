@@ -91,8 +91,8 @@ module Nero
 
     processor = Nero::Processor.new(storage, output, load_config('projects.yml', environment))
 
-    input = Telekinesis::Consumer::KCL.new(stream: ENV.fetch("AWS_KINESIS_STREAM", "panoptes-production"),
-                                           app:    ENV.fetch("AWS_KINESIS_APPNAME", "marten")) do
+    input = Telekinesis::Consumer::KCL.new(stream: ENV.fetch("AWS_KINESIS_STREAM", "panoptes-staging"),
+                                           app:    ENV.fetch("AWS_KINESIS_APPNAME", "nero-development")) do
       Telekinesis::Consumer::Block.new do |records, checkpointer, millis_behind|
         records.each do |record|
           begin
