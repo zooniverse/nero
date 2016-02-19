@@ -110,6 +110,8 @@ module Nero
             puts ex.backtrace
           end
         end
+
+        checkpointer.checkpoint
       end
     end
 
