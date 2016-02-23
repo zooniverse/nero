@@ -100,9 +100,10 @@ module Nero
             hash = JSON.parse(json)
             puts ">>> #{hash.inspect}"
 
-            case hash.fetch("type")
-            when "classification"
+            if hash.fetch("source") == "panoptes" && hash.fetch("type") == "classification"
               processor.process(hash)
+            elsif hash.fetch("source") == "talk" && hash.fetch("type") == "comment"
+              # reserved for future processing (e.g. MICO)
             end
           rescue StandardError => ex
             Honeybadger.notify(ex)
