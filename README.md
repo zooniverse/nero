@@ -23,5 +23,5 @@ $ docker exec -it nero_postgres_1 createdb --username=nero nero_test
 Then try running the test suite:
 
 ```
-bin/rspec
+docker exec -it nero_nero_1 bin/rspec
 ```
