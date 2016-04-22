@@ -1,14 +1,14 @@
 require 'spec_helper'
 
 describe Nero::Processor do
-  let(:storage) { double("Storage", find_user_state: nil, find_estimate: nil) }
+  let(:storage) { double("Storage", find_user_state: nil, find_subject_state: nil) }
   let(:output) { double("Output") }
   let(:config) { {} }
 
   let(:processed_classifications) { [] }
 
   before do
-    allow_any_instance_of(Nero::Processor::NullAlgorithm).to receive(:process) do |obj, classification, user_state, estimate|
+    allow_any_instance_of(Nero::Processor::NullAlgorithm).to receive(:process) do |obj, classification, user_state, subject_state|
       processed_classifications << classification
     end
   end

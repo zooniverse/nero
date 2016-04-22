@@ -1,5 +1,5 @@
 module Nero
-  class Estimate
+  class SubjectState
     attr_reader :id, :subject_id, :workflow_id, :data
 
     def initialize(id:, subject_id:, workflow_id:, data: {})

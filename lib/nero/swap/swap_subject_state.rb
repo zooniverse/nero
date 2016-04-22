@@ -3,7 +3,7 @@ require 'set'
 
 module Nero
   module Swap
-    class SwapEstimate < SimpleDelegator
+    class SwapSubjectState < SimpleDelegator
       INITIAL_PRIOR = 2e-4
       REJECTION_THRESHOLD = 1e-07
       DETECTION_THRESHOLD = 0.95

@@ -27,28 +27,28 @@ describe Nero::Storage do
     end
   end
 
-  context 'estimates' do
-    it 'returns a default estimate for unknown subject/workflows' do
-      estimate = storage.find_estimate('1', '2')
-      expect(estimate.id).to be_nil
-      expect(estimate.subject_id).to eq('1')
-      expect(estimate.workflow_id).to eq('2')
+  context 'subject_states' do
+    it 'returns a default subject_state for unknown subject/workflows' do
+      subject_state = storage.find_subject_state('1', '2')
+      expect(subject_state.id).to be_nil
+      expect(subject_state.subject_id).to eq('1')
+      expect(subject_state.workflow_id).to eq('2')
     end
 
-    it 'finds the latest estimate' do
+    it 'finds the latest subject_state' do
       db[:estimates].insert(subject_id: '1', workflow_id: '2', data: JSON.dump({a: 1}))
-      estimate = storage.find_estimate('1', '2')
-      expect(estimate.data).to eq({'a' => 1})
+      subject_state = storage.find_subject_state('1', '2')
+      expect(subject_state.data).to eq({'a' => 1})
     end
 
-    it 'stores estimates' do
+    it 'stores subject_states' do
       db[:estimates].insert(subject_id: '1', workflow_id: '2')
-      estimate = storage.find_estimate('1', '2')
-      estimate.data["foo"] = "bar"
-      storage.record_estimate(estimate)
+      subject_state = storage.find_subject_state('1', '2')
+      subject_state.data["foo"] = "bar"
+      storage.record_subject_state(subject_state)
 
-      retrieved_estimate = storage.find_estimate('1', '2')
-      expect(retrieved_estimate.data["foo"]).to eq("bar")
+      retrieved_subject_state = storage.find_subject_state('1', '2')
+      expect(retrieved_subject_state.data["foo"]).to eq("bar")
     end
   end
 end

@@ -37,22 +37,22 @@ module Nero
       end
     end
 
-    def find_estimate(subject_id, workflow_id)
+    def find_subject_state(subject_id, workflow_id)
       record = db[:estimates].where(subject_id: subject_id, workflow_id: workflow_id).order(:id).last
 
       if record
-        Estimate.new(id: record[:id], subject_id: subject_id, workflow_id: workflow_id, data: record[:data])
+        SubjectState.new(id: record[:id], subject_id: subject_id, workflow_id: workflow_id, data: record[:data])
       else
-        Estimate.new(id: nil, subject_id: subject_id, workflow_id: workflow_id)
+        SubjectState.new(id: nil, subject_id: subject_id, workflow_id: workflow_id)
       end
     end
 
-    def record_estimate(estimate)
-      record = estimate.attributes.dup
+    def record_subject_state(subject_state)
+      record = subject_state.attributes.dup
       record[:data] = Sequel.pg_jsonb(record[:data])
 
-      if estimate.id
-        db[:estimates].where(id: estimate.id).update(record.merge(updated_at: Time.now))
+      if subject_state.id
+        db[:estimates].where(id: subject_state.id).update(record.merge(updated_at: Time.now))
       else
         db[:estimates].insert(record.merge(created_at: Time.now, updated_at: Time.now))
       end

@@ -3,7 +3,7 @@ require 'set'
 
 module Nero
   module WildlifeWatch
-    class WildlifeWatchEstimate < SimpleDelegator
+    class WildlifeWatchSubjectState < SimpleDelegator
       def add_vote(vote)
         data["votes"] ||= []
         data["votes"] << vote
