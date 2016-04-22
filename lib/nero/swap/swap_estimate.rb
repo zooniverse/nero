@@ -8,9 +8,9 @@ module Nero
       REJECTION_THRESHOLD = 1e-07
       DETECTION_THRESHOLD = 0.95
 
-      def adjust(agent, guess)
-        pl = agent.pl
-        pd = agent.pd
+      def adjust(user_state, guess)
+        pl = user_state.pl
+        pd = user_state.pd
 
         if guess=="LENS"
           likelihood = pl
@@ -20,7 +20,7 @@ module Nero
           likelihood /= ((1-pl)*probability + pd*(1-probability))
         end
 
-        guesses << {"timestamp" => DateTime.now.strftime("%Q"), "user_id" => agent.external_id, "answer" => guess, "probability" => likelihood * probability}
+        guesses << {"timestamp" => DateTime.now.strftime("%Q"), "user_id" => user_state.external_id, "answer" => guess, "probability" => likelihood * probability}
         self
       end
 
@@ -53,7 +53,7 @@ module Nero
 
       def seen_by?(user_ids)
         user_ids = Set.new(user_ids)
-        
+
         guesses.any? do |guess|
           user_ids.include?(guess["user_id"])
         end

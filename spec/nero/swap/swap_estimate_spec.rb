@@ -5,17 +5,17 @@ module Nero
     describe SwapEstimate do
       describe '#adjust' do
         let(:estimate) { described_class.new(double(data: {})) }
-        let(:agent) { double(external_id: nil, pl: 0.6, pd: 0.6) }
+        let(:user_state) { double(external_id: nil, pl: 0.6, pd: 0.6) }
 
-        it 'increases in probability when guessing a LENS with an agent that is more than average' do
+        it 'increases in probability when guessing a LENS with a user that is more than average' do
           previous_probability = estimate.probability
-          estimate.adjust(agent, "LENS")
+          estimate.adjust(user_state, "LENS")
           expect(estimate.probability).to be > previous_probability
         end
 
         it 'decreases in probability when guessing a NOT' do
           previous_probability = estimate.probability
-          estimate.adjust(agent, "NOT")
+          estimate.adjust(user_state, "NOT")
           expect(estimate.probability).to be < previous_probability
         end
       end

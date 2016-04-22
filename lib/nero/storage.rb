@@ -16,22 +16,22 @@ module Nero
       self.class.migrate(db)
     end
 
-    def find_agent(user_id)
+    def find_user_state(user_id)
       record = db[:agents].where(external_id: user_id).order(:id).first
 
       if record
-        Agent.new(id: record[:id], external_id: record[:external_id], data: record[:data])
+        UserState.new(id: record[:id], external_id: record[:external_id], data: record[:data])
       else
-        Agent.new(id: nil, external_id: user_id)
+        UserState.new(id: nil, external_id: user_id)
       end
     end
 
-    def record_agent(agent)
-      record = agent.attributes.dup
+    def record_user_state(user_state)
+      record = user_state.attributes.dup
       record[:data] = Sequel.pg_jsonb(record[:data])
 
-      if agent.id
-        db[:agents].where(id: agent.id).update(record.merge(updated_at: Time.now))
+      if user_state.id
+        db[:agents].where(id: user_state.id).update(record.merge(updated_at: Time.now))
       else
         db[:agents].insert(record.merge(created_at: Time.now, updated_at: Time.now))
       end

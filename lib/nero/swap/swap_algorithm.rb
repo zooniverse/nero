@@ -1,5 +1,5 @@
 require 'ostruct'
-require_relative 'swap_agent'
+require_relative 'swap_user_state'
 require_relative 'swap_subject'
 require_relative 'swap_classification'
 require_relative 'swap_estimate'
@@ -7,11 +7,11 @@ require_relative 'swap_estimate'
 module Nero
   module Swap
     class SwapAlgorithm < Nero::Algorithm
-      def process(classification, agent, estimate)
+      def process(classification, user_state, estimate)
         return unless classification.user_id
 
         classification = SwapClassification.new(classification)
-        agent = SwapAgent.new(agent)
+        user_state = SwapUserState.new(user_state)
         estimate = SwapEstimate.new(estimate)
 
         classification.subjects.map do |subject|
@@ -20,13 +20,13 @@ module Nero
           end
 
           if subject.test? || estimate.active?
-            estimate.adjust(agent, classification.guess)
-            agent.update_confusion_unsupervised(classification.guess, estimate.probability)
-            @storage.record_agent(agent)
+            estimate.adjust(user_state, classification.guess)
+            user_state.update_confusion_unsupervised(classification.guess, estimate.probability)
+            @storage.record_user_state(user_state)
             @storage.record_estimate(estimate)
           else # training subject or retired already
-            agent.update_confusion_unsupervised(classification.guess, estimate.probability)
-            @storage.record_agent(agent)
+            user_state.update_confusion_unsupervised(classification.guess, estimate.probability)
+            @storage.record_user_state(user_state)
           end
 
           if estimate.retired? && subject.test?
@@ -44,11 +44,11 @@ module Nero
 
       def workflow
         data_column = Sequel.pg_json_op(:data)
-        skilled_agents = agents.where(data_column.get_text('skill').cast(Float) > 0.8).map { |i| i[:external_id] }
+        skilled_agents = user_states.where(data_column.get_text('skill').cast(Float) > 0.8).map { |i| i[:external_id] }
         OpenStruct.new(skilled_agents: skilled_agents)
       end
 
-      def agents
+      def user_states
         @storage.db[:agents]
       end
     end

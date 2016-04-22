@@ -4,7 +4,7 @@ require_relative 'pulsar_hunters_estimate'
 module Nero
   module PulsarHunters
     class PulsarHuntersAlgorithm < Nero::Algorithm
-      def process(classification, agent, estimate)
+      def process(classification, user_state, estimate)
         return unless classification.subject_ids.size == 1
 
         classification = Nero::PulsarHunters::PulsarHuntersClassification.new(classification)

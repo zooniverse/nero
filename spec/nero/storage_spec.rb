@@ -8,22 +8,22 @@ describe Nero::Storage do
     described_class.migrate(db)
   end
 
-  context 'agents' do
-    it 'returns a new agent for an unknown user id' do
-      agent = storage.find_agent('123')
-      expect(agent.id).to be_nil
-      expect(agent.external_id).to eq('123')
+  context 'user_states' do
+    it 'returns a new user_state for an unknown user id' do
+      user_state = storage.find_user_state('123')
+      expect(user_state.id).to be_nil
+      expect(user_state.external_id).to eq('123')
     end
 
-    it 'stores and retrieves agents' do
-      agent = storage.find_agent('123')
-      agent.data["foo"] = "bar"
-      storage.record_agent(agent)
-      retrieved_agent = storage.find_agent('123')
+    it 'stores and retrieves user_states' do
+      user_state = storage.find_user_state('123')
+      user_state.data["foo"] = "bar"
+      storage.record_user_state(user_state)
+      retrieved_user_state = storage.find_user_state('123')
 
-      expect(retrieved_agent.id).not_to be_nil
-      expect(retrieved_agent.external_id).to eq('123')
-      expect(retrieved_agent.data["foo"]).to eq("bar")
+      expect(retrieved_user_state.id).not_to be_nil
+      expect(retrieved_user_state.external_id).to eq('123')
+      expect(retrieved_user_state.data["foo"]).to eq("bar")
     end
   end
 

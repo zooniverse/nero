@@ -4,7 +4,7 @@ require_relative 'wildlife_watch_estimate'
 module Nero
   module WildlifeWatch
     class WildlifeWatchAlgorithm < Nero::Algorithm
-      def process(classification, agent, estimate)
+      def process(classification, user_state, estimate)
         return unless classification.user_id
         return unless classification.subject_ids.size == 1
 
