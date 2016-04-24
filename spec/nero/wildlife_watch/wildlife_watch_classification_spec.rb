@@ -7,7 +7,7 @@ describe Nero::WildlifeWatch::WildlifeWatchClassification do
   let(:i_see_human)   { [{"task" => "T1", "value" => [{"choice" => "HMN", "answers" => {"HWMN" => "1", "NGPRSNT" => "N"}, "filters" => {}}]}] }
 
   def make_classification(annotations)
-    base = Nero::Classification.new("annotations" => annotations)
+    base = Nero::Classification.new("annotations" => annotations, "links" => {"workflow" => "1021"})
     described_class.new(base)
   end
 

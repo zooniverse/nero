@@ -25,3 +25,18 @@ Then try running the test suite:
 ```
 docker exec -it nero_nero_1 bin/rspec
 ```
+
+### Adding more algorithms
+
+First gather a bunch of data from the live stream of events:
+
+```bash
+$ gem install kinesis-tools
+$ AWS_REGION=us-east-1 kinesis-tail zooniverse-production > tail.json
+$ cat tail.json | jq -c 'select(.source == "panoptes")' |
+                  jq -c 'select(.data.links.workflow == "1590")' |
+                  bin/anonymize_raw_classifications > spec/fixtures/my_algorithm.json
+```
+
+**Make sure you use the anonymizer!** This removes user_ids, user_group_ids and user_ips.
+
