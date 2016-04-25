@@ -1,6 +1,6 @@
 module Nero
   module Swap
-    class SwapAgent < SimpleDelegator
+    class SwapUserState < SimpleDelegator
       INITIAL_PL = 0.5
       INITIAL_PD = 0.5
 

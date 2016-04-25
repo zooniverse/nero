@@ -13,19 +13,19 @@ describe Nero::Output::PanoptesApi do
   end
 
   describe '#retire' do
-    let(:estimate) { double(workflow_id: 1, subject_id: 1) }
+    let(:subject_state) { double(workflow_id: 1, subject_id: 1) }
 
     it 'retires subjects' do
       request = stub_request(:post, "http://example.org/api/workflows/1/retired_subjects")
         .to_return(status: 200, body: '')
-      api.retire(estimate)
+      api.retire(subject_state)
       expect(request).to have_been_requested
     end
 
     it 'raises an error if panoptes responds with something other than HTTP 200 status' do
       stub_request(:post, "http://example.org/api/workflows/1/retired_subjects")
         .to_return(status: 500, body: '')
-      expect { api.retire(estimate) }.to raise_error(Panoptes::Client::ServerError)
+      expect { api.retire(subject_state) }.to raise_error(Panoptes::Client::ServerError)
     end
   end
 end

@@ -16,43 +16,43 @@ module Nero
       self.class.migrate(db)
     end
 
-    def find_agent(user_id)
+    def find_user_state(user_id)
       record = db[:agents].where(external_id: user_id).order(:id).first
 
       if record
-        Agent.new(id: record[:id], external_id: record[:external_id], data: record[:data])
+        UserState.new(id: record[:id], external_id: record[:external_id], data: record[:data])
       else
-        Agent.new(id: nil, external_id: user_id)
+        UserState.new(id: nil, external_id: user_id)
       end
     end
 
-    def record_agent(agent)
-      record = agent.attributes.dup
+    def record_user_state(user_state)
+      record = user_state.attributes.dup
       record[:data] = Sequel.pg_jsonb(record[:data])
 
-      if agent.id
-        db[:agents].where(id: agent.id).update(record.merge(updated_at: Time.now))
+      if user_state.id
+        db[:agents].where(id: user_state.id).update(record.merge(updated_at: Time.now))
       else
         db[:agents].insert(record.merge(created_at: Time.now, updated_at: Time.now))
       end
     end
 
-    def find_estimate(subject_id, workflow_id)
+    def find_subject_state(subject_id, workflow_id)
       record = db[:estimates].where(subject_id: subject_id, workflow_id: workflow_id).order(:id).last
 
       if record
-        Estimate.new(id: record[:id], subject_id: subject_id, workflow_id: workflow_id, data: record[:data])
+        SubjectState.new(id: record[:id], subject_id: subject_id, workflow_id: workflow_id, data: record[:data])
       else
-        Estimate.new(id: nil, subject_id: subject_id, workflow_id: workflow_id)
+        SubjectState.new(id: nil, subject_id: subject_id, workflow_id: workflow_id)
       end
     end
 
-    def record_estimate(estimate)
-      record = estimate.attributes.dup
+    def record_subject_state(subject_state)
+      record = subject_state.attributes.dup
       record[:data] = Sequel.pg_jsonb(record[:data])
 
-      if estimate.id
-        db[:estimates].where(id: estimate.id).update(record.merge(updated_at: Time.now))
+      if subject_state.id
+        db[:estimates].where(id: subject_state.id).update(record.merge(updated_at: Time.now))
       else
         db[:estimates].insert(record.merge(created_at: Time.now, updated_at: Time.now))
       end

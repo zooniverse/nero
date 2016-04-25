@@ -1,8 +1,5 @@
 module Nero
-  class Agent
-    INITIAL_PL = 0.5
-    INITIAL_PD = 0.5
-
+  class UserState
     attr_reader :id, :external_id, :data
 
     def initialize(id:, external_id:, data: {})

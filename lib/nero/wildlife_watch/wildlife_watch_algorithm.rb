@@ -1,20 +1,20 @@
 require_relative 'wildlife_watch_classification'
-require_relative 'wildlife_watch_estimate'
+require_relative 'wildlife_watch_subject_state'
 
 module Nero
   module WildlifeWatch
     class WildlifeWatchAlgorithm < Nero::Algorithm
-      def process(classification, agent, estimate)
+      def process(classification, user_state, subject_state)
         return unless classification.user_id
         return unless classification.subject_ids.size == 1
 
         classification = Nero::WildlifeWatch::WildlifeWatchClassification.new(classification)
-        estimate = Nero::WildlifeWatch::WildlifeWatchEstimate.new(estimate)
-        estimate.add_vote(classification.vote)
-        @storage.record_estimate(estimate)
+        subject_state = Nero::WildlifeWatch::WildlifeWatchSubjectState.new(subject_state)
+        subject_state.add_vote(classification.vote)
+        @storage.record_subject_state(subject_state)
 
-        if estimate.retired?
-          @panoptes.retire(estimate)
+        if subject_state.retired?
+          @panoptes.retire(subject_state)
         end
       end
     end

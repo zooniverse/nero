@@ -3,7 +3,7 @@ require 'set'
 
 module Nero
   module PulsarHunters
-    class PulsarHuntersEstimate < SimpleDelegator
+    class PulsarHuntersSubjectState < SimpleDelegator
       def add(classification_id)
         data["classification_ids"] ||= []
         data["classification_ids"] << classification_id
