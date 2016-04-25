@@ -1,0 +1,2 @@
+[0] ["1979399", {"votes"=>[{"value"=>"something", "classification_id"=>"11650620"}]}]
+[1] ["1979463", {"votes"=>[{"value"=>"blank", "classification_id"=>"11650393"}]}]
