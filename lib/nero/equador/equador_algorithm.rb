@@ -4,7 +4,7 @@ require_relative 'equador_subject_state'
 module Nero
   module Equador
     class EquadorAlgorithm < Nero::Algorithm
-      def process(classification, _user_state, subject_state)
+      def process(classification, user_state, subject_state)
         super(classification, user_state, subject_state)
         return unless classification.user_id
         return unless classification.subject_ids.size == 1
