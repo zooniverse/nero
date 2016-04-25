@@ -5,6 +5,7 @@ module Nero
   module PulsarHunters
     class PulsarHuntersAlgorithm < Nero::Algorithm
       def process(classification, user_state, subject_state)
+        super(classification, user_state, subject_state)
         return unless classification.subject_ids.size == 1
 
         classification = Nero::PulsarHunters::PulsarHuntersClassification.new(classification)

@@ -5,6 +5,7 @@ module Nero
   module WildlifeWatch
     class WildlifeWatchAlgorithm < Nero::Algorithm
       def process(classification, user_state, subject_state)
+        super(classification, user_state, subject_state)
         return unless classification.user_id
         return unless classification.subject_ids.size == 1
 

@@ -8,6 +8,7 @@ module Nero
   module Swap
     class SwapAlgorithm < Nero::Algorithm
       def process(classification, user_state, subject_state)
+        super(classification, user_state, subject_state)
         return unless classification.user_id
 
         classification = SwapClassification.new(classification)

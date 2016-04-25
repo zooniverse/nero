@@ -7,12 +7,6 @@ module Nero
   class Processor
     include ::NewRelic::Agent::Instrumentation::ControllerInstrumentation
 
-    class NullAlgorithm
-      def process(*args)
-        return []
-      end
-    end
-
     ALGORITHMS = {
       'wildlife_watch' => Nero::WildlifeWatch::WildlifeWatchAlgorithm,
       'swap' => Nero::Swap::SwapAlgorithm,
@@ -25,7 +19,7 @@ module Nero
     def initialize(storage, output, config)
       @storage = storage
       @output  = output
-      @workflows = config.each.with_object(Hash.new(NullAlgorithm.new)) do |(workflow_id, workflow_config), hash|
+      @workflows = config.each.with_object(Hash.new(Algorithm.new(@storage, @output))) do |(workflow_id, workflow_config), hash|
         hash[workflow_id.to_s] = ALGORITHMS.fetch(workflow_config.fetch('algorithm')).new(storage, output, workflow_config)
       end
     end
