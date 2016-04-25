@@ -8,7 +8,7 @@ describe Nero::Processor do
   let(:processed_classifications) { [] }
 
   before do
-    allow_any_instance_of(Nero::Processor::NullAlgorithm).to receive(:process) do |obj, classification, user_state, subject_state|
+    allow_any_instance_of(Nero::Algorithm).to receive(:process) do |_obj, classification, _user_state, _subject_state|
       processed_classifications << classification
     end
   end
@@ -40,14 +40,14 @@ describe Nero::Processor do
   end
 
   it 'notifies Honeybadger in case a workflow implementation crashes' do
-    always_crashes = Class.new do
+    always_crashes = Class.new(Nero::Algorithm) do
       def process(*args)
         raise 'Oops'
       end
     end
 
     stub_const("Honeybadger", double("Honey Badger").as_null_object)
-    stub_const("Nero::Processor::NullAlgorithm", always_crashes)
+    stub_const("Nero::Algorithm", always_crashes)
 
     processor = described_class.new(storage, output, config)
     processor.process(data)

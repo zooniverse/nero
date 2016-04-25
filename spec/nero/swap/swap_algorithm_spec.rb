@@ -6,7 +6,7 @@ describe Nero::Swap::SwapAlgorithm do
   let(:storage) { Nero::Storage.new(DB) }
   let(:panoptes) { spy("Panoptes") }
   let(:subj) { double("Subject", attributes: {"metadata" => {"training" => [{"type" => "lensing cluster"}]}}) }
-  let(:classification) { double("Classification", user_id: 1, subjects: [subj], hash: {"annotations" => []}) }
+  let(:classification) { double("Classification", user_id: 1, flagged?: false, subjects: [subj], hash: {"annotations" => []}) }
   let(:user_state) { double(id: 1, data: {"pl" => 0.9, "pd" => 0.9}, attributes: {}, external_id: '1') }
   let(:subject_state) { Nero::SubjectState.new(id: nil, subject_id: 1, workflow_id: 2, data: {}) } # active?: true, retired?: false, adjust: new_subject_state) }
 

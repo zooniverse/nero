@@ -7,6 +7,10 @@ module Nero
       @linked = linked
     end
 
+    def flagged?
+      hash.fetch("metadata", {}).fetch("subject_flagged", false)
+    end
+
     def id
       hash.fetch("id")
     end
