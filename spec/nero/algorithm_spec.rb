@@ -26,4 +26,10 @@ describe Nero::Algorithm do
     algorithm.process(classification, user_state, subject_state)
     expect(output).to have_received(:retire).with(subject_state).once
   end
+
+  it 'does not retire the subject if the flag was not set by a logged-in user' do
+    classification.hash['links']['user'] = nil
+    algorithm.process(classification, user_state, subject_state)
+    expect(output).to have_received(:retire).with(subject_state).exactly(0).times
+  end
 end

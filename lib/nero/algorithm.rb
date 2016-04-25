@@ -9,7 +9,7 @@ module Nero
     end
 
     def process(classification, _user_state, subject_state)
-      if classification.flagged?
+      if classification.user_id && classification.flagged?
         panoptes.retire(subject_state)
       end
     end
