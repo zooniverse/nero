@@ -6,7 +6,7 @@ describe Nero::Algorithm do
   let(:subject_state) { double("SubjectState") }
   let(:output) { double("Output", retire: nil) }
   let(:config) { {} }
-  let(:algorithm){ described_class.new(storage, output) }
+  let(:algorithm) { described_class.new(storage, output) }
 
   let(:classification) do
     Nero::Classification.new(
@@ -26,5 +26,4 @@ describe Nero::Algorithm do
     algorithm.process(classification, user_state, subject_state)
     expect(output).to have_received(:retire).with(subject_state).once
   end
-
 end
