@@ -20,12 +20,19 @@ module Nero
         @annotations ||= hash.fetch("annotations", {}).group_by { |ann| ann["task"] }
       end
 
-      def t1_task
-        annotations.fetch("T1", []).first || {}
+      def task
+        case workflow_id
+        when "1021"
+          annotations.fetch("T1", []).first || {}
+        when "1590"
+          annotations.fetch("T0").first || {}
+        else
+          raise "not tested against this workflow yet, check question key"
+        end
       end
 
       def choices
-        values = t1_task.fetch("value", [])
+        values = task.fetch("value", [])
         values.map { |val| val["choice"] }
       end
     end
