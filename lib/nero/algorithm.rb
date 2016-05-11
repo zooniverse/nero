@@ -10,7 +10,7 @@ module Nero
 
     def process(classification, _user_state, subject_state)
       if classification.user_id && classification.flagged?
-        panoptes.retire(subject_state)
+        panoptes.retire(subject_state, reason: 'flagged')
       end
     end
   end

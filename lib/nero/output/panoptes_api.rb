@@ -9,8 +9,8 @@ module Nero
         @client = Panoptes::Client.new(url: url, auth: {client_id: client_id, client_secret: client_secret})
       end
 
-      def retire(subject_state)
-        client.retire_subject(subject_state.workflow_id, subject_state.subject_id)
+      def retire(subject_state, reason: "other")
+        client.retire_subject(subject_state.workflow_id, subject_state.subject_id, reason: reason)
       end
     end
   end

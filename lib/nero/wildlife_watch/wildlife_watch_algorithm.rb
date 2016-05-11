@@ -14,8 +14,13 @@ module Nero
         subject_state.add_vote(classification.vote)
         @storage.record_subject_state(subject_state)
 
-        if subject_state.retired?
-          @panoptes.retire(subject_state)
+        case subject_state.retired?
+        when :human
+          @panoptes.retire(subject_state, reason: 'other')
+        when :three_blanks, :five_blanks
+          @panoptes.retire(subject_state, reason: 'blank')
+        when :consensus
+          @panoptes.retire(subject_state, reason: 'consensus')
         end
       end
     end
