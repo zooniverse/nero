@@ -22,7 +22,7 @@ module Nero
 
       def task
         case workflow_id
-        when "1021"
+        when "1021", "1717"
           annotations.fetch("T1", []).first || {}
         when "1590"
           annotations.fetch("T0").first || {}
