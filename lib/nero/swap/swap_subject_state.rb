@@ -20,7 +20,7 @@ module Nero
           likelihood /= ((1-pl)*probability + pd*(1-probability))
         end
 
-        guesses << {"timestamp" => DateTime.now.strftime("%Q"), "user_id" => user_state.external_id, "answer" => guess, "probability" => likelihood * probability}
+        guesses << {"timestamp" => DateTime.now.strftime("%Q"), "user_id" => user_state.user_id, "answer" => guess, "probability" => likelihood * probability}
         self
       end
 

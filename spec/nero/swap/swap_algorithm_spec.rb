@@ -7,7 +7,7 @@ describe Nero::Swap::SwapAlgorithm do
   let(:panoptes) { spy("Panoptes") }
   let(:subj) { double("Subject", attributes: {"metadata" => {"training" => [{"type" => "lensing cluster"}]}}) }
   let(:classification) { double("Classification", user_id: 1, flagged?: false, subjects: [subj], hash: {"annotations" => []}) }
-  let(:user_state) { double(id: 1, data: {"pl" => 0.9, "pd" => 0.9}, attributes: {}, external_id: '1') }
+  let(:user_state) { double(id: 1, data: {"pl" => 0.9, "pd" => 0.9}, attributes: {}, user_id: '1') }
   let(:subject_state) { Nero::SubjectState.new(id: nil, subject_id: 1, workflow_id: 2, data: {}) } # active?: true, retired?: false, adjust: new_subject_state) }
 
   subject(:strategy) { described_class.new(storage, panoptes) }
@@ -49,9 +49,9 @@ describe Nero::Swap::SwapAlgorithm do
 
       it 'enqueues the subject for known skilled users' do
         pending
-        DB[:agents].insert(external_id: 'unskilled', data: Sequel.pg_jsonb("skill" => 0.4))
-        DB[:agents].insert(external_id: 'skilled-1', data: Sequel.pg_jsonb("skill" => 0.94))
-        DB[:agents].insert(external_id: 'skilled-2', data: Sequel.pg_jsonb("skill" => 0.81))
+        DB[:user_states].insert(user_id: 'unskilled', data: Sequel.pg_jsonb("skill" => 0.4))
+        DB[:user_states].insert(user_id: 'skilled-1', data: Sequel.pg_jsonb("skill" => 0.94))
+        DB[:user_states].insert(user_id: 'skilled-2', data: Sequel.pg_jsonb("skill" => 0.81))
 
         strategy.process(classification, user_state, old_subject_state)
         expect(panoptes).to have_received(:enqueue).with(['skilled-1', 'skilled-2']).once

@@ -5,7 +5,7 @@ module Nero
     describe SwapSubjectState do
       describe '#adjust' do
         let(:subject_state) { described_class.new(double(data: {})) }
-        let(:user_state) { double(external_id: nil, pl: 0.6, pd: 0.6) }
+        let(:user_state) { double(user_id: nil, pl: 0.6, pd: 0.6) }
 
         it 'increases in probability when guessing a LENS with a user that is more than average' do
           previous_probability = subject_state.probability
