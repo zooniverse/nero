@@ -79,6 +79,7 @@ require_relative 'nero/classification'
 require_relative 'nero/subject'
 require_relative 'nero/algorithm'
 require_relative 'nero/processor'
+require_relative 'nero/web'
 
 module Nero
   def self.start(environment)
