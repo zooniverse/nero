@@ -1,4 +1,4 @@
-require_relative 'swap/swap_algorithm'
+require_relative 'spacewarps/spacewarps_algorithm'
 require_relative 'wildlife_watch/wildlife_watch_algorithm'
 require_relative 'equador/equador_algorithm'
 require_relative 'pulsar_hunters/pulsar_hunters_algorithm'
@@ -9,7 +9,7 @@ module Nero
 
     ALGORITHMS = {
       'wildlife_watch' => Nero::WildlifeWatch::WildlifeWatchAlgorithm,
-      'swap' => Nero::Swap::SwapAlgorithm,
+      'spacewarps' => Nero::Spacewarps::SpacewarpsAlgorithm,
       'pulsar_hunters' => Nero::PulsarHunters::PulsarHuntersAlgorithm,
       'equador' => Nero::Equador::EquadorAlgorithm
     }

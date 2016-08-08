@@ -1,6 +1,6 @@
 module Nero
-  module Swap
-    class SwapUserState < SimpleDelegator
+  module Spacewarps
+    class SpacewarpsUserState < SimpleDelegator
       INITIAL_PL = 0.5
       INITIAL_PD = 0.5
 

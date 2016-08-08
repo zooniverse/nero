@@ -1,9 +1,9 @@
 module Nero
-  module Swap
-    class SwapClassification < SimpleDelegator
+  module Spacewarps
+    class SpacewarpsClassification < SimpleDelegator
 
       def subjects
-        super.map { |subject| SwapSubject.new(subject) }
+        super.map { |subject| SpacewarpsSubject.new(subject) }
       end
 
       def guess
@@ -34,8 +34,13 @@ module Nero
         end
       end
 
+      def markers
+        hash["annotations"].select   { |ann| ann["task"] == "T1" }
+                           .flat_map { |ann| ann["value"] }
+      end
+
       def markers?
-        hash["annotations"].select{ |annotation| annotation.keys.include? "x" }.count > 0
+        markers.select { |value| value["tool"] == 0 }.size > 0
       end
 
       def sim_found?
