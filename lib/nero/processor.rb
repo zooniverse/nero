@@ -1,18 +1,20 @@
 require_relative 'swap/swap_algorithm'
-require_relative 'snapshot_wisconsin/snapshot_wisconsin_algorithm'
+require_relative 'chicago_wildlife_watch/chicago_wildlife_watch_algorithm'
 require_relative 'equador/equador_algorithm'
 require_relative 'pulsar_hunters/pulsar_hunters_algorithm'
+require_relative 'snapshot_wisconsin/snapshot_wisconsin_algorithm'
 
 module Nero
   class Processor
     include ::NewRelic::Agent::Instrumentation::ControllerInstrumentation
 
     ALGORITHMS = {
-      'wildlife_watch' => Nero::SnapshotWisconsin::SnapshotWisconsinAlgorithm, # DEPRECATED ALGORITHM KEY, REMOVE IF NO LONGER MENTIONED IN PROJECTS.YML
+      'chicago_wildlife_watch' => Nero::ChicagoWildlifeWatch::ChicagoWildlifeWatchAlgorithm,
+      'equador' => Nero::Equador::EquadorAlgorithm,
+      'pulsar_hunters' => Nero::PulsarHunters::PulsarHuntersAlgorithm,
       'snapshot_wisconsin' => Nero::SnapshotWisconsin::SnapshotWisconsinAlgorithm,
       'swap' => Nero::Swap::SwapAlgorithm,
-      'pulsar_hunters' => Nero::PulsarHunters::PulsarHuntersAlgorithm,
-      'equador' => Nero::Equador::EquadorAlgorithm
+      'wildlife_watch' => Nero::SnapshotWisconsin::SnapshotWisconsinAlgorithm, # DEPRECATED ALGORITHM KEY, REMOVE IF NO LONGER MENTIONED IN PROJECTS.YML
     }
 
     attr_reader :workflows
