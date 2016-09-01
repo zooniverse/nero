@@ -1,5 +1,5 @@
-require_relative 'wildlife_watch_classification'
-require_relative 'wildlife_watch_subject_state'
+require_relative 'snapshot_wisconsin_classification'
+require_relative 'snapshot_wisconsin_subject_state'
 
 module Nero
   module SnapshotWisconsin

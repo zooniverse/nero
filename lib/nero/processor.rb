@@ -1,5 +1,5 @@
 require_relative 'swap/swap_algorithm'
-require_relative 'wildlife_watch/wildlife_watch_algorithm'
+require_relative 'snapshot_wisconsin/snapshot_wisconsin_algorithm'
 require_relative 'equador/equador_algorithm'
 require_relative 'pulsar_hunters/pulsar_hunters_algorithm'
 
@@ -8,7 +8,7 @@ module Nero
     include ::NewRelic::Agent::Instrumentation::ControllerInstrumentation
 
     ALGORITHMS = {
-      'wildlife_watch' => Nero::SnapshotWisconsin::SnapshotWisconsinAlgorithm, # DEPRECATED ALGORITHM KEY, REMOVE IF NO LONGER MENTIONED IN PROJECTS.YML
+      'snapshot_wisconsin' => Nero::SnapshotWisconsin::SnapshotWisconsinAlgorithm, # DEPRECATED ALGORITHM KEY, REMOVE IF NO LONGER MENTIONED IN PROJECTS.YML
       'snapshot_wisconsin' => Nero::SnapshotWisconsin::SnapshotWisconsinAlgorithm,
       'swap' => Nero::Swap::SwapAlgorithm,
       'pulsar_hunters' => Nero::PulsarHunters::PulsarHuntersAlgorithm,
