@@ -1,6 +1,6 @@
 module Nero
-  module WildlifeWatch
-    class WildlifeWatchClassification < SimpleDelegator
+  module SnapshotWisconsin
+    class SnapshotWisconsinClassification < SimpleDelegator
       def vote
         case
         when choices.empty?

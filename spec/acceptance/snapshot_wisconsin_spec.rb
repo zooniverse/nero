@@ -5,7 +5,7 @@ describe 'Snapshot Wisconsin' do
   let(:output) { Nero::Output::IOWriter.new(StringIO.new) }
   let(:processor) do
     Nero::Processor.new(storage, output,
-                        "1717" => {"algorithm" => "wildlife_watch"})
+                        "1717" => {"algorithm" => "snapshot_wisconsin"})
   end
 
   after do

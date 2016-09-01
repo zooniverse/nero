@@ -2,8 +2,8 @@ require 'date'
 require 'set'
 
 module Nero
-  module WildlifeWatch
-    class WildlifeWatchSubjectState < SimpleDelegator
+  module SnapshotWisconsin
+    class SnapshotWisconsinSubjectState < SimpleDelegator
       def add_vote(vote)
         data["votes"] ||= []
         data["votes"] << vote

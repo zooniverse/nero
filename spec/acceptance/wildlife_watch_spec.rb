@@ -5,8 +5,8 @@ describe 'Wildlife Watch' do
   let(:output) { Nero::Output::IOWriter.new(StringIO.new) }
   let(:processor) do
     Nero::Processor.new(storage, output,
-                        "1021" => {"algorithm" => "wildlife_watch"},
-                        "1590" => {"algorithm" => "wildlife_watch"})
+                        "1021" => {"algorithm" => "snapshot_wisconsin"},
+                        "1590" => {"algorithm" => "snapshot_wisconsin"})
   end
 
   after do

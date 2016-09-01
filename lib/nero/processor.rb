@@ -8,7 +8,8 @@ module Nero
     include ::NewRelic::Agent::Instrumentation::ControllerInstrumentation
 
     ALGORITHMS = {
-      'wildlife_watch' => Nero::WildlifeWatch::WildlifeWatchAlgorithm,
+      'wildlife_watch' => Nero::SnapshotWisconsin::SnapshotWisconsinAlgorithm, # DEPRECATED ALGORITHM KEY, REMOVE IF NO LONGER MENTIONED IN PROJECTS.YML
+      'snapshot_wisconsin' => Nero::SnapshotWisconsin::SnapshotWisconsinAlgorithm,
       'swap' => Nero::Swap::SwapAlgorithm,
       'pulsar_hunters' => Nero::PulsarHunters::PulsarHuntersAlgorithm,
       'equador' => Nero::Equador::EquadorAlgorithm

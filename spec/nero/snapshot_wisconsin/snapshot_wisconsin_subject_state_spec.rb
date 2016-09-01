@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Nero::WildlifeWatch::WildlifeWatchSubjectState do
+describe Nero::SnapshotWisconsin::SnapshotWisconsinSubjectState do
   let(:subject_state) { described_class.new(Nero::SubjectState.new(id: 1, subject_id: 1, workflow_id: 1)) }
 
   describe '#retired?' do

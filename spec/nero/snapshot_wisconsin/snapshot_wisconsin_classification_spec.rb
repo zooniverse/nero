@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Nero::WildlifeWatch::WildlifeWatchClassification do
+describe Nero::SnapshotWisconsin::SnapshotWisconsinClassification do
   let(:no_answers)    { [] }
   let(:i_see_nothing) { [{"task" => "T1", "value" => [{"choice"=>"NTHNGHR", "answers"=>{}, "filters"=>{}}]}] }
   let(:i_see_deer)    { [{"task" => "T1", "value" => [{"choice" => "DR", "answers" => {"HWMN" => "1", "NGPRSNT" => "N"}, "filters" => {}}]}] }

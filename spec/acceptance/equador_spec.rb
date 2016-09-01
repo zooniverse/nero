@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'Wildlife Watch' do
+describe 'Equador' do
   let(:storage) { Nero::Storage.new(DB) }
   let(:output) { Nero::Output::IOWriter.new(StringIO.new) }
   let(:processor) do
