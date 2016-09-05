@@ -98,7 +98,6 @@ module Nero
           begin
             json = String.from_java_bytes(record.data.array)
             hash = JSON.parse(json)
-            puts ">>> #{hash.inspect}"
 
             if hash.fetch("source") == "panoptes" && hash.fetch("type") == "classification"
               processor.process(hash)
