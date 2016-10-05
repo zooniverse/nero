@@ -12,6 +12,10 @@ module Nero
       def retire(subject_state, reason: "other")
         client.retire_subject(subject_state.workflow_id, subject_state.subject_id, reason: reason)
       end
+
+      def add_subjects_to_subject_set(subject_set_id, subject_ids)
+        client.add_subjects_to_subject_set(subject_set_id, subject_ids)
+      end
     end
   end
 end
