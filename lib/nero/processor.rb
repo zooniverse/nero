@@ -3,6 +3,7 @@ require_relative 'chicago_wildlife_watch/chicago_wildlife_watch_algorithm'
 require_relative 'equador/equador_algorithm'
 require_relative 'pulsar_hunters/pulsar_hunters_algorithm'
 require_relative 'snapshot_wisconsin/snapshot_wisconsin_algorithm'
+require_relative 'transcribe_hack/transcribe_hack_algorithm'
 
 module Nero
   class Processor
@@ -15,6 +16,7 @@ module Nero
       'snapshot_wisconsin' => Nero::SnapshotWisconsin::SnapshotWisconsinAlgorithm,
       'swap' => Nero::Swap::SwapAlgorithm,
       'wildlife_watch' => Nero::SnapshotWisconsin::SnapshotWisconsinAlgorithm, # DEPRECATED ALGORITHM KEY, REMOVE IF NO LONGER MENTIONED IN PROJECTS.YML
+      'transcribe_hack' => Nero::TranscribeHack::TranscribeHackAlgorithm
     }
 
     attr_reader :workflows
