@@ -30,7 +30,7 @@ GEM
     multipart-post (2.0.0)
     newrelic_rpm (3.15.0.314)
     nokogiri (1.6.7.2-java)
-    panoptes-client (0.2.9)
+    panoptes-client (0.2.10)
       faraday
       faraday-panoptes (~> 0.2.0)
       jwt (~> 1.5.0)
