@@ -5,8 +5,8 @@ module Nero
     class PanoptesApi
       attr_reader :client
 
-      def initialize(url, client_id, client_secret)
-        @client = Panoptes::Client.new(url: url, auth: {client_id: client_id, client_secret: client_secret})
+      def initialize(env, client_id, client_secret)
+        @client = Panoptes::Client.new(env: env, auth: {client_id: client_id, client_secret: client_secret})
       end
 
       def retire(subject_state, reason: "other")

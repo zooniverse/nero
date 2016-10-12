@@ -3,8 +3,6 @@ postgres:
   environment:
     - "POSTGRES_USER=nero"
     - "POSTGRES_PASSWORD=nero"
-  ports:
-    - "5432:5432"
 
 nero:
   dockerfile: Dockerfile
