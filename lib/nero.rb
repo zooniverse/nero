@@ -85,7 +85,7 @@ module Nero
     storage = Nero::Storage.new(DB)
 
     panoptes_config = load_config('panoptes.yml', environment)
-    output = Nero::Output::PanoptesApi.new(panoptes_config.fetch("url"),
+    output = Nero::Output::PanoptesApi.new(environment,
                                            panoptes_config.fetch("client_id"),
                                            panoptes_config.fetch("client_secret"))
 
