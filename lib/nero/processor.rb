@@ -1,8 +1,9 @@
-require_relative 'swap/swap_algorithm'
 require_relative 'chicago_wildlife_watch/chicago_wildlife_watch_algorithm'
 require_relative 'equador/equador_algorithm'
 require_relative 'pulsar_hunters/pulsar_hunters_algorithm'
 require_relative 'snapshot_wisconsin/snapshot_wisconsin_algorithm'
+require_relative 'survey/survey_algorithm'
+require_relative 'swap/swap_algorithm'
 require_relative 'transcribe_hack/transcribe_hack_algorithm'
 
 module Nero
@@ -14,6 +15,7 @@ module Nero
       'equador' => Nero::Equador::EquadorAlgorithm,
       'pulsar_hunters' => Nero::PulsarHunters::PulsarHuntersAlgorithm,
       'snapshot_wisconsin' => Nero::SnapshotWisconsin::SnapshotWisconsinAlgorithm,
+      'survey' => Nero::Survey::SurveyAlgorithm,
       'swap' => Nero::Swap::SwapAlgorithm,
       'wildlife_watch' => Nero::SnapshotWisconsin::SnapshotWisconsinAlgorithm, # DEPRECATED ALGORITHM KEY, REMOVE IF NO LONGER MENTIONED IN PROJECTS.YML
       'transcribe_hack' => Nero::TranscribeHack::TranscribeHackAlgorithm

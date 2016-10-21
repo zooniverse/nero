@@ -5,7 +5,7 @@ describe 'Chicago Wildlife Watch' do
   let(:output) { Nero::Output::IOWriter.new(StringIO.new) }
   let(:processor) do
     Nero::Processor.new(storage, output,
-                        "2334" => {"algorithm" => "chicago_wildlife_watch"})
+                        "2334" => {"algorithm" => "survey"})
   end
 
   after do
