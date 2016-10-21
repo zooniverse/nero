@@ -12,15 +12,15 @@ describe Nero::Survey::SurveyClassification do
 
   describe '#vote' do
     it 'detects blanks from classification step' do
-      expect(make_classification(i_see_nothing).vote).to eq("blank")
+      expect(make_classification(i_see_nothing).vote("T0")).to eq("blank")
     end
 
     it 'detects humans from classification step' do
-      expect(make_classification(i_see_human).vote).to eq("human")
+      expect(make_classification(i_see_human).vote("T0")).to eq("human")
     end
 
     it 'detects animals' do
-      expect(make_classification(i_see_raccoon).vote).to eq("RCCN")
+      expect(make_classification(i_see_raccoon).vote("T0")).to eq("RCCN")
     end
   end
 end

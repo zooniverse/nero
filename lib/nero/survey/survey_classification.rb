@@ -1,18 +1,18 @@
 module Nero
   module Survey
     class SurveyClassification < SimpleDelegator
-      def vote
+      def vote(task_key)
         case
-        when choices.empty?
+        when choices(task_key).empty?
           "blank"
-        when choices.include?("NTHNGHR")
+        when choices(task_key).include?("NTHNGHR")
           "blank"
-        when choices.include?("HMN")
+        when choices(task_key).include?("HMN")
           "human"
-        when choices.include?("RPRTTHSPHT")
+        when choices(task_key).include?("RPRTTHSPHT")
           "reported"
         else
-          choices.join("-") # Should only ever be one choice probably
+          choices(task_key).join("-") # Should only ever be one choice probably
         end
       end
 
@@ -22,12 +22,12 @@ module Nero
         @annotations ||= hash.fetch("annotations", {}).group_by { |ann| ann["task"] }
       end
 
-      def task
-        annotations.fetch("T0").first || {}
+      def task(task_key)
+        annotations.fetch(task_key).first || {}
       end
 
-      def choices
-        values = task.fetch("value", [])
+      def choices(task_key)
+        values = task(task_key).fetch("value", [])
         values.map { |val| val["choice"] }
       end
     end
