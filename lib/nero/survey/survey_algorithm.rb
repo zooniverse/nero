@@ -1,5 +1,6 @@
 require_relative 'survey_classification'
 require_relative 'survey_subject_state'
+require_relative 'survey_rules'
 
 module Nero
   module Survey
@@ -10,7 +11,7 @@ module Nero
 
         classification = Nero::Survey::SurveyClassification.new(classification)
         subject_state = Nero::Survey::SurveySubjectState.new(subject_state)
-        subject_state.add_vote(classification.vote(task_key))
+        subject_state.add_vote(classification.id, classification.vote(task_key))
         @storage.record_subject_state(subject_state)
 
         case retired?(subject_state)
@@ -26,12 +27,11 @@ module Nero
       end
 
       def retired?(subject_state)
-        return :consensus       if subject_state.vote_counts.any? { |_, count| count >= consensus_limit }
-        return :human           if subject_state.vote_counts["human"] >= human_limit
-        return :flagged         if subject_state.vote_counts["reported"] >= flagged_limit
-        return :blank           if subject_state.votes.first(blank_limit).count("blank") == blank_limit
-        return :blank_consensus if subject_state.vote_counts["blank"] >= blank_consensus_limit
-        false # leaving the 15 classifications limit up to panoptes
+        rules.apply_to(subject_state.results)
+      end
+
+      def rules
+        @rules ||= Nero::Survey::SurveyRules.new(options)
       end
 
       def task_key
