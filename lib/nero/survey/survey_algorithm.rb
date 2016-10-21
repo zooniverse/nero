@@ -18,7 +18,7 @@ module Nero
           @panoptes.retire(subject_state, reason: 'other')
         when :flagged
           @panoptes.retire(subject_state, reason: 'flagged')
-        when :three_blanks, :five_blanks
+        when :blank, :blank_consensus
           @panoptes.retire(subject_state, reason: 'blank')
         when :consensus
           @panoptes.retire(subject_state, reason: 'consensus')
@@ -26,12 +26,32 @@ module Nero
       end
 
       def retired?(subject_state)
-        return :consensus    if subject_state.vote_counts.any? { |_, count| count >= 7 } # If 7 users have annotated the same animal, retire it.
-        return :human        if subject_state.vote_counts["human"] >= 1                  # If anyone has annotated a human, retire it.
-        return :flagged      if subject_state.vote_counts["reported"] >= 1               # If anyone has annotated the subject as ‘Report this photo’, retire it.
-        return :three_blanks if subject_state.votes[0..2].count("blank") == 3            # If the first three users annotated the subject as blank, retire it.
-        return :five_blanks  if subject_state.vote_counts["blank"] >= 5                  # If 5 users annotated the subject as blank, retire it.
+        return :consensus       if subject_state.vote_counts.any? { |_, count| count >= consensus_limit } # If 7 users have annotated the same animal, retire it.
+        return :human           if subject_state.vote_counts["human"] >= human_limit                      # If anyone has annotated a human, retire it.
+        return :flagged         if subject_state.vote_counts["reported"] >= flagged_limit                 # If anyone has annotated the subject as ‘Report this photo’, retire it.
+        return :blank           if subject_state.votes[0..2].count("blank") == blank_limit                # If the first three users annotated the subject as blank, retire it.
+        return :blank_consensus if subject_state.vote_counts["blank"] >= blank_consensus_limit            # If 5 users annotated the subject as blank, retire it.
         false # leaving the 15 classifications limit up to panoptes
+      end
+
+      def consensus_limit
+        options.fetch(:consensus_limit)
+      end
+
+      def human_limit
+        options.fetch(:human_limit)
+      end
+
+      def flagged_limit
+        options.fetch(:flagged_limit)
+      end
+
+      def blank_limit
+        options.fetch(:blank_limit)
+      end
+
+      def blank_consensus_limit
+        options.fetch(:blank_consensus_limit)
       end
     end
   end
