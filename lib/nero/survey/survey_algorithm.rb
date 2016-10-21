@@ -29,7 +29,7 @@ module Nero
         return :consensus       if subject_state.vote_counts.any? { |_, count| count >= consensus_limit }
         return :human           if subject_state.vote_counts["human"] >= human_limit
         return :flagged         if subject_state.vote_counts["reported"] >= flagged_limit
-        return :blank           if subject_state.votes[0..2].count("blank") == blank_limit
+        return :blank           if subject_state.votes.first(blank_limit).count("blank") == blank_limit
         return :blank_consensus if subject_state.vote_counts["blank"] >= blank_consensus_limit
         false # leaving the 15 classifications limit up to panoptes
       end
