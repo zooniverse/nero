@@ -10,10 +10,9 @@ matrix:
 addons:
   postgresql: "9.4"
 env:
-- DATABASE_URL_TEST=jdbc:postgresql://localhost/nero_test?user=postgres
+  - DATABASE_URL_TEST=jdbc:postgresql://localhost/nero_test?user=postgres
 
 before_script:
-  - cp config/database.travis.yml config/database.yml
   - psql -c 'create database nero_test;' -U postgres
 
 script: "bin/rspec --tag ~kafka"
