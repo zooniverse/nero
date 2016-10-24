@@ -1,6 +1,3 @@
-require 'date'
-require 'set'
-
 module Nero
   module Survey
     class SurveySubjectState < SimpleDelegator
