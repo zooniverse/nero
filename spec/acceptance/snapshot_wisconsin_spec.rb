@@ -4,8 +4,10 @@ describe 'Snapshot Wisconsin' do
   let(:storage) { Nero::Storage.new(DB) }
   let(:output) { Nero::Output::IOWriter.new(StringIO.new) }
   let(:processor) do
-    Nero::Processor.new(storage, output,
-                        "1717" => {"algorithm" => "snapshot_wisconsin"})
+    Nero::Processor.new(storage, output, "1717" => {
+      "algorithm" => "survey",
+      task_key: "T1"
+    })
   end
 
   after do
