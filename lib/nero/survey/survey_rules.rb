@@ -8,11 +8,13 @@ module Nero
       end
 
       def apply_to(results)
-        return :consensus       if vote_counts(results).any? { |_, count| count >= consensus_limit }
-        return :human           if vote_counts(results)["human"] >= human_limit
-        return :flagged         if vote_counts(results)["reported"] >= flagged_limit
+        vote_counts = group_results(results)
+
+        return :consensus       if vote_counts.any? { |_, count| count >= consensus_limit }
+        return :human           if vote_counts["human"] >= human_limit
+        return :flagged         if vote_counts["reported"] >= flagged_limit
         return :blank           if votes(results).first(blank_limit).count("blank") == blank_limit
-        return :blank_consensus if vote_counts(results)["blank"] >= blank_consensus_limit
+        return :blank_consensus if vote_counts["blank"] >= blank_consensus_limit
         false
       end
 
@@ -20,7 +22,7 @@ module Nero
         results.map {|result| result["vote"] }
       end
 
-      def vote_counts(results)
+      def group_results(results)
         votes(results).reduce(Hash.new(0)) do |groups, vote|
           groups[vote] += 1
           groups
