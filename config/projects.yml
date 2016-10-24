@@ -8,15 +8,20 @@ development:
     algorithm: pulsar_hunters
     gold_standard_limit: 150
     normal_limit: 50
+
 test:
   5101a1341a320ea77f000001:
     algorithm: swap
-staging: {}
+
+staging:
+  2661:
+    algorithm: transcribe_hack
+
 production:
   1717:
-    algorithm: snapshot_wisconsin
+    algorithm: wildlife_watch
   1217:
-    algorithm: snapshot_wisconsin
+    algorithm: wildlife_watch
   1224:
     algorithm: pulsar_hunters
     gold_standard_limit: 50
