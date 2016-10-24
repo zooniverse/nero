@@ -1,3 +1,0 @@
-test:
-  adapter: jdbc
-  uri: jdbc:postgresql://localhost/nero_test?user=postgres
