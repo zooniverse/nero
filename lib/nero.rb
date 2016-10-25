@@ -64,9 +64,13 @@ end
 Nero.logger
 Dotenv.load
 NewRelic::Agent.manual_start
-Honeybadger.start(:'config.path' => Nero.config_path("honeybadger.yml"))
+Honeybadger.start
 
-DB = Sequel.connect(Nero.load_config('database.yml', ENV.fetch("RAILS_ENV")))
+connection_string = case ENV.fetch("RAILS_ENV")
+                    when "test" then ENV.fetch("DATABASE_URL_TEST")
+                    else ENV.fetch("DATABASE_URL")
+                    end
+DB = Sequel.connect(connection_string)
 DB.extension :pg_json
 
 require_relative 'nero/input/io_reader'
@@ -84,10 +88,9 @@ module Nero
   def self.start(environment)
     storage = Nero::Storage.new(DB)
 
-    panoptes_config = load_config('panoptes.yml', environment)
     output = Nero::Output::PanoptesApi.new(environment,
-                                           panoptes_config.fetch("client_id"),
-                                           panoptes_config.fetch("client_secret"))
+                                           ENV.fetch("PANOPTES_CLIENT_ID"),
+                                           ENV.fetch("PANOPTES_CLIENT_SECRET"))
 
     processor = Nero::Processor.new(storage, output, load_config('projects.yml', environment))
 
