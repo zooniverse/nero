@@ -9,6 +9,14 @@ module Nero
           "blank"
         when choices(task_key).include?("HMN")
           "human"
+        when choices(task_key).include?("HMNNTVHCLS")
+          # used by camera catalogue, to make config option soon, but
+          # under time pressure since they're eager to relaunch asap.
+          "human"
+        when choices(task_key).include?("VHCL")
+          # used by camera catalogue, to make config option soon, but
+          # under time pressure since they're eager to relaunch asap.
+          "vehicle"
         when choices(task_key).include?("RPRTTHSPHT")
           "reported"
         else

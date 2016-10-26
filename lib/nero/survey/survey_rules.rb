@@ -12,6 +12,7 @@ module Nero
 
         return :consensus       if vote_counts.any? { |_, count| count >= consensus_limit }
         return :human           if vote_counts["human"] >= human_limit
+        return :vehicle         if vote_counts["vehicle"] >= vehicle_limit
         return :flagged         if vote_counts["reported"] >= flagged_limit
         return :blank           if votes(results).first(blank_limit).count("blank") == blank_limit
         return :blank_consensus if vote_counts["blank"] >= blank_consensus_limit
@@ -39,6 +40,10 @@ module Nero
 
       def human_limit
         options.fetch(:human_limit, 1)
+      end
+
+      def vehicle_limit
+        options.fetch(:vehicle_limit, 1)
       end
 
       def flagged_limit

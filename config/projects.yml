@@ -28,3 +28,30 @@ production:
     normal_limit: 50
   1810:
     algorithm: equador
+  2647:
+    algorithm: survey
+    task_key: T0
+    consensus_limit: 7
+    human_limit: 1
+    vehicle_limit: 1
+    flagged_limit: 1
+    blank_limit: 3
+    blank_consensus_limit: 5
+  2672:
+    algorithm: survey
+    task_key: T0
+    consensus_limit: 7
+    human_limit: 1
+    vehicle_limit: 1
+    flagged_limit: 1
+    blank_limit: 3
+    blank_consensus_limit: 5
+  2731:
+    algorithm: survey
+    task_key: T0
+    consensus_limit: 7
+    human_limit: 1
+    vehicle_limit: 1
+    flagged_limit: 1
+    blank_limit: 3
+    blank_consensus_limit: 5

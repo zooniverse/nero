@@ -1,9 +1,7 @@
 require 'spec_helper'
 
 describe Nero::Survey::SurveyClassification do
-  let(:i_see_nothing) { [{"task" => "T0", "value" => [{"choice"=>"NTHNGHR", "answers"=>{}, "filters"=>{}}]}] }
-  let(:i_see_raccoon) { [{"task" => "T0", "value" => [{"choice" => "RCCN", "answers" => {"HWMN" => "1"}, "filters" => {}}]}] }
-  let(:i_see_human)   { [{"task" => "T0", "value" => [{"choice" => "HMN", "answers" => {"HWMN" => "1"}, "filters" => {}}]}] }
+  let(:classification)   { [{"task" => "T0", "value" => [{"choice" => "OTHER", "answers" => {"HWMN" => "1"}, "filters" => {}}]}] }
 
   def make_classification(annotations)
     base = Nero::Classification.new("annotations" => annotations, "links" => {"workflow" => "1021"})
@@ -12,15 +10,23 @@ describe Nero::Survey::SurveyClassification do
 
   describe '#vote' do
     it 'detects blanks from classification step' do
-      expect(make_classification(i_see_nothing).vote("T0")).to eq("blank")
+      classification[0]["value"][0]["choice"] = "NTHNGHR"
+      expect(make_classification(classification).vote("T0")).to eq("blank")
     end
 
     it 'detects humans from classification step' do
-      expect(make_classification(i_see_human).vote("T0")).to eq("human")
+      classification[0]["value"][0]["choice"] = "HMN"
+      expect(make_classification(classification).vote("T0")).to eq("human")
+    end
+
+    it 'detects humans from classification step' do
+      classification[0]["value"][0]["choice"] = "VHCL"
+      expect(make_classification(classification).vote("T0")).to eq("vehicle")
     end
 
     it 'detects animals' do
-      expect(make_classification(i_see_raccoon).vote("T0")).to eq("RCCN")
+      classification[0]["value"][0]["choice"] = "RCCN"
+      expect(make_classification(classification).vote("T0")).to eq("RCCN")
     end
   end
 end
