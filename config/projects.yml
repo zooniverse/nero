@@ -55,3 +55,5 @@ production:
     flagged_limit: 1
     blank_limit: 3
     blank_consensus_limit: 5
+  2334:
+    algorithm: chicago_wildlife_watch
