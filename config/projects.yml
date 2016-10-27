@@ -56,4 +56,11 @@ production:
     blank_limit: 3
     blank_consensus_limit: 5
   2334:
-    algorithm: chicago_wildlife_watch
+    algorithm: survey
+    task_key: T0
+    consensus_limit: 7
+    human_limit: 1
+    vehicle_limit: 1
+    flagged_limit: 1
+    blank_limit: 3
+    blank_consensus_limit: 5
