@@ -15,7 +15,7 @@ module Nero
         @storage.record_subject_state(subject_state)
 
         case retired?(subject_state)
-        when :human
+        when :human, :vehicle
           @panoptes.retire(subject_state, reason: 'other')
         when :flagged
           @panoptes.retire(subject_state, reason: 'flagged')

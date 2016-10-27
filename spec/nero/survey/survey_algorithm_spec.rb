@@ -20,6 +20,12 @@ describe Nero::Survey::SurveyAlgorithm do
       expect { subject_state.add_vote 3, "human" }.to change { algorithm.retired?(subject_state) }.from(false).to(:human)
     end
 
+    it "is retired when any classification says it's a vehicle" do
+      subject_state.add_vote 1, "RCCN"
+      subject_state.add_vote 2, "RCCN"
+      expect { subject_state.add_vote 3, "vehicle" }.to change { algorithm.retired?(subject_state) }.from(false).to(:vehicle)
+    end
+
     it "is retired when any classification says it's reported" do
       subject_state.add_vote 1, "RCCN"
       subject_state.add_vote 2, "RCCN"
