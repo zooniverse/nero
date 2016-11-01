@@ -6,7 +6,7 @@ module Nero
         case
         when task_choices.empty?
           "blank"
-        when task_choices.include?("NTHNGHR")
+        when (task_choices & %w(NTHNGHR NTHNGTHR)).any?
           "blank"
         when task_choices.include?("HMN")
           "human"

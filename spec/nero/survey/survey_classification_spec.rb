@@ -10,8 +10,10 @@ describe Nero::Survey::SurveyClassification do
 
   describe '#vote' do
     it 'detects blanks from classification step' do
-      classification[0]["value"][0]["choice"] = "NTHNGHR"
-      expect(make_classification(classification).vote("T0")).to eq("blank")
+      %w(NTHNGHR NTHNGTHR).each do |human_code|
+        classification[0]["value"][0]["choice"] = human_code
+        expect(make_classification(classification).vote("T0")).to eq("blank")
+      end
     end
 
     it 'detects humans from classification step' do
@@ -24,6 +26,11 @@ describe Nero::Survey::SurveyClassification do
         classification[0]["value"][0]["choice"] = vehicle_code
         expect(make_classification(classification).vote("T0")).to eq("vehicle")
       end
+    end
+
+    it 'detects reported photos' do
+      classification[0]["value"][0]["choice"] = "RPRTTHSPHT"
+      expect(make_classification(classification).vote("T0")).to eq("reported")
     end
 
     it 'detects animals' do
