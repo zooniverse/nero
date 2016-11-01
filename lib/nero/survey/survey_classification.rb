@@ -2,20 +2,22 @@ module Nero
   module Survey
     class SurveyClassification < SimpleDelegator
       def vote(task_key)
+        task_choices = choices(task_key)
         case
-        when choices(task_key).empty?
+        when task_choices.empty?
           "blank"
-        when choices(task_key).include?("NTHNGHR")
+        when task_choices.include?("NTHNGHR")
           "blank"
-        when choices(task_key).include?("HMN")
+        when task_choices.include?("HMN")
           "human"
-        when choices(task_key).include?("HMNNTVHCLS")
+        when task_choices.include?("HMNNTVHCLS")
           # used by camera catalogue, to make config option soon, but
           # under time pressure since they're eager to relaunch asap.
           "human"
-        when choices(task_key).include?("VHCL")
-          # used by camera catalogue, to make config option soon, but
-          # under time pressure since they're eager to relaunch asap.
+        when (task_choices & %w(VHCL MTRZDVHCL)).any?
+          # used by camera catalogue & cmp wildlife cameras,
+          # to make config option soon,
+          # but under time pressure since they're eager to relaunch asap.
           "vehicle"
         when choices(task_key).include?("RPRTTHSPHT")
           "reported"

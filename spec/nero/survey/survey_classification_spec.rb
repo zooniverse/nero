@@ -20,8 +20,10 @@ describe Nero::Survey::SurveyClassification do
     end
 
     it 'detects humans from classification step' do
-      classification[0]["value"][0]["choice"] = "VHCL"
-      expect(make_classification(classification).vote("T0")).to eq("vehicle")
+      %w(MTRZDVHCL VHCL).each do |vehicle_code|
+        classification[0]["value"][0]["choice"] = vehicle_code
+        expect(make_classification(classification).vote("T0")).to eq("vehicle")
+      end
     end
 
     it 'detects animals' do
