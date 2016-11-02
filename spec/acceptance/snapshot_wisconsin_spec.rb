@@ -6,7 +6,7 @@ describe 'Snapshot Wisconsin' do
   let(:processor) do
     Nero::Processor.new(storage, output, "1717" => {
       "algorithm" => "survey",
-      task_key: "T1"
+      "task_key" => "T1"
     })
   end
 

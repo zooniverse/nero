@@ -35,27 +35,27 @@ module Nero
       end
 
       def task_key
-        options.fetch(:task_key, "T0")
+        options.fetch('task_key', "T0")
       end
 
       def consensus_limit
-        options.fetch(:consensus_limit, 7)
+        options.fetch('consensus_limit', 7)
       end
 
       def human_limit
-        options.fetch(:human_limit, 1)
+        options.fetch('human_limit', 1)
       end
 
       def flagged_limit
-        options.fetch(:flagged_limit, 1)
+        options.fetch('flagged_limit', 1)
       end
 
       def blank_limit
-        options.fetch(:blank_limit, 3)
+        options.fetch('blank_limit', 3)
       end
 
       def blank_consensus_limit
-        options.fetch(:blank_consensus_limit, 5)
+        options.fetch('blank_consensus_limit', 5)
       end
     end
   end
