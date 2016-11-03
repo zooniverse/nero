@@ -5,6 +5,7 @@ require_relative 'snapshot_wisconsin/snapshot_wisconsin_algorithm'
 require_relative 'survey/survey_algorithm'
 require_relative 'swap/swap_algorithm'
 require_relative 'transcribe_hack/transcribe_hack_algorithm'
+require_relative 'blank/blank_algorithm'
 
 module Nero
   class Processor
@@ -18,7 +19,8 @@ module Nero
       'survey' => Nero::Survey::SurveyAlgorithm,
       'swap' => Nero::Swap::SwapAlgorithm,
       'wildlife_watch' => Nero::SnapshotWisconsin::SnapshotWisconsinAlgorithm, # DEPRECATED ALGORITHM KEY, REMOVE IF NO LONGER MENTIONED IN PROJECTS.YML
-      'transcribe_hack' => Nero::TranscribeHack::TranscribeHackAlgorithm
+      'transcribe_hack' => Nero::TranscribeHack::TranscribeHackAlgorithm,
+      'blank' => Nero::Blank::BlankAlgorithm,
     }
 
     attr_reader :workflows

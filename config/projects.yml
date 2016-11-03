@@ -73,3 +73,7 @@ production:
     flagged_limit: 1
     blank_limit: 3
     blank_consensus_limit: 5
+  2245:
+    algorithm: blank
+    task_key: T1
+    blank_consensus_limit: 5
