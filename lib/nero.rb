@@ -75,6 +75,8 @@ DB.extension :pg_json
 
 require_relative 'nero/input/io_reader'
 require_relative 'nero/storage'
+require_relative 'nero/repository'
+require_relative 'nero/workflow_repository'
 require_relative 'nero/output/io_writer'
 require_relative 'nero/output/panoptes_api'
 require_relative 'nero/user_state'

@@ -34,6 +34,11 @@ module Nero
     end
 
     def process(record)
+      old_style_processing(record)
+      new_style_processing(record)
+    end
+
+    def old_style_processing(record)
       linked_data         = record.fetch("linked") { {} }
       classification_hash = record.fetch("data")
       classification      = Classification.new(classification_hash, linked: linked_data)
@@ -49,6 +54,10 @@ module Nero
         Honeybadger.notify(exception, context: {classification_id: classification.id, subject_ids: classification.subject_ids})
         Nero.logger.error 'processing-failed', classification_id: classification.id, subject_ids: classification.subject_ids
       end
+    end
+
+    def new_style_processing(record)
+      workflow_repo.update_caches(record.fetch("linked").fetch("workflows"))
     end
 
     add_transaction_tracer :process, category: :task
