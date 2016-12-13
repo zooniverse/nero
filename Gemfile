@@ -16,6 +16,7 @@ end
 group :development, :test do
   gem 'pry'
   gem 'awesome_print'
+  gem 'database_cleaner'
 end
 
 group :test do
