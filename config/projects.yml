@@ -35,7 +35,7 @@ production:
     human_limit: 1
     vehicle_limit: 1
     flagged_limit: 1
-    blank_limit: 3
+    blank_limit: 1
     blank_consensus_limit: 5
   2672:
     algorithm: survey
@@ -44,7 +44,7 @@ production:
     human_limit: 1
     vehicle_limit: 1
     flagged_limit: 1
-    blank_limit: 3
+    blank_limit: 1
     blank_consensus_limit: 5
   2731:
     algorithm: survey
@@ -53,7 +53,7 @@ production:
     human_limit: 1
     vehicle_limit: 1
     flagged_limit: 1
-    blank_limit: 3
+    blank_limit: 1
     blank_consensus_limit: 5
   2334:
     algorithm: survey
