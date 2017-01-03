@@ -62,12 +62,23 @@ module Nero
     end
 
     def new_style_processing(record)
+      return unless process?(record)
+
       workflow_repo.update_caches(record.fetch("linked").fetch("workflows"))
       subject_repo.update_caches(record.fetch("linked").fetch("subjects"))
       id = classification_repo.update_cache(record.fetch("data"))
 
       ClassificationProcessing.new(id).perform
     end
+
+    def process?(record)
+      return false unless record["linked"]
+      return false unless record["linked"]["workflows"]
+      return false unless record["linked"]["workflows"].any? { |workflow| workflow["retirement"] }
+
+      true
+    end
+
 
     add_transaction_tracer :process, category: :task
   end

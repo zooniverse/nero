@@ -10,8 +10,9 @@ module Nero
       def update_caches(workflow_hashes)
         workflow_hashes.each do |workflow_hash|
           upsert(workflow_hash.fetch("id"),
-                 project_id: workflow_hash.fetch("links").fetch("project"),
-                 rules: workflow_hash.fetch("retirement"))
+                 # TODO: Links for workflows are not being serialized.
+                 # project_id: workflow_hash.fetch("links").fetch("project"),
+                 rules: workflow_hash.fetch("retirement", {}))
         end
       end
 
