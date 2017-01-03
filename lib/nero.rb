@@ -85,6 +85,7 @@ require_relative 'nero/repositories/workflow_repository'
 
 require_relative 'nero/extractors/survey_extractor'
 
+require_relative 'nero/reducers/reduction_results'
 require_relative 'nero/reducers/simple_survey_reducer'
 
 require_relative 'nero/output/io_writer'

@@ -8,7 +8,7 @@ module Nero
       end
 
       def process(extractions)
-        {}.tap do |results|
+        ReductionResults.build do |results|
           process_range(results, extractions, "survey-total")
 
           sub_ranges.each do |range|
@@ -24,14 +24,9 @@ module Nero
       def process_range(results, extractions, key_prefix)
         extractions.each do |extraction|
           extraction.fetch("choices").each do |choice|
-            increment(results, "#{key_prefix}-#{choice}")
+            results.increment("#{key_prefix}-#{choice}")
           end
         end
-      end
-
-      def increment(results, key)
-        results[key] ||= 0
-        results[key] += 1
       end
     end
   end
