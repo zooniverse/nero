@@ -19,8 +19,11 @@ describe Nero::Reducers::SimpleSurveyReducer do
 
     it 'counts occurrences of species within the first 3 classifications' do
       expect(reducer.process([
-        {"choices" => ["NTHNGHR"]}
-      ])).to include({"survey-from0to3-NTHNGHR" => 1})
+        {"choices" => ["NTHNGHR"]},
+        {"choices" => ["RCCN", "RCCN"]},
+        {"choices" => ["RCCN", "BBN"]},
+        {"choices" => ["NTHNGHR"]},
+      ])).to include({"survey-from0to2-NTHNGHR" => 1})
     end
   end
 end
