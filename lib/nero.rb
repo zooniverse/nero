@@ -75,9 +75,18 @@ DB.extension :pg_json
 
 require_relative 'nero/input/io_reader'
 require_relative 'nero/storage'
+
+require_relative 'nero/models/workflow'
+require_relative 'nero/models/classification'
+
 require_relative 'nero/repositories/classification_repository'
 require_relative 'nero/repositories/subject_repository'
 require_relative 'nero/repositories/workflow_repository'
+
+require_relative 'nero/extractors/survey_extractor'
+
+require_relative 'nero/reducers/simple_survey_reducer'
+
 require_relative 'nero/output/io_writer'
 require_relative 'nero/output/panoptes_api'
 require_relative 'nero/user_state'
@@ -85,6 +94,7 @@ require_relative 'nero/subject_state'
 require_relative 'nero/classification'
 require_relative 'nero/subject'
 require_relative 'nero/algorithm'
+require_relative 'nero/classification_processing'
 require_relative 'nero/processor'
 
 module Nero

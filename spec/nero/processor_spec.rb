@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe Nero::Processor do
-  let(:storage) { double("Storage", find_user_state: nil, find_subject_state: nil) }
+  let(:storage) { double("Storage", db: DB, find_user_state: nil, find_subject_state: nil) }
   let(:output) { double("Output") }
   let(:config) { {} }
 
@@ -16,18 +16,25 @@ describe Nero::Processor do
   let(:data) do
     {
       "data" => {
-        "id" => "classification-1",
+        "id" => "1",
+        "annotations" => [],
+        "metadata" => {},
         "links" => {
-          "project" => "project-1",
-          "workflow" => "workflow-1",
-          "user" => "user-1",
-          "subjects" => ["subject-1"]
+          "project" => "1",
+          "workflow" => "2",
+          "user" => "3",
+          "subjects" => ["4"]
         }
       },
       "linked" => {
         "subjects" => [{
-          "id" => "subject-1",
+          "id" => "4",
           "metadata" => {"Filename" => "1.jpg"}
+        }],
+        "workflows" => [{
+          "id" => "2",
+          "links" => {"project" => "1"},
+          "retirement" => {}
         }]
       }
     }

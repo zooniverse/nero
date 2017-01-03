@@ -23,11 +23,16 @@ module Nero
       'blank' => Nero::Blank::BlankAlgorithm,
     }
 
+    attr_reader :workflow_repo, :subject_repo, :classification_repo
     attr_reader :workflows
 
     def initialize(storage, output, config)
       @storage = storage
       @output  = output
+      @workflow_repo = Repositories::WorkflowRepository.new(storage.db)
+      @subject_repo = Repositories::SubjectRepository.new(storage.db)
+      @classification_repo = Repositories::ClassificationRepository.new(storage.db)
+
       @workflows = config.each.with_object(Hash.new(Algorithm.new(@storage, @output))) do |(workflow_id, workflow_config), hash|
         hash[workflow_id.to_s] = ALGORITHMS.fetch(workflow_config.fetch('algorithm')).new(storage, output, workflow_config)
       end
@@ -58,6 +63,10 @@ module Nero
 
     def new_style_processing(record)
       workflow_repo.update_caches(record.fetch("linked").fetch("workflows"))
+      subject_repo.update_caches(record.fetch("linked").fetch("subjects"))
+      id = classification_repo.update_cache(record.fetch("data"))
+
+      ClassificationProcessing.new(id).perform
     end
 
     add_transaction_tracer :process, category: :task
