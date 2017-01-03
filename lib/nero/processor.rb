@@ -79,7 +79,6 @@ module Nero
       true
     end
 
-
     add_transaction_tracer :process, category: :task
   end
 end
