@@ -42,20 +42,20 @@ describe Nero::Swap::SwapAlgorithm do
       end
     end
 
-    context 'and it has not been seen by a skilled user' do
-      let(:subj) { double("Subject", test?: true) }
-      let(:old_subject_state) { double("old subject_state", adjust: new_subject_state, data: {}, retired?: false, active?: true) }
-      let(:new_subject_state) { double("new subject_state", seen_by?: false, retired?: true, probability: 0.5, attributes: {}) }
+    # context 'and it has not been seen by a skilled user' do
+    #   let(:subj) { double("Subject", test?: true) }
+    #   let(:old_subject_state) { double("old subject_state", adjust: new_subject_state, data: {}, retired?: false, active?: true) }
+    #   let(:new_subject_state) { double("new subject_state", seen_by?: false, retired?: true, probability: 0.5, attributes: {}) }
 
-      it 'enqueues the subject for known skilled users' do
-        pending
-        DB[:agents].insert(external_id: 'unskilled', data: Sequel.pg_jsonb("skill" => 0.4))
-        DB[:agents].insert(external_id: 'skilled-1', data: Sequel.pg_jsonb("skill" => 0.94))
-        DB[:agents].insert(external_id: 'skilled-2', data: Sequel.pg_jsonb("skill" => 0.81))
+    #   it 'enqueues the subject for known skilled users' do
+    #     pending
+    #     DB[:agents].insert(external_id: 'unskilled', data: Sequel.pg_jsonb("skill" => 0.4))
+    #     DB[:agents].insert(external_id: 'skilled-1', data: Sequel.pg_jsonb("skill" => 0.94))
+    #     DB[:agents].insert(external_id: 'skilled-2', data: Sequel.pg_jsonb("skill" => 0.81))
 
-        strategy.process(classification, user_state, old_subject_state)
-        expect(panoptes).to have_received(:enqueue).with(['skilled-1', 'skilled-2']).once
-      end
-    end
+    #     strategy.process(classification, user_state, old_subject_state)
+    #     expect(panoptes).to have_received(:enqueue).with(['skilled-1', 'skilled-2']).once
+    #   end
+    # end
   end
 end
