@@ -8,17 +8,15 @@ module Nero
       end
 
       def process(extractions)
-        results = {}
+        {}.tap do |results|
+          process_range(results, extractions, "survey-total")
 
-        process_range(results, extractions, "survey-total")
-
-        sub_ranges.each do |range|
-          from = range.fetch(:from)
-          till = range.fetch(:till)
-          process_range(results, extractions[from..till], "survey-from#{from}to#{till}")
+          sub_ranges.each do |range|
+            from = range.fetch(:from)
+            till = range.fetch(:till)
+            process_range(results, extractions[from..till], "survey-from#{from}to#{till}")
+          end
         end
-
-        results
       end
 
       private
