@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Nero::WorkflowRepository do
+describe Nero::Repositories::WorkflowRepository do
   let(:db) { DB }
 
   before do
