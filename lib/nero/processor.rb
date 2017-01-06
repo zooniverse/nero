@@ -68,7 +68,7 @@ module Nero
       subject_repo.update_caches(record.fetch("linked").fetch("subjects"))
       id = classification_repo.update_cache(record.fetch("data"))
 
-      ClassificationProcessing.new(id).perform
+      ClassificationProcessing.new(repositories, id).perform
     end
 
     def process?(record)
@@ -77,6 +77,14 @@ module Nero
       return false unless record["linked"]["workflows"].any? { |workflow| workflow["retirement"] }
 
       true
+    end
+
+    def repositories
+      {
+        classifications: @classification_repo,
+        workflows: @workflow_repo,
+        subjects: @subject_repo
+      }
     end
 
     add_transaction_tracer :process, category: :task

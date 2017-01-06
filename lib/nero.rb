@@ -88,6 +88,8 @@ require_relative 'nero/extractors/survey_extractor'
 require_relative 'nero/reducers/reduction_results'
 require_relative 'nero/reducers/simple_survey_reducer'
 
+require_relative 'nero/rules/engine'
+
 require_relative 'nero/output/io_writer'
 require_relative 'nero/output/panoptes_api'
 require_relative 'nero/user_state'

@@ -1,17 +1,22 @@
 module Nero
   class ClassificationProcessing
-    def initialize(classification_id)
+    attr_reader :repositories, :classification_id
+
+    def initialize(repositories, classification_id)
+      @repositories = repositories
       @classification_id = classification_id
     end
 
     def perform
-      extractors.each do |extractor|
+      essences = extractors.each do |extractor|
         essence = extractor.process(classification)
       end
 
-      reducers.each do |reducer|
+      reductions = reducers.each do |reducer|
         reducer.process(essences)
       end
+
+      reduction = reductions.reduce({}) { |memo, obj| memo.merge(obj) }
 
       rules.each do |rule|
         rule.apply(reduction)
@@ -33,7 +38,15 @@ module Nero
     end
 
     def classification
-      nil
+      @classification ||= repositories[:classifications].find(classification_id)
+    end
+
+    def workflow
+      @workflow ||= repositories[:workflows].find(classification.workflow_id)
+    end
+
+    def subject
+      @subject ||= repositories[:subjects].find(classification.subject_id)
     end
   end
 end
