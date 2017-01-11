@@ -18,16 +18,38 @@ staging:
     algorithm: transcribe_hack
 
 production:
-  1717:
-    algorithm: wildlife_watch
   1217:
-    algorithm: wildlife_watch
+    algorithm: snapshot_wisconsin
   1224:
     algorithm: pulsar_hunters
     gold_standard_limit: 50
     normal_limit: 50
+  1432:
+    algorithm: survey
+    task_key: T1
+    consensus_limit: 7
+    human_limit: 1
+    vehicle_limit: 1
+    flagged_limit: 1
+    blank_limit: 3
+    blank_consensus_limit: 5
+  1717:
+    algorithm: snapshot_wisconsin
   1810:
     algorithm: equador
+  2245:
+    algorithm: blank
+    task_key: T1
+    blank_consensus_limit: 5
+  2334:
+    algorithm: survey
+    task_key: T0
+    consensus_limit: 7
+    human_limit: 1
+    vehicle_limit: 1
+    flagged_limit: 1
+    blank_limit: 3
+    blank_consensus_limit: 5
   2647:
     algorithm: survey
     task_key: T0
@@ -55,16 +77,7 @@ production:
     flagged_limit: 1
     blank_limit: 1
     blank_consensus_limit: 5
-  2334:
-    algorithm: survey
-    task_key: T0
-    consensus_limit: 7
-    human_limit: 1
-    vehicle_limit: 1
-    flagged_limit: 1
-    blank_limit: 3
-    blank_consensus_limit: 5
-  1432:
+  2855:
     algorithm: survey
     task_key: T1
     consensus_limit: 7
@@ -72,10 +85,6 @@ production:
     vehicle_limit: 1
     flagged_limit: 1
     blank_limit: 3
-    blank_consensus_limit: 5
-  2245:
-    algorithm: blank
-    task_key: T1
     blank_consensus_limit: 5
   2863:
     algorithm: survey
@@ -85,4 +94,13 @@ production:
     vehicle_limit: 1
     flagged_limit: 1
     blank_limit: 1
+    blank_consensus_limit: 5
+  3054:
+    algorithm: survey
+    task_key: T0
+    consensus_limit: 7
+    human_limit: 1
+    vehicle_limit: 1
+    flagged_limit: 1
+    blank_limit: 3
     blank_consensus_limit: 5

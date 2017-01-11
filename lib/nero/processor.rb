@@ -18,7 +18,6 @@ module Nero
       'snapshot_wisconsin' => Nero::SnapshotWisconsin::SnapshotWisconsinAlgorithm,
       'survey' => Nero::Survey::SurveyAlgorithm,
       'swap' => Nero::Swap::SwapAlgorithm,
-      'wildlife_watch' => Nero::SnapshotWisconsin::SnapshotWisconsinAlgorithm, # DEPRECATED ALGORITHM KEY, REMOVE IF NO LONGER MENTIONED IN PROJECTS.YML
       'transcribe_hack' => Nero::TranscribeHack::TranscribeHackAlgorithm,
       'blank' => Nero::Blank::BlankAlgorithm,
     }
