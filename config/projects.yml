@@ -33,6 +33,15 @@ production:
     flagged_limit: 1
     blank_limit: 3
     blank_consensus_limit: 5
+  1643:
+    algorithm: survey
+    task_key: T0
+    consensus_limit: 7
+    human_limit: 1
+    vehicle_limit: 1
+    flagged_limit: 1
+    blank_limit: 1
+    blank_consensus_limit: 5
   1717:
     algorithm: snapshot_wisconsin
   1810:
@@ -103,4 +112,49 @@ production:
     vehicle_limit: 1
     flagged_limit: 1
     blank_limit: 3
+    blank_consensus_limit: 5
+  3206:
+    algorithm: survey
+    task_key: T0
+    consensus_limit: 7
+    human_limit: 1
+    vehicle_limit: 1
+    flagged_limit: 1
+    blank_limit: 1
+    blank_consensus_limit: 5
+  3207:
+    algorithm: survey
+    task_key: T0
+    consensus_limit: 7
+    human_limit: 1
+    vehicle_limit: 1
+    flagged_limit: 1
+    blank_limit: 1
+    blank_consensus_limit: 5
+  3208:
+    algorithm: survey
+    task_key: T0
+    consensus_limit: 7
+    human_limit: 1
+    vehicle_limit: 1
+    flagged_limit: 1
+    blank_limit: 1
+    blank_consensus_limit: 5
+  3209:
+    algorithm: survey
+    task_key: T0
+    consensus_limit: 7
+    human_limit: 1
+    vehicle_limit: 1
+    flagged_limit: 1
+    blank_limit: 1
+    blank_consensus_limit: 5
+  3210:
+    algorithm: survey
+    task_key: T0
+    consensus_limit: 7
+    human_limit: 1
+    vehicle_limit: 1
+    flagged_limit: 1
+    blank_limit: 1
     blank_consensus_limit: 5
