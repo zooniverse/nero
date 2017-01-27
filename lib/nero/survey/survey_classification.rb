@@ -6,15 +6,15 @@ module Nero
         case
         when task_choices.empty?
           "blank"
-        when (task_choices & %w(NTHNGHR NTHNGTHR)).any?
+        when (task_choices & %w(NTHNGHR NTHNGTHR NOTHINGHERE)).any?
           "blank"
         when task_choices.include?("HMN")
           "human"
-        when task_choices.include?("HMNNTVHCLS")
+        when task_choices.include?("HMNNTVHCLS HUMANNOTVEHICLES")
           # used by camera catalogue, to make config option soon, but
           # under time pressure since they're eager to relaunch asap.
           "human"
-        when (task_choices & %w(VHCL MTRZDVHCL)).any?
+        when (task_choices & %w(VHCL MTRZDVHCL VEHICLE)).any?
           # used by camera catalogue & cmp wildlife cameras,
           # to make config option soon,
           # but under time pressure since they're eager to relaunch asap.
