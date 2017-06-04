@@ -1,18 +1,24 @@
 module Nero
   class UserState
-    attr_reader :id, :external_id, :data
+    attr_reader :id, :user_id, :workflow_id, :data
 
-    def initialize(id:, external_id:, data: {})
+    def initialize(id:, user_id:, workflow_id:, data: {})
       @id = id
-      @external_id = external_id
-      @data = data
+      @user_id = user_id
+      @workflow_id = workflow_id
+      @data = data || {}
     end
 
     def attributes
       {
-        external_id: external_id,
+        user_id: user_id,
+        workflow_id: workflow_id,
         data: data,
       }
+    end
+
+    def to_json(*_args)
+      JSON.dump(attributes)
     end
   end
 end

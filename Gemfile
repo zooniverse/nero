@@ -9,6 +9,10 @@ gem 'dotenv'
 gem 'telekinesis', '~> 3.1.0'
 gem 'jdbc-postgres'
 
+gem 'sinatra'
+gem 'sinatra-contrib'
+gem 'puma'
+
 group :development do
   gem 'rerun'
 end

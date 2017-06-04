@@ -16,13 +16,13 @@ module Nero
       self.class.migrate(db)
     end
 
-    def find_user_state(user_id)
-      record = db[:agents].where(external_id: user_id).order(:id).first
+    def find_user_state(user_id, workflow_id)
+      record = db[:user_states].where(user_id: user_id, workflow_id: workflow_id).first
 
       if record
-        UserState.new(id: record[:id], external_id: record[:external_id], data: record[:data])
+        UserState.new(id: record[:id], user_id: user_id, workflow_id: workflow_id, data: record[:data])
       else
-        UserState.new(id: nil, external_id: user_id)
+        UserState.new(id: nil, user_id: user_id, workflow_id: workflow_id)
       end
     end
 
@@ -31,9 +31,9 @@ module Nero
       record[:data] = Sequel.pg_jsonb(record[:data])
 
       if user_state.id
-        db[:agents].where(id: user_state.id).update(record.merge(updated_at: Time.now))
+        db[:user_states].where(id: user_state.id).update(record.merge(updated_at: Time.now))
       else
-        db[:agents].insert(record.merge(created_at: Time.now, updated_at: Time.now))
+        db[:user_states].insert(record.merge(created_at: Time.now, updated_at: Time.now))
       end
     end
 

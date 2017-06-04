@@ -13,7 +13,7 @@ RSpec.configure do |config|
   end
 
   config.before(:example) do
-    DB[:agents].delete
+    DB[:user_states].delete
     DB[:estimates].delete
 
     # Stub out any calls the NewRelic gem makes

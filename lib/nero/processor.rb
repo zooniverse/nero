@@ -39,7 +39,7 @@ module Nero
 
       Nero.logger.info "processing", classification_id: classification.id, subject_ids: classification.subject_ids
 
-      user_state = @storage.find_user_state(classification.user_id)
+      user_state = @storage.find_user_state(classification.user_id, classification.workflow_id)
       subject_state = @storage.find_subject_state(classification.subject_ids.join("-"), classification.workflow_id)
 
       begin

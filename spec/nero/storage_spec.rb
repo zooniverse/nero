@@ -9,20 +9,25 @@ describe Nero::Storage do
   end
 
   context 'user_states' do
+    let(:user_id) { '123' }
+    let(:workflow_id) { '2' }
+
     it 'returns a new user_state for an unknown user id' do
-      user_state = storage.find_user_state('123')
+      user_state = storage.find_user_state(user_id, workflow_id)
       expect(user_state.id).to be_nil
-      expect(user_state.external_id).to eq('123')
+      expect(user_state.user_id).to eq(user_id)
     end
 
     it 'stores and retrieves user_states' do
-      user_state = storage.find_user_state('123')
+      user_state = storage.find_user_state(user_id, workflow_id)
       user_state.data["foo"] = "bar"
       storage.record_user_state(user_state)
-      retrieved_user_state = storage.find_user_state('123')
+      retrieved_user_state = storage.find_user_state(user_id, workflow_id)
 
       expect(retrieved_user_state.id).not_to be_nil
-      expect(retrieved_user_state.external_id).to eq('123')
+      expect(retrieved_user_state.user_id).to eq(user_id)
+      expect(retrieved_user_state.workflow_id).to eq(workflow_id)
+
       expect(retrieved_user_state.data["foo"]).to eq("bar")
     end
   end

@@ -16,5 +16,9 @@ module Nero
         data: data
       }
     end
+
+    def to_json(*_args)
+      JSON.dump(attributes)
+    end
   end
 end

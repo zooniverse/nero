@@ -45,12 +45,12 @@ module Nero
 
       def workflow
         data_column = Sequel.pg_json_op(:data)
-        skilled_agents = user_states.where(data_column.get_text('skill').cast(Float) > 0.8).map { |i| i[:external_id] }
+        skilled_agents = user_states.where(data_column.get_text('skill').cast(Float) > 0.8).map { |i| i[:user_id] }
         OpenStruct.new(skilled_agents: skilled_agents)
       end
 
       def user_states
-        @storage.db[:agents]
+        @storage.db[:user_states]
       end
     end
   end
